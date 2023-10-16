@@ -9,7 +9,7 @@ Lembrem se de componentizar as telas
 
 Thiago, essas pastas estao muito confusas :(
 
-- Tá nada
+if Tá nada
 
 ## atualmente fazendo animações e trabalhando na responsividade do app.
 
