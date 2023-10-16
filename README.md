@@ -5,6 +5,7 @@ Baixar Node modules
 Lembrem se de componentizar as telas
 
 ## Toda mudança que for efetuada, favor colocar no repositório do github!
+## Não colocar nnada no github hoje! mudanças sendo feitas em dois computadores.
 
 Thiago, essas pastas estao muito confusas :(
 
