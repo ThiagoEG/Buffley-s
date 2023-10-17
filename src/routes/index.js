@@ -3,7 +3,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createAppContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { TouchableOpacity } from 'react-native';
 
+import TelaNotificacoes from '../pages/TelaNotificacoes';
+import Preferencias from '../pages/Preferencias'
 import HomeBuffet from '../pages/HomeBuffet'
 import TelaLucas1 from '../pages/TelaLucas1'
 import TelaLucas2 from '../pages/TelaLucas2'
@@ -13,6 +18,7 @@ import Home2 from '../pages/Home2'
 import Welcome from '../pages/Welcome'
 import SignIn from '../pages/SignIn'
 import Cardapio from '../pages/Cardapio'
+import CardapiosBuffet from '../pages/CardapiosBuffet'
 import TelaInicial from '../pages/TelaInicial/telaInicial'
 import TelaFreelancer1 from '../pages/TelaFreelancer1'
 import TelaFreelancer2 from '../pages/TelaFreelancer2'
@@ -26,14 +32,16 @@ const iconesDasGuias = {
 
   const iconesDasGuias2 = {
     HomeBuffet: 'home', // Substitua 'home' pelo nome real do ícone que você deseja usar
-    TelaLucas1: 'business', // Substitua 'person' pelo nome real do ícone que você deseja usar
-    TelaLucas2: 'clipboard-outline', // Substitua 'settings' pelo nome real do ícone que você deseja usar
+    CardapiosBuffet: 'business', // Substitua 'person' pelo nome real do ícone que você deseja usar
+    Funcionarios: 'clipboard-outline', // Substitua 'settings' pelo nome real do ícone que você deseja usar
   };
 
 
   
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator(); // Adicione esta linha
+
 
 function HomeScreen() {
     return (
@@ -55,10 +63,11 @@ function HomeScreen() {
         <Tab.Screen name="BuffetsParceiros" component={BuffetsParceiros} options={{headerShown: false}}/>
         <Tab.Screen name="Cardapio" component={Cardapio} options={{headerShown: false}}/>
       </Tab.Navigator>
+      
     );
   }
 
-  function HomeScreenBuffet() {
+ export function HomeScreenBuffet() {
     return (
       <Tab.Navigator
         initialRouteName="Home"
@@ -75,15 +84,13 @@ function HomeScreen() {
         })}
       >
         <Tab.Screen name="HomeBuffet" component={HomeBuffet} options={{headerShown: false}}/>
-        <Tab.Screen name="TelaLucas1" component={TelaLucas1} options={{headerShown: false}}/>
-        <Tab.Screen name="TelaLucas2" component={TelaLucas2} options={{headerShown: false}}/>
+        <Tab.Screen name="CardapiosBuffet" component={CardapiosBuffet} options={{headerShown: false}}/>
+        <Tab.Screen name="Funcionarios" component={TelaLucas2} options={{headerShown: false}}/>
       </Tab.Navigator>
     );
   }  
 
-
-  
-  
+/*
 
 function Routes(props)
 {
@@ -129,5 +136,65 @@ function Routes(props)
     )    
     
 }
+
+*/
+  
+  /*
+  
+  function StackNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
+      <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="HomeScreenBuffet" component={HomeScreenBuffet} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  );
+}
+
+function Routes() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName="HomeScreen">
+        <Drawer.Screen name="Inicio" component={StackNavigator} options={{ headerShown: false }} />
+        <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+        <Drawer.Screen name="HomeScreenBuffet" component={HomeScreenBuffet} options={{ headerShown: false }} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
+  
+  */
+function StackNavigator() {
+  return (
+    <Stack.Navigator initialRouteName="SignIn">
+      <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
+      <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="HomeScreenBuffet" component={HomeScreenBuffet} options={{ headerShown: false }} />
+      <Stack.Screen name="DrawerScreen" component={DrawerScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="TelaNotificacoes" component={TelaNotificacoes} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  );
+}
+
+function DrawerScreen() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="DrawerHomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+      <Drawer.Screen name="DrawerHomeScreenBuffet" component={HomeScreenBuffet} options={{ headerShown: false }} />
+    </Drawer.Navigator>
+  );
+}
+
+function Routes() {
+  return (
+    <NavigationContainer>
+      <StackNavigator />
+    </NavigationContainer>
+  );
+}
+
+
 
 export default Routes;

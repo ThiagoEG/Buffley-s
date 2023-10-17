@@ -8,10 +8,9 @@ import Stars from '../componentes2/Stars2.js';
 
 export default function App() {
   return (
-    <ScrollView style={{margin: 0}}>
+    <ScrollView style={{margin: 0, backgroundColor: 'white'}}>
       <Navbar/>
       <Meio/>
-      <Botão/>
     </ScrollView>
   );
 }

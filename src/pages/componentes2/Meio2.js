@@ -10,7 +10,7 @@ export default function Meio() {
         <Icon name="search" size={24} color="gray" style={styles.icon} />
         <TextInput
           style={styles.textInput}
-          placeholder="Search"
+          placeholder=""
           placeholderTextColor="gray"
         />
       </View>
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    marginLeft: 10,
+    marginHorizontal: '5%',
     marginTop: 20,
     paddingHorizontal: 10,
     borderRadius: 5,

@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions  } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
-import { NavigationContainer } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
+import Card from '../Componentes/card';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import SideMenu from '../Componentes/SideMenu';
 
 const { width, height } = Dimensions.get('window');
 
-const handlePress = () => {
-  navigation.navigate('TelaNotificaçoes');
-};
 
 const Categoria = ({ text}) => (
   <View tyle={styles.categoriaBox}>
@@ -18,16 +13,34 @@ const Categoria = ({ text}) => (
   </View>
 );
 
+const RetanguloComTexto = ({ texto }) => {
+  return (
+    <View style={styles.retangulo}>
+      <Text style={styles.texto}>{texto}</Text>
+    </View>
+  );
+};
 
 
-
-export default function Home({ rating, navigation  }) {
-  const [menuVisible, setMenuVisible] = useState(false);
-  const toggleMenu = () => {
-    setMenuVisible(!menuVisible);
+const RetanguloComTexto1 = ({ texto }) => {
+    return (
+      <View style={styles.retangulo1}>
+        <Text style={styles.texto}>{texto}</Text>
+      </View>
+    );
   };
 
-  const textos = ['5 Estrelas', 'Cardapios', '100 pessoas', '2500 R$', '300 pessoas'];
+export default function Home({ rating }) {
+
+  const textos = ['Aprovados', 'Recusados'];
+  
+  const textos1 = ['300 pessoas', '2,500', '22/05/23'];
+
+  const card = {
+    itens: '15 Itens',
+    maisBarato: 'Salada, 100R$',
+    maisCaro: 'Prato principal, 700R$',
+  };
 
     const renderStars = () => {
         const stars = [];
@@ -44,29 +57,85 @@ export default function Home({ rating, navigation  }) {
         }
         return stars;
       };
-      const handleNotifications = () => {
-        navigation.navigate('TelaNotificacoes');
-      };
 
   return (
 
+    <View style={styles.container}>
+
+<View style={styles.topBar}>
+      <View style={styles.leftContainer}>
+        <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
+      </View>
+      <View style={styles.rightContainer}>
+        <Feather name="bell" size={24} marginRight={12} color="black" />
+        <Feather name="menu" size={24} marginRight={12} color="black" />
+      </View>
+    </View>
+
+    <ScrollView contentContainerStyle={styles.scrollContent}>
+
+    <ScrollView horizontal 
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.scrollContent2}>
+
+      <View style={styles.container2}>
+      {textos.map((texto, index) => (
+        <View key={index} style={styles.retanguloComEspacamento}>
+          <RetanguloComTexto texto={texto} />
+        </View>
+      ))}
+    </View>
+
+    </ScrollView>
+
+    <Text style={styles.title}>Cardápios aprovados</Text>
+
+    <View style={styles.containerCard}>
+
+<View style={styles.titleCard}>
+  <Text style={styles.titleText}>Art's Fia Buffet</Text>
+  <Icon name='star' size={30} color="green" marginTop={8}></Icon>
+</View>
+
+<View style={styles.container2}>
+{textos1.map((texto, index) => (
+  <View key={index} style={styles.retanguloComEspacamento}>
+    <RetanguloComTexto1 texto={texto} />
+  </View>
+))}
+</View> 
+
+<View style={{ flex: 1 }}>
+<Card
+  itens={card.itens}
+  maisBarato={card.maisBarato}
+  maisCaro={card.maisCaro}
+/>
+</View>
+
+<TouchableOpacity style={styles.bottom}>
+<Text style={styles.bottomText}>Visualizar</Text>
+</TouchableOpacity>
+
+</View>
+
+    </ScrollView>
+
+    </View>
+
+    /*
+    
     <View style={styles.container}>
     <View style={styles.topBar}>
       <View style={styles.leftContainer}>
         <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
       </View>
       <View style={styles.rightContainer}>
-      <TouchableOpacity onPress={handleNotifications}>
-            <Feather name="bell" size={24} marginRight={12} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleMenu}>
-            <Feather name="menu" size={24} color="black" />
-          </TouchableOpacity>
+        <Feather name="bell" size={24} marginRight={12} color="black" />
+        <Feather name="menu" size={24} marginRight={12} color="black" />
       </View>
     </View>
 
- 
- <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
     
     <ScrollView contentContainerStyle={styles.scrollContent}>
 
@@ -123,16 +192,12 @@ export default function Home({ rating, navigation  }) {
 
 
  </View>
+    
+    */
 
 );
 };
-const RetanguloComTexto = ({ texto }) => {
-  return (
-    <View style={styles.retangulo}>
-      <Text style={styles.texto}>{texto}</Text>
-    </View>
-  );
-};
+
 const styles = StyleSheet.create({
 container: {
   flex: 1,
@@ -339,11 +404,26 @@ searchContainer: {
   container2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    paddingHorizontal: 4,
   },
 
+/*
+  retangulo: {
+    height: 32,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 15,
+    marginTop: 24,
+    marginHorizontal: 16,
+    borderRadius: 5,
+    elevation: 8,
+  },
+*/
+
+
   retanguloComEspacamento: {
-    marginRight: null, // Adiciona um espaçamento de 8px à direita de cada retângulo
+    marginRight: -16
   },
 
   retangulo: {
@@ -354,6 +434,18 @@ searchContainer: {
     paddingHorizontal: 15,
     marginTop: 24,
     marginHorizontal: 16,
+    borderRadius: 5,
+    elevation: 8,
+  },
+  retangulo1:
+  {
+    height: 32,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 15,
+    marginTop: 24,
+    marginRight: 38,
     borderRadius: 5,
     elevation: 8,
   },

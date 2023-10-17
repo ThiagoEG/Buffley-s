@@ -9,10 +9,15 @@ const Card = ({ itens, maisBarato, maisCaro }) => {
         <Image source={require('../../../assets/Rectangle-152.png')} />
       </View>
       <View style={styles.textContainer}>
-        <Text style={styles.label}>Nome</Text>
-        <Text style={styles.label2}>Fixo ou Freelancer</Text>
+
+      <View style={styles.textContainerTop}>
+      <Text style={styles.label}>Nome</Text>
+      </View>
+      <View style={styles.textContainerBottom}>
+      <Text style={styles.label2}>Fixo/Freelancer</Text>
         <Text style={styles.label2}>Salario</Text>
         <Text style={styles.label2}>Cargo</Text>
+        </View>
       </View>
       <View style={styles.iconContainer}>
         <Icon name="phone" size={24} color="gray" />
@@ -38,12 +43,23 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   textContainer: {
-    flexDirection: 'column',
     flex: 1, // Allow text to expand and fill available space
+  },
+  textContainerTop: {
+    flexDirection: 'column',
+    flex: 0.5, // Allow text to expand and fill available space
+  },
+  textContainerBottom: {
+    flexDirection: 'row',
+    flex: 0.5, // Allow text to expand and fill available space
   },
   label: {
     fontWeight: 'bold',
     marginBottom: 8,
+    flexDirection: 'column',
+  },
+  label2: {
+    marginRight: 8,
   },
   iconContainer: {
     justifyContent: 'center',

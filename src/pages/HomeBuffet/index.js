@@ -317,7 +317,10 @@ export default function HomeBuffet({  }) {
       </View>
     </View>
     
-    <Text style={styles.title}>Cardápio Solicitados</Text>
+
+<ScrollView>
+
+<Text style={styles.title}>Cardápio Solicitados</Text>
 
      <View style={styles.retangulo1}>
         <View style={styles.titleSol}>
@@ -364,6 +367,10 @@ export default function HomeBuffet({  }) {
 </TouchableOpacity>
 
 </View>
+
+</ScrollView>
+
+    
 
 
     </View>
