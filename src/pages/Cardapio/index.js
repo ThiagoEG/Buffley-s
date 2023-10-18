@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Card from '../Componentes/card';
+import SideMenu from '../Componentes/SideMenu';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+
 
 const { width, height } = Dimensions.get('window');
 
 const Categoria = ({ text}) => (
-  <View tyle={styles.categoriaBox}>
-    <Text tyle={styles.categoriaText}>{text}</Text>
+  <View style={styles.categoriaBox}>
+    <Text style={styles.categoriaText}>{text}</Text>
   </View>
 );
 
@@ -20,7 +24,7 @@ const RetanguloComTexto = ({ texto }) => {
   );
 };
 
-export default function Home({ rating }) {
+export default function Home({ rating, navigation }) {
 
   const textos = ['300 pessoas', '2,500', '22/05/23'];
   
@@ -28,6 +32,20 @@ export default function Home({ rating }) {
     itens: '15 Itens',
     maisBarato: 'Salada, 100R$',
     maisCaro: 'Prato principal, 700R$',
+  };
+
+  const handlePress = () => {
+    navigation.navigate('CriarCardapio');
+  };
+  const handleNotifications = () => {
+    navigation.navigate('TelaNotificacoes');
+  };
+  const handleBuffetNavigation = () => {
+    navigation.navigate('BuffetPerfil');
+  };
+  const [menuVisible, setMenuVisible] = useState(false);
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
   };
 
   return (
@@ -38,11 +56,16 @@ export default function Home({ rating }) {
         <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
       </View>
       <View style={styles.rightContainer}>
-        <Feather name="bell" size={24} marginRight={12} color="black" />
-        <Feather name="menu" size={24} marginRight={12} color="black" />
+      <TouchableOpacity onPress={handleNotifications}>
+            <Feather name="bell" size={24} marginRight={12} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleMenu}>
+            <Feather name="menu" size={24} color="black" />
+          </TouchableOpacity>
       </View>
     </View>
 
+    <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
     
     <ScrollView contentContainerStyle={styles.scrollContent}>
 
@@ -62,7 +85,7 @@ export default function Home({ rating }) {
 
       <View style={styles.titleCard}>
         <Text style={styles.titleText}>Art's Fia Buffet</Text>
-        <Icon name='star' size={30} color="green" marginTop={8}></Icon>
+        <MaterialIcons name='star' size={30} color="green" marginTop={8}></MaterialIcons>
       </View>
 
       <View style={styles.container2}>
@@ -81,7 +104,7 @@ export default function Home({ rating }) {
       />
     </View>
 
-    <TouchableOpacity style={styles.bottom}>
+    <TouchableOpacity onPress={handlePress} style={styles.bottom}>
       <Text style={styles.bottomText}>Visualizar</Text>
     </TouchableOpacity>
 

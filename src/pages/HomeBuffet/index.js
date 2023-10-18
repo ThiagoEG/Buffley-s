@@ -278,11 +278,13 @@ searchContainer: {
 
 */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Icon from 'react-native-vector-icons/FontAwesome';
+import SideMenu from '../Componentes/SideMenu';
 import Card from '../Componentes/card';
+import CustomModal from '../Componentes/Modal';
 
 const textos = ['300 pessoas', '2,500', '22/05/23'];
   
@@ -302,21 +304,49 @@ const RetanguloComTexto = ({ texto }) => {
     );
   };
 
-export default function HomeBuffet({  }) {
+
+
+export default function HomeBuffet({ navigation }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handlePress = () => {
+    navigation.navigate('CriarCardapio');
+  };
+  const handleOpenModal = () => {
+    setIsModalOpen(true);}
+
+    const handleCloseModal = () => {
+      setIsModalOpen(false);
+    }
+
+  const handleNotifications = () => {
+    navigation.navigate('TelaNotificacoes');
+  };
+  const handleBuffetNavigation = () => {
+    navigation.navigate('BuffetPerfil');
+  };
+  const [menuVisible, setMenuVisible] = useState(false);
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
 
     return(
 
-    <View style={styles.container}>
-    <View style={styles.topBar}>
-      <View style={styles.leftContainer}>
-        <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
+      <View style={styles.container}>
+      <View style={styles.topBar}>
+        <View style={styles.leftContainer}>
+          <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
+        </View>
+        <View style={styles.rightContainer}>
+        <TouchableOpacity onPress={handleNotifications}>
+              <Feather name="bell" size={24} marginRight={12} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={toggleMenu}>
+              <Feather name="menu" size={24} color="black" />
+            </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.rightContainer}>
-        <Feather name="bell" size={24} marginRight={12} color="black" />
-        <Feather name="menu" size={24} marginRight={12} color="black" />
-      </View>
-    </View>
     
+      <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
 
 <ScrollView>
 
@@ -332,10 +362,15 @@ export default function HomeBuffet({  }) {
            </View>
 
         </View>
-        <TouchableOpacity>
-        <Image source={require('../../../assets/MenuDots.png') }style={styles.imagemIcon}/>
-        </TouchableOpacity>
+      <TouchableOpacity onPress={handleOpenModal}>
+        <Image source={require('../../../assets/MenuDots.png')} style={styles.imagemIcon} />
+      </TouchableOpacity>
       </View>
+
+      {/* Renderiza o modal quando a variável isModalOpen for true */}
+      {isModalOpen && (
+        <CustomModal isVisible={isModalOpen} onClose={handleCloseModal} />
+      )}
 
       <Text style={styles.title}>Seus cardápios</Text>
 
@@ -362,7 +397,7 @@ export default function HomeBuffet({  }) {
 />
 </View>
 
-<TouchableOpacity style={styles.bottom}>
+<TouchableOpacity onPress={handlePress} style={styles.bottom}>
 <Text style={styles.bottomText}>Visualizar</Text>
 </TouchableOpacity>
 

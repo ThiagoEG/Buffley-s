@@ -2,16 +2,19 @@ import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
+import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { createAppContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { TouchableOpacity } from 'react-native';
 
+import TelaWyllian from '../pages/TelaWyllian'
 import TelaNotificacoes from '../pages/TelaNotificacoes';
 import Preferencias from '../pages/Preferencias'
 import HomeBuffet from '../pages/HomeBuffet'
-import TelaLucas1 from '../pages/TelaLucas1'
-import TelaLucas2 from '../pages/TelaLucas2'
+import BuffetPerfil from '../pages/BuffetPerfil'
+import Funcionarios from '../pages/Funcionarios'
 import Home from '../pages/Home'
 import BuffetsParceiros from '../pages/BuffetsParceiros'
 import Home2 from '../pages/Home2'
@@ -23,6 +26,7 @@ import TelaInicial from '../pages/TelaInicial/telaInicial'
 import TelaFreelancer1 from '../pages/TelaFreelancer1'
 import TelaFreelancer2 from '../pages/TelaFreelancer2'
 import TelaFreelancer3 from '../pages/TelaFreelancer3'
+import CriarCardapio from '../pages/CriarCardapio'
 
 const iconesDasGuias = {
     Home: 'home', // Substitua 'home' pelo nome real do ícone que você deseja usar
@@ -85,7 +89,7 @@ function HomeScreen() {
       >
         <Tab.Screen name="HomeBuffet" component={HomeBuffet} options={{headerShown: false}}/>
         <Tab.Screen name="CardapiosBuffet" component={CardapiosBuffet} options={{headerShown: false}}/>
-        <Tab.Screen name="Funcionarios" component={TelaLucas2} options={{headerShown: false}}/>
+        <Tab.Screen name="Funcionarios" component={Funcionarios} options={{headerShown: false}}/>
       </Tab.Navigator>
     );
   }  
@@ -173,7 +177,10 @@ function StackNavigator() {
       <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="HomeScreenBuffet" component={HomeScreenBuffet} options={{ headerShown: false }} />
       <Stack.Screen name="DrawerScreen" component={DrawerScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="TelaNotificacoes" component={TelaNotificacoes} options={{ headerShown: false }} />
+      <Stack.Screen name="TelaNotificacoes" component={TelaNotificacoes} options={{ headerShown: false }}/>
+      <Stack.Screen name="BuffetPerfil" component={BuffetPerfil} options={{ headerShown: false }} />
+      <Stack.Screen name="Preferencias" component={Preferencias} options={{ headerShown: false }} />
+      <Stack.Screen name="CriarCardapio" component={CriarCardapio} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

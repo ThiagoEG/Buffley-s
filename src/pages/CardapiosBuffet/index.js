@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions  } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Card from '../Componentes/card';
+import SideMenu from '../Componentes/SideMenu'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const { width, height } = Dimensions.get('window');
@@ -30,7 +31,7 @@ const RetanguloComTexto1 = ({ texto }) => {
     );
   };
 
-export default function Home({ rating }) {
+export default function Home({ rating, navigation }) {
 
   const textos = ['Aprovados', 'Recusados'];
   
@@ -47,7 +48,7 @@ export default function Home({ rating }) {
         for (let i = 1; i <= 5; i++) {
           stars.push(
             <View key={i} style={styles.starContainer}>
-              <Icon
+              <MaterialIcons
                 name={i <= rating ? 'star_border' : 'grade'}
                 size={30}
                 color={i <= rating ? 'gold' : 'gray'}
@@ -57,20 +58,41 @@ export default function Home({ rating }) {
         }
         return stars;
       };
+      const handleNotifications = () => {
+        navigation.navigate('TelaNotificacoes');
+      };
+      const handleCardapioNavigation = () => {
+        navigation.navigate('CriarCardapio');
+      };
+      const handleBuffetNavigation = () => {
+        navigation.navigate('BuffetPerfil');
+      };
+      const [menuVisible, setMenuVisible] = useState(false);
+      const toggleMenu = () => {
+        setMenuVisible(!menuVisible);}
 
   return (
 
     <View style={styles.container}>
-
-<View style={styles.topBar}>
+    <View style={styles.topBar}>
       <View style={styles.leftContainer}>
         <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
       </View>
       <View style={styles.rightContainer}>
-        <Feather name="bell" size={24} marginRight={12} color="black" />
-        <Feather name="menu" size={24} marginRight={12} color="black" />
+      <TouchableOpacity onPress={handleCardapioNavigation}>
+            <Feather name="edit" size={24} marginRight={12} color="black" />
+          </TouchableOpacity>
+      <TouchableOpacity onPress={handleNotifications}>
+            <Feather name="bell" size={24} marginRight={12} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleMenu}>
+            <Feather name="menu" size={24}  color="black" />
+          </TouchableOpacity>
+
       </View>
     </View>
+  
+    <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
 
     <ScrollView contentContainerStyle={styles.scrollContent}>
 
@@ -94,7 +116,7 @@ export default function Home({ rating }) {
 
 <View style={styles.titleCard}>
   <Text style={styles.titleText}>Art's Fia Buffet</Text>
-  <Icon name='star' size={30} color="green" marginTop={8}></Icon>
+  <MaterialIcons name='star' size={30} color="green" marginTop={8}></MaterialIcons>
 </View>
 
 <View style={styles.container2}>

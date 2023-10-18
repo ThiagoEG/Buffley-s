@@ -1,13 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Navbar from '../Componentes/Navbar';
 import Imagem from '../Componentes/Imagem';
-import Botão from '../Componentes/Botão';
 import Stars from '../Componentes/Stars';
 import CardCardapio from '../componentes2/CardCardapio';
 
 export default function App() {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate('Preferencias');
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Navbar />
@@ -18,7 +24,14 @@ export default function App() {
       <CardCardapio />
       <CardCardapio />
       <CardCardapio />
-      <Botão />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={handlePress}>
+          <Image
+            source={require("../../../assets/Frame4.png")}
+            style={styles.buttonImage}
+          />
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }
@@ -42,5 +55,8 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     margin: 16,
   },
-
+  buttonContainer: {
+    alignItems: 'center',
+    margin: 16,
+  },
 });

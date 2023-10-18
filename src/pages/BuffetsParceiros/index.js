@@ -1,11 +1,18 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions  } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
-
+import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Ionicons } from '@expo/vector-icons';
+import SideMenu from '../Componentes/SideMenu';
+import BuffetPerfil from '../BuffetPerfil'
 
 const { width, height } = Dimensions.get('window');
 
+const handlePress = () => {
+  navigation.navigate('TelaNotificaçoes');
+};
 
 const Categoria = ({ text}) => (
   <View tyle={styles.categoriaBox}>
@@ -13,24 +20,23 @@ const Categoria = ({ text}) => (
   </View>
 );
 
-const RetanguloComTexto = ({ texto }) => {
-  return (
-    <View style={styles.retangulo}>
-      <Text style={styles.texto}>{texto}</Text>
-    </View>
-  );
-};
 
-export default function Home({ rating }) {
 
-  const textos = ['5 Esctrelas', 'Cardapios', '100 pessoas', '2500 R$', '300 pessoas'];
+
+export default function Home({ rating, navigation  }) {
+  const [menuVisible, setMenuVisible] = useState(false);
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+
+  const textos = ['5 Estrelas', 'Cardapios', '100 pessoas', '2500 R$', '300 pessoas'];
 
     const renderStars = () => {
         const stars = [];
         for (let i = 1; i <= 5; i++) {
           stars.push(
             <View key={i} style={styles.starContainer}>
-              <Icon
+              <MaterialIcons
                 name={i <= rating ? 'star_border' : 'grade'}
                 size={30}
                 color={i <= rating ? 'gold' : 'gray'}
@@ -39,6 +45,12 @@ export default function Home({ rating }) {
           );
         }
         return stars;
+      };
+      const handleNotifications = () => {
+        navigation.navigate('TelaNotificacoes');
+      };
+      const handleBuffetNavigation = () => {
+        navigation.navigate('BuffetPerfil');
       };
 
   return (
@@ -49,19 +61,31 @@ export default function Home({ rating }) {
         <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
       </View>
       <View style={styles.rightContainer}>
-        <Feather name="bell" size={24} marginRight={12} color="black" />
-        <Feather name="menu" size={24} marginRight={12} color="black" />
+      <TouchableOpacity onPress={handleNotifications}>
+            <Feather name="bell" size={24} marginRight={12} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleMenu}>
+            <Feather name="menu" size={24} color="black" />
+          </TouchableOpacity>
       </View>
     </View>
 
+ 
+ <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
     
     <ScrollView contentContainerStyle={styles.scrollContent}>
 
     
 
-    
 
-      <Text style={styles.title}>Buffets parceiros</Text>
+      <ScrollView horizontal 
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.scrollContent2}>
+
+
+    </ScrollView>
+
+      <Text style={styles.title}>Buffets Proximos a você</Text>
 
   <View style={styles.containerCard}>
       <Image
@@ -71,7 +95,7 @@ export default function Home({ rating }) {
 
       <View style={styles.titleCard}>
         <Text style={styles.titleText}>Art's Fia Buffet</Text>
-        <Icon name='place' size={30} color="black" marginTop={8}></Icon>
+        <MaterialIcons name='place' size={30} color="black" marginTop={8}></MaterialIcons>
       </View>
 
       <View style={styles.rectangle}>
@@ -79,7 +103,7 @@ export default function Home({ rating }) {
     </View>
 
 
-    <TouchableOpacity style={styles.bottom}>
+    <TouchableOpacity style={styles.bottom} onPress={handleBuffetNavigation}>
       <Text style={styles.bottomText}>Ver Buffet</Text>
     </TouchableOpacity>
 
@@ -93,30 +117,36 @@ export default function Home({ rating }) {
 
 );
 };
-
+const RetanguloComTexto = ({ texto }) => {
+  return (
+    <View style={styles.retangulo}>
+      <Text style={styles.texto}>{texto}</Text>
+    </View>
+  );
+};
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    width: width,  // Use width e height para tornar o tamanho responsivo
-    height: height,
-    alignSelf: 'center',
-  },
-  topBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    height: height * 0.09,  // Defina uma porcentagem adequada
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    borderBottomLeftRadius: 15, 
-    borderBottomRightRadius: 15,
-    shadowOffset: { width: 10, height: 0 },
-      shadowOpacity: 5,
-      shadowRadius: 2,
-      elevation: 8,
-  },
+container: {
+  flex: 1,
+  backgroundColor: 'white',
+  width: width,  // Use width e height para tornar o tamanho responsivo
+  height: height,
+  alignSelf: 'center',
+},
+topBar: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '100%',
+  height: height * 0.09,  // Defina uma porcentagem adequada
+  backgroundColor: 'white',
+  paddingHorizontal: 20,
+  borderBottomLeftRadius: 15, 
+  borderBottomRightRadius: 15,
+  shadowOffset: { width: 10, height: 0 },
+    shadowOpacity: 5,
+    shadowRadius: 2,
+    elevation: 8,
+},
 
 leftContainer: {
   flexDirection: 'row',
@@ -135,8 +165,8 @@ rightContainer: {
 searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 20, // Espaçamento entre a top bar e a barra de pesquisa
-    marginHorizontal: 32,
+    marginTop: height * 0.03,  // Porcentagem em relação à altura
+    marginHorizontal: width * 0.05,  // Porcentagem em relação à largura
     paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: 'white',
@@ -173,6 +203,36 @@ searchContainer: {
     elevation: 4,
     marginTop: 32,
     marginVertical:32,
+
+    /* 
+       width: 360,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    shadowColor: 'black',
+    alignSelf:'center',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+    marginTop: 32,
+    marginVertical:32,
+
+        width: width * 0.9,  // 90% da largura da tela
+    paddingVertical: height * 0.02,  // 2% da altura da tela
+    paddingHorizontal: width * 0.04,  // 4% da largura da tela
+    backgroundColor: 'white',
+    borderRadius: 10,
+    shadowColor: 'black',
+    alignSelf:'center',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 6,
+    marginTop: 32,
+    marginVertical:32,
+    */
   },
   image: {
     width: 330,

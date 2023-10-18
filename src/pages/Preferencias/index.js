@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Dropdown from '../Componentes/DropDown'
 
 export default function Welcome() {
   const [nome, setNome] = useState('');
@@ -11,16 +12,16 @@ export default function Welcome() {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    navigation.navigate('SignIn');
+    navigation.navigate('HomeScreen');
   };
 
-  const handlePress2 = () => {
+/*  const handlePress2 = () => {
     if (selectedOption === 'Buffet') {
       // Lógica para o Buffet
     } else if (selectedOption === 'Cliente') {
       // Lógica para o Cliente
     }
-  };
+  };*/
 
   const [selectedOption, setSelectedOption] = useState('Buffet');
 
@@ -77,49 +78,15 @@ export default function Welcome() {
 
         <Text style={styles.sectionTitle}>Preferências</Text>
 
-        <View style={styles.inputContainer}>
-          <Icon name="arrow-down" size={24} color="#000" style={styles.icon} />
-          <TextInput
-            style={[styles.input, styles.inputWithIcon, { fontWeight: 'bold' }]}
-            placeholder="Carne"
-            placeholderTextColor="#050505"
-            editable={false}
-          />
-        </View>
+        <Dropdown placeholder="Carnes"></Dropdown>
+        <Dropdown placeholder="Bebidas"></Dropdown>
+        <Dropdown placeholder="Bolos"></Dropdown>
+        <Dropdown placeholder="Entradas"></Dropdown>
 
-        <View style={styles.inputContainer}>
-          <Icon name="arrow-down" size={24} color="#000" style={styles.icon} />
-          <TextInput
-            style={[styles.input, styles.inputWithIcon, { fontWeight: 'bold' }]}
-            placeholder="Bebidas"
-            placeholderTextColor="#050505"
-            editable={false}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Icon name="arrow-down" size={24} color="#000" style={styles.icon} />
-          <TextInput
-            style={[styles.input, styles.inputWithIcon, { fontWeight: 'bold' }]}
-            placeholder="Bolo"
-            placeholderTextColor="#050505"
-            editable={false}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Icon name="arrow-down" size={24} color="#000" style={styles.icon} />
-          <TextInput
-            style={[styles.input, styles.inputWithIcon, { fontWeight: 'bold' }]}
-            placeholder="Entradas"
-            placeholderTextColor="#050505"
-            editable={false}
-          />
-        </View>
       </View>
       
       <View style={styles.bottomContainer}>
-        <TouchableOpacity style={styles.button} onPress={handlePress2}>
+        <TouchableOpacity style={styles.button} onPress={handlePress}>
           <Text style={styles.buttonText}>Concluir</Text>
         </TouchableOpacity>
       </View>

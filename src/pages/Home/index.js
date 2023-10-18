@@ -4,7 +4,9 @@ import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Cer
 import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Ionicons } from '@expo/vector-icons';
 import SideMenu from '../Componentes/SideMenu';
+import BuffetPerfil from '../BuffetPerfil'
 
 const { width, height } = Dimensions.get('window');
 
@@ -34,7 +36,7 @@ export default function Home({ rating, navigation  }) {
         for (let i = 1; i <= 5; i++) {
           stars.push(
             <View key={i} style={styles.starContainer}>
-              <Icon
+              <MaterialIcons
                 name={i <= rating ? 'star_border' : 'grade'}
                 size={30}
                 color={i <= rating ? 'gold' : 'gray'}
@@ -46,6 +48,9 @@ export default function Home({ rating, navigation  }) {
       };
       const handleNotifications = () => {
         navigation.navigate('TelaNotificacoes');
+      };
+      const handleBuffetNavigation = () => {
+        navigation.navigate('BuffetPerfil');
       };
 
   return (
@@ -104,7 +109,7 @@ export default function Home({ rating, navigation  }) {
 
       <View style={styles.titleCard}>
         <Text style={styles.titleText}>Art's Fia Buffet</Text>
-        <Icon name='place' size={30} color="black" marginTop={8}></Icon>
+        <MaterialIcons name='place' size={30} color="black" marginTop={8}></MaterialIcons>
       </View>
 
       <View style={styles.rectangle}>
@@ -112,8 +117,8 @@ export default function Home({ rating, navigation  }) {
     </View>
 
 
-    <TouchableOpacity style={styles.bottom}>
-      <Text style={styles.bottomText}>Ver Receitas</Text>
+    <TouchableOpacity style={styles.bottom} onPress={handleBuffetNavigation}>
+      <Text style={styles.bottomText}>Ver Buffet</Text>
     </TouchableOpacity>
 
   </View>

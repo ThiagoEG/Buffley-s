@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Ionicons, AntDesign  } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 import * as Animatable from 'react-native-animatable';
@@ -84,7 +84,7 @@ export default function SignIn() {
     onChangeText={(text) => setSenha(text)}
   />
   <TouchableOpacity onPress={togglePasswordVisibility}>
-    <Icon
+    <FontAwesome
       name={showPassword ? 'eye' : 'eye-slash'}
       size={20}
       color="gray"

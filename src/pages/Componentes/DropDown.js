@@ -16,7 +16,7 @@ const data = [
   { label: 'Item 10', value: '10' },
 ];
 
-const MultiSelectComponent = () => {
+const MultiSelectComponent = ({ placeholder }) => {
   const [selected, setSelected] = useState([]);
 
   const renderItem = item => {
@@ -30,36 +30,36 @@ const MultiSelectComponent = () => {
 
   return (
     <View style={styles.container}>
-      <MultiSelect
-        style={styles.dropdown}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        inputSearchStyle={styles.inputSearchStyle}
-        iconStyle={styles.iconStyle}
-        data={data}
-        labelField="label"
-        valueField="value"
-        placeholder="Tipo de Carne"
-        value={selected}
-        search
-        searchPlaceholder="Search..."
-        onChange={item => {
-          setSelected(item);
-        }}
-        renderLeftIcon={() => (
-          <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-        )}
-        renderItem={renderItem}
-        renderSelectedItem={(item, unSelect) => (
-          <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
-            <View style={styles.selectedStyle}>
-              <Text style={styles.textSelectedStyle}>{item.label}</Text>
-              <AntDesign color="black" name="delete" size={17} />
-            </View>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
+    <MultiSelect
+      style={styles.dropdown}
+      placeholderStyle={styles.placeholderStyle}
+      selectedTextStyle={styles.selectedTextStyle}
+      inputSearchStyle={styles.inputSearchStyle}
+      iconStyle={styles.iconStyle}
+      data={data}
+      labelField="label"
+      valueField="value"
+      placeholder={placeholder} // Use o valor da prop 'placeholder' aqui
+      value={selected}
+      search
+      searchPlaceholder="Search..."
+      onChange={item => {
+        setSelected(item);
+      }}
+      renderLeftIcon={() => (
+        <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
+      )}
+      renderItem={renderItem}
+      renderSelectedItem={(item, unSelect) => (
+        <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+          <View style={styles.selectedStyle}>
+            <Text style={styles.textSelectedStyle}>{item.label}</Text>
+            <AntDesign color="black" name="delete" size={17} />
+          </View>
+        </TouchableOpacity>
+      )}
+    />
+  </View>
   );
 };
 
