@@ -6,7 +6,7 @@ import { MaterialIcons, Feather } from '@expo/vector-icons';
 
 
 
-export default function DropCard() {
+export default function DropCard( { title } ) {
   const [inputText, setInputText] = useState('');
   const [items, setItems] = useState([]);
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -28,7 +28,7 @@ export default function DropCard() {
       <View style={styles.containerComp}>
         <TouchableOpacity onPress={() => setIsCollapsed(!isCollapsed)}>
           <View  style={styles.containerDrop}> 
-            <Text style={{fontSize: 30, fontWeight: 'bold'}}>Lista de Itens</Text>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>{title}</Text>
             <TouchableOpacity onPress={() => setIsCollapsed(!isCollapsed)}>
               <Feather name="plus-circle" size={35} color="black" />
             </TouchableOpacity>
@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
     elevation: 2,
     borderRadius: 5,
     marginBottom: 12,
-    marginTop:24,
-
+    marginTop:10,
+    marginHorizontal: 16,
   },
   containerDrop:{
     width: 360,
