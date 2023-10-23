@@ -1,14 +1,15 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-
+import { CardapioProvider } from './src/services/CardapioContext';
 import { NavigationContainer } from '@react-navigation/native'
 import Routes from './src/routes'
 import BottomNavigator from './src/routes/BottomNavigator';
 
 export default function App() {
   return (
-      
+    <CardapioProvider>
       <Routes/>
+      </CardapioProvider>
   );
 }
 

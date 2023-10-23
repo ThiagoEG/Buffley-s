@@ -1,14 +1,17 @@
 /*import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
-import { Feather, FontAwesome } from '@expo/vector-icons';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions  } from 'react-native';
+import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
+import Card from '../Componentes/card';
+import SideMenu from '../Componentes/SideMenu'
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import SideMenu from '../Componentes/SideMenu';
+import { useCardapio } from '../../services/CardapioContext/index';
 
 const { width, height } = Dimensions.get('window');
 
-const Categoria = ({ text }) => (
-  <View style={styles.categoriaBox}>
-    <Text style={styles.categoriaText}>{text}</Text>
+
+const Categoria = ({ text}) => (
+  <View tyle={styles.categoriaBox}>
+    <Text tyle={styles.categoriaText}>{text}</Text>
   </View>
 );
 
@@ -20,30 +23,62 @@ const RetanguloComTexto = ({ texto }) => {
   );
 };
 
-export default function Home({ rating, navigation }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const textos = ['5 Estrelas', 'Cardapios', '100 pessoas', '2500 R$', '300 pessoas'];
-
-  const renderStars = () => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <View key={i} style={styles.starContainer}>
-          <Icon
-            name={i <= rating ? 'star' : 'star-border'}
-            size={30}
-            color={i <= rating ? 'gold' : 'gray'}
-          />
-        </View>
-      );
-    }
-    return stars;
+const RetanguloComTexto1 = ({ texto }) => {
+    return (
+      <View style={styles.retangulo1}>
+        <Text style={styles.texto}>{texto}</Text>
+      </View>
+    );
   };
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+export default function Home({ rating, navigation, route  }) {
+
+  const [tipoCardapio, setTipoCardapio] = useState('aprovados');
+  const { state } = useCardapio();
+  const cardapios = state.cardapios;
+
+  const handleToggleCardapio = (tipo) => {
+    setTipoCardapio(tipo);}
+
+
+  const textos = ['Aprovados', 'Recusados'];
+  
+  const textos1 = ['300 pessoas', '2,500', '22/05/23'];
+
+  const card = {
+    itens: '15 Itens',
+    maisBarato: 'Salada, 100R$',
+    maisCaro: 'Prato principal, 700R$',
   };
+
+    const renderStars = () => {
+        const stars = [];
+        for (let i = 1; i <= 5; i++) {
+          stars.push(
+            <View key={i} style={styles.starContainer}>
+              <MaterialIcons
+                name={i <= rating ? 'star_border' : 'grade'}
+                size={30}
+                color={i <= rating ? 'gold' : 'gray'}
+              />
+            </View>
+          );
+        }
+        return stars;
+      };
+      const handleNotifications = () => {
+        navigation.navigate('TelaNotificacoes');
+      };
+      const handleCardapioNavigation = () => {
+        navigation.navigate('CriarCardapio');
+      };
+      const handleBuffetNavigation = () => {
+        navigation.navigate('BuffetPerfil');
+      };
+      const [menuVisible, setMenuVisible] = useState(false);
+      const toggleMenu = () => {
+        setMenuVisible(!menuVisible);}
 
   return (
 
@@ -53,27 +88,72 @@ export default function Home({ rating, navigation }) {
         <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
       </View>
       <View style={styles.rightContainer}>
-        <TouchableOpacity><Feather name="bell" size={24} marginRight={12} color="black" /></TouchableOpacity>
-        <TouchableOpacity onPress={toggleMenu}>
-            <Feather name="menu" size={24} color="black" />
+      <TouchableOpacity onPress={handleCardapioNavigation}>
+            <Feather name="edit" size={24} marginRight={12} color="black" />
           </TouchableOpacity>
+      <TouchableOpacity onPress={handleNotifications}>
+            <Feather name="bell" size={24} marginRight={12} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleMenu}>
+            <Feather name="menu" size={24}  color="black" />
+          </TouchableOpacity>
+
       </View>
     </View>
+  
+    <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
+
+    <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent2}>
+          <View style={styles.container2}>
+            {textos.map((texto, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.retanguloComEspacamento}
+                onPress={() => handleToggleCardapio(texto.toLowerCase())}
+              >
+                <RetanguloComTexto texto={texto} />
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+
+        <Text style={styles.title}>
+          {tipoCardapio === 'aprovados' ? 'Cardápios Aprovados' : 'Cardápios Recusados'}
+        </Text>
+
+        {tipoCardapio === 'aprovados'
+    ? cardapios.aprovados.map((cardapio, index) => (
+      <View style={{ flex: 1 }}>
+      <Card
+        itens={card.itens}
+        maisBarato={card.maisBarato}
+        maisCaro={card.maisCaro}
+      />
+      </View>
+      ))
+    : cardapios.recusados.map((cardapio, index) => (
+        <Text key={index}>{cardapio.nome}</Text>
+        // Exiba outras informações do cardápio recusado conforme necessário
+      ))}
+
+    </ScrollView>
+
+    </View>
+
+    /*
     
-    {isMenuOpen && (
-        <View style={styles.sideMenu}>
-      <TouchableOpacity style={styles.closeButton} onPress={onClose} ><Feather name="bell" size={24} marginRight={12} color="black" />
-        <Text>Fechar</Text>
-      </TouchableOpacity>
-      {/* Adicione os itens do menu aqui *//*
-      <TouchableOpacity style={styles.menuItem}>
-        <Text>Item 1</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem}>
-        <Text>Item 2</Text>
-      </TouchableOpacity>
-        </View>
-      )}
+    <View style={styles.container}>
+    <View style={styles.topBar}>
+      <View style={styles.leftContainer}>
+        <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
+      </View>
+      <View style={styles.rightContainer}>
+        <Feather name="bell" size={24} marginRight={12} color="black" />
+        <Feather name="menu" size={24} marginRight={12} color="black" />
+      </View>
+    </View>
+
     
     <ScrollView contentContainerStyle={styles.scrollContent}>
 
@@ -130,7 +210,9 @@ export default function Home({ rating, navigation }) {
 
 
  </View>
-
+    
+    */
+/*
 );
 };
 
@@ -308,7 +390,7 @@ searchContainer: {
     fontSize: 12,
   },
 
-  bottom:{aaaaaaaaaaaaaaaaa
+  bottom:{
     width: 330,
     height: 42,
     backgroundColor: '#be3455',
@@ -340,11 +422,26 @@ searchContainer: {
   container2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    paddingHorizontal: 4,
   },
 
+/*
+  retangulo: {
+    height: 32,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 15,
+    marginTop: 24,
+    marginHorizontal: 16,
+    borderRadius: 5,
+    elevation: 8,
+  },
+*//*
+
+
   retanguloComEspacamento: {
-    marginRight: null, // Adiciona um espaçamento de 8px à direita de cada retângulo
+    marginRight: -16
   },
 
   retangulo: {
@@ -358,6 +455,18 @@ searchContainer: {
     borderRadius: 5,
     elevation: 8,
   },
+  retangulo1:
+  {
+    height: 32,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 15,
+    marginTop: 24,
+    marginRight: 38,
+    borderRadius: 5,
+    elevation: 8,
+  },
   texto: {
     fontSize: 14,
     fontWeight: 'bold',
@@ -365,30 +474,7 @@ searchContainer: {
 
   scrollContent2:{
     paddingBottom: 5, // Altura da navbar
-  },
-  sideMenu: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: width * 0.75, // Largura do menu lateral
-    height: height,
-    backgroundColor: 'white',
-    shadowColor: 'black',
-    shadowOffset: { width: 2, height: 0 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-    zIndex: 1,
-  },
-  closeButton: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'gray',
-  },
-  menuItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'gray',
-  },
+  }
 });
+
 */

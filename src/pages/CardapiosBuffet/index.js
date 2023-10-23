@@ -33,6 +33,10 @@ const RetanguloComTexto1 = ({ texto }) => {
 
 export default function Home({ rating, navigation }) {
 
+  const [tipoCardapio, setTipoCardapio] = useState('aprovados');
+    const handleToggleCardapio = (tipo) => {
+    setTipoCardapio(tipo);}
+
   const textos = ['Aprovados', 'Recusados'];
   
   const textos1 = ['300 pessoas', '2,500', '22/05/23'];

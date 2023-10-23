@@ -27,6 +27,7 @@ import TelaFreelancer1 from '../pages/TelaFreelancer1'
 import TelaFreelancer2 from '../pages/TelaFreelancer2'
 import TelaFreelancer3 from '../pages/TelaFreelancer3'
 import CriarCardapio from '../pages/CriarCardapio'
+import CriarReceita from '../pages/CriarReceita'
 
 const iconesDasGuias = {
     Home: 'home', // Substitua 'home' pelo nome real do ícone que você deseja usar
@@ -181,6 +182,7 @@ function StackNavigator() {
       <Stack.Screen name="BuffetPerfil" component={BuffetPerfil} options={{ headerShown: false }} />
       <Stack.Screen name="Preferencias" component={Preferencias} options={{ headerShown: false }} />
       <Stack.Screen name="CriarCardapio" component={CriarCardapio} options={{ headerShown: false }} />
+      <Stack.Screen name="CriarReceita" component={CriarReceita} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

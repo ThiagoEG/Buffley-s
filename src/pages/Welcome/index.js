@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RadioButton, Card } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { auth, db} from "../../services/firebaseConfigurations/firebaseConfig"; // Certifique-se de importar suas configurações do Firebase e o Firestore.
+import { registerUser } from '../../services/firebaseConfigurations/authUtils'; // Importe a função de registro
+
 
 export default function Welcome() {
   const [nome, setNome] = useState('');
@@ -11,7 +16,61 @@ export default function Welcome() {
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
   const [errors, setErrors] = useState({});
+  const [errorText, setErrorText] = useState('');
   const navigation = useNavigation();
+  
+
+
+  
+  const handleRegister = async () => {
+    try {
+      // Resto do código para verificar se o usuário já está registrado
+      // ...
+  
+      // Se o usuário não existir, prossiga com o registro
+      const userCredential = await registerUser(email, senha);
+      const user = userCredential.user;
+  
+      // Resto do código para adicionar os dados do usuário ao Firestore
+      // ...
+  
+      console.log('Registro bem-sucedido:', user);
+    } catch (error) {
+      console.error('Erro no registro:', error);
+  
+      if (error.code === 'auth/email-already-in-use') {
+        setErrorText('O email já está em uso. Por favor, escolha outro email.');
+      } else if (error.code === 'auth/weak-password') {
+        setErrorText('A senha é muito fraca. Escolha uma senha mais forte.');
+      } else if (error.code === 'auth/invalid-email') {
+        setErrorText('O email fornecido é inválido.');
+      } else if (error.code === 'auth/user-not-found') {
+        setErrorText('O usuário não foi encontrado.');
+      } else if (error.code === 'auth/wrong-password') {
+        setErrorText('A senha está incorreta.');
+      } else if (error.code === 'auth/network-request-failed') {
+        setErrorText('Falha na conexão de rede. Verifique sua conexão à internet.');
+      } else {
+        setErrorText('Ocorreu um erro desconhecido no registro.');
+      }
+    }
+  };
+  
+  
+  // Função para verificar se o usuário já está registrado
+  const checkUserExists = async (auth, email) => {
+    try {
+      const user = await getAuth().getUserByEmail(auth, email);
+      return !!user; // Retorna true se o usuário existir
+    } catch (error) {
+      if (error.code === 'auth/user-not-found') {
+        return false; // O usuário não existe
+      }
+      throw error; // Outro erro, lança a exceção
+    }
+  };
+  
+  
 
   const handlePress = () => {
     navigation.navigate('SignIn');
@@ -66,7 +125,7 @@ export default function Welcome() {
     const isValid = validateForm();
 
     if (isValid) {
-      // Seu código de cadastro aqui
+      handleRegister();
     }
   };
 
@@ -86,7 +145,9 @@ export default function Welcome() {
         >
           Crie sua conta
         </Animatable.Text>
+        <Text style={styles.errorText}>{errorText}</Text>
         <Text style={styles.errorText}>{errors.nome}</Text>
+        
         <TextInput
           borderWidth={1}
           borderRadius={8}
@@ -177,7 +238,7 @@ export default function Welcome() {
           duration={1000}
           style={{ width: '100%' }}
         >
-          <TouchableOpacity style={styles.button} onPress={handlePress2}>
+          <TouchableOpacity style={styles.button} onPress={cadastrar}>
             <Text style={styles.buttonText}>Cadastrar</Text>
           </TouchableOpacity>
         </Animatable.View>

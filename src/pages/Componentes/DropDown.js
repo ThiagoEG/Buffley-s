@@ -23,9 +23,9 @@ const Dropdown = () => {
           setSelectedValue(itemValue)
         }
       >
-        <Picker.Item label="Opção 1" value="opcao1" />
-        <Picker.Item label="Opção 2" value="opcao2" />
-        <Picker.Item label="Opção 3" value="opcao3" />
+        <Picker.Item label="150 pessoas" value="150" />
+        <Picker.Item label="200 pessoas" value="200" />
+        <Picker.Item label="100 pessoas" value="100" />
       </Picker>
     </View>
   );

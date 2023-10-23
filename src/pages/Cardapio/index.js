@@ -26,6 +26,7 @@ const RetanguloComTexto = ({ texto }) => {
 
 export default function Home({ rating, navigation }) {
 
+
   const textos = ['300 pessoas', '2,500', '22/05/23'];
   
   const card = {
