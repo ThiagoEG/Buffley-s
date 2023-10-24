@@ -11,3 +11,5 @@ Thiago, essas pastas estao muito confusas :(
 - Tá nada
 
 ## Frontend feito. Agora se deve fazer o backend
+
+# Autenticação do app feita, façam outras partes do backend (Utilizem node.js de preferência)
