@@ -24,22 +24,29 @@ export default function App() {
   const handleNotifications = () => {
     navigation.navigate('TelaNotificacoes');
   };
+  const handleCriarFuncionarioNavigation = () => {
+    navigation.navigate('CriarFuncionario');
+  };
   const handleBuffetNavigation = () => {
     navigation.navigate('BuffetPerfil');
   };
   return (
     <View style={styles.container}>
-          <View style={styles.topBar}>
+    <View style={styles.topBar}>
       <View style={styles.leftContainer}>
         <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
       </View>
       <View style={styles.rightContainer}>
+      <TouchableOpacity onPress={handleCriarFuncionarioNavigation}>
+            <Feather name="user-plus" size={24} marginRight={12} color="black" />
+          </TouchableOpacity>
       <TouchableOpacity onPress={handleNotifications}>
             <Feather name="bell" size={24} marginRight={12} color="black" />
           </TouchableOpacity>
           <TouchableOpacity onPress={toggleMenu}>
-            <Feather name="menu" size={24} color="black" />
+            <Feather name="menu" size={24}  color="black" />
           </TouchableOpacity>
+
       </View>
     </View>
 

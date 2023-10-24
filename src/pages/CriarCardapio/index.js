@@ -29,10 +29,12 @@ export default function Cardapio() {
 
   return (
     <View style={styles.container}>
+      <Navbar />
       <StatusBar hidden={true}/>
-      <ScrollView>
-        <Navbar />
-        <View style={styles.inputName}>
+      <ScrollView style={styles.scrollContainer}>
+      <View style={styles.contentContainer}>
+
+      <View style={styles.inputName}>
           <Text style={{ fontSize: 24, fontWeight: 'bold', marginHorizontal: 16 }}>Nome</Text>
           <TextInput placeholder="Digite o nome do Cardápio" style={styles.Input} />
         </View>
@@ -54,6 +56,10 @@ export default function Cardapio() {
         <DropCard title="Saladas" onSelectRecipe={SelecionarReceita} recipes={Saladas}/>
         <DropCard title="Sobremesas" onSelectRecipe={SelecionarReceita} recipes={Sobremesas}/>
         <DropCard title="Bebidas" onSelectRecipe={SelecionarReceita} recipes={Bebidas}/>
+
+      </View>
+        
+
       </ScrollView>
       <LinearButton/>
     </View>
@@ -63,6 +69,13 @@ export default function Cardapio() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
+    
+  },
+  contentContainer:
+  {
+    alignItems: 'center',
+    width: '100%'
   },
   Input: {
     width: 350,
@@ -77,7 +90,7 @@ const styles = StyleSheet.create({
   inputs: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: 350,
+    width: '85%',
     marginTop: 10,
     marginBottom: 24,
     paddingHorizontal: 16,

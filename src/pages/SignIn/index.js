@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute  } from '@react-navigation/native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, db} from "../../services/firebaseConfigurations/firebaseConfig";
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { AsyncStorage } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
 import Navbar from '../Componentes/Navbar';
@@ -17,6 +18,9 @@ export default function SignIn() {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [errors, setErrors] = useState({});
   const navigation = useNavigation();
+  const route = useRoute();
+  const { userType } = route.params || {};
+
 
   const handleLogin = async () => {
     try {
@@ -41,7 +45,14 @@ export default function SignIn() {
   };
 
   const handlePress2 = () => {
-    navigation.navigate('HomeScreen');
+    console.log('User Type:', userType);
+    if (userType === 'Buffet') {
+      console.log('Redirecionando para HomeScreenBuffet');
+      navigation.navigate('HomeScreenBuffet');
+    } else if (userType === 'Cliente') {
+      console.log('Redirecionando para HomeScreen');
+      navigation.navigate('HomeScreen');
+    }
   };
 
   const validateForm = async () => {
@@ -118,26 +129,33 @@ export default function SignIn() {
         {isFormVisible && (
           <View>
             {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+            <View style={styles.emailContainer}>
             <TextInput
               style={styles.input}
               placeholder="Email"
               value={email}
               onChangeText={(text) => setEmail(text)}
             />
+            </View>
+            
+
             {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
 
             <View style={styles.passwordContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Senha"
-                secureTextEntry={!showPassword}
-                value={password}
-                onChangeText={(text) => setPassword(text)}
-              />
-              <TouchableOpacity onPress={togglePasswordVisibility}>
-                <FontAwesome name={showPassword ? 'eye' : 'eye-slash'} size={20} color="gray" />
-              </TouchableOpacity>
-            </View>
+  <View style={styles.passwordInputContainer}>
+    <TextInput
+      style={styles.passwordInput}
+      placeholder="Senha"
+      secureTextEntry={!showPassword}
+      value={password}
+      onChangeText={(text) => setPassword(text)}
+    />
+    <TouchableOpacity onPress={togglePasswordVisibility}>
+      <FontAwesome name={showPassword ? 'eye' : 'eye-slash'} size={20} color="gray" />
+    </TouchableOpacity>
+  </View>
+</View>
+
             <View style={styles.ButtonsContainer}>
               <TouchableOpacity style={styles.button} onPress={validateForm}>
                 <Text style={styles.buttonText}>Acessar</Text>
@@ -172,7 +190,7 @@ const styles = StyleSheet.create({
     height: '85%',
     alignSelf: 'center',
   },
-  input: {
+ /* input: {
     marginBottom: 16,
     padding: 4,
     borderWidth: 2,
@@ -180,12 +198,45 @@ const styles = StyleSheet.create({
     borderColor: '#f7a7b4',
     width: '80%',
     alignSelf: 'center'
+  },*/
+  emailContainer:
+  {
+    marginBottom: 16,
+    paddingVertical: 6,
+    width:'85%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignSelf: 'center',
+    borderWidth: 2,
+    paddingHorizontal: 10, // Espaço entre o ícone e o TextInput
+    borderColor: '#f7a7b4',
   },
-  passwordContainer: {
+  /*passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
-    marginHorizontal: '10%'
+    paddingVertical: 6,
+    width:'85%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignSelf: 'center',
+    borderWidth: 2,
+    borderColor: '#f7a7b4',
+  },*/
+  passwordInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '85%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignSelf: 'center',
+    borderWidth: 2,
+    paddingVertical: 6,
+    borderColor: '#f7a7b4',
+    marginBottom: '5%',
+    paddingHorizontal: 10, // Espaço entre o ícone e o TextInput
+  },
+  passwordInput: {
+    flex: 1, // Ocupa o espaço restante no contêiner
   },
   errorText: {
     color: 'red',

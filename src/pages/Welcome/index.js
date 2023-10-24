@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { RadioButton, Card } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { AsyncStorage } from 'react-native';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db} from "../../services/firebaseConfigurations/firebaseConfig"; // Certifique-se de importar suas configurações do Firebase e o Firestore.
 import { registerUser } from '../../services/firebaseConfigurations/authUtils'; // Importe a função de registro
@@ -35,6 +36,7 @@ export default function Welcome() {
       // ...
   
       console.log('Registro bem-sucedido:', user);
+      handlePress2();
     } catch (error) {
       console.error('Erro no registro:', error);
   
@@ -78,11 +80,12 @@ export default function Welcome() {
 
   const handlePress2 = () => {
     if (selectedOption === 'Buffet') {
-      navigation.navigate('HomeScreenBuffet');
+      navigation.navigate('SignIn', { userType: 'Buffet' });
     } else if (selectedOption === 'Cliente') {
-      navigation.navigate('HomeScreen');
+      navigation.navigate('SignIn', { userType: 'Cliente' });
     }
   };
+
 
   const [selectedOption, setSelectedOption] = useState('Buffet');
 
