@@ -11,6 +11,12 @@ import PratosPrincipais from '../ReceitasBanco/PratosPrincipais';
 import Saladas from '../ReceitasBanco/Saladas';
 import Sobremesas from '../ReceitasBanco/Sobremesas';
 import LinearButton from '../Componentes/LinearButton';
+import { Picker } from '@react-native-picker/picker';
+import CardInfo from '../Componentes/CardBuffetInfo';
+import { useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { TouchableOpacity } from 'react-native';
 
 
 

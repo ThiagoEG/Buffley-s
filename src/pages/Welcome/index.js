@@ -7,11 +7,12 @@ import * as Animatable from 'react-native-animatable';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { AsyncStorage } from 'react-native';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { ref, get } from 'firebase/database';
 import { auth, db} from "../../services/firebaseConfigurations/firebaseConfig"; // Certifique-se de importar suas configurações do Firebase e o Firestore.
 import { registerUser } from '../../services/firebaseConfigurations/authUtils'; // Importe a função de registro
 
 
-export default function Welcome() {
+export default function Welcome({user }) {
   const [nome, setNome] = useState('');
   const [senha, setSenha] = useState('');
   const [email, setEmail] = useState('');
@@ -23,14 +24,14 @@ export default function Welcome() {
 
 
   
-  const handleRegister = async () => {
+  const handleRegister = async (email, senha, nome, telefone, userType) => {
     try {
       // Resto do código para verificar se o usuário já está registrado
       // ...
   
       // Se o usuário não existir, prossiga com o registro
-      const userCredential = await registerUser(email, senha);
-      const user = userCredential.user;
+      const userCredential = await registerUser(email, senha, nome, telefone, userType);
+    const user = userCredential.user;
   
       // Resto do código para adicionar os dados do usuário ao Firestore
       // ...
@@ -128,7 +129,7 @@ export default function Welcome() {
     const isValid = validateForm();
 
     if (isValid) {
-      handleRegister();
+      handleRegister(email, senha, nome, telefone, selectedOption);
     }
   };
 

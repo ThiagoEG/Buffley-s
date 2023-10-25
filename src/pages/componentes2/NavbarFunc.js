@@ -10,6 +10,9 @@ export default function Navbar({ navigation, onMenuPress  }) {
   const handleNotifications = () => {
     navigation.navigate('TelaNotificacoes');
   };
+  const handleFuncionarios = () => {
+    navigation.navigate('CriarFuncionario');
+  };
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -37,6 +40,9 @@ export default function Navbar({ navigation, onMenuPress  }) {
         </Text>
       </View>
       <View style={styles.rightContainer}>
+      <TouchableOpacity onPress={handleFuncionarios}>
+            <Feather name="user-plus" size={24} marginRight={12} color="black" />
+          </TouchableOpacity>
         <TouchableOpacity onPress={handleNotifications}>
           <Feather name="bell" size={24} marginRight={12} color="black" />
         </TouchableOpacity>

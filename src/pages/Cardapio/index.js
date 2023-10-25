@@ -1,10 +1,15 @@
+
 import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
-import Card from '../Componentes/card';
 import SideMenu from '../Componentes/SideMenu';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useContext } from 'react';
+import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
+import { useNavigation, useRoute  } from '@react-navigation/native';
+import { ref, get } from 'firebase/database';
+import Navbar from '../componentes2/Navbar2';
+import BuffetPerfil from '../BuffetPerfil';
+import Card from '../Componentes/card'
 
 
 
@@ -24,8 +29,14 @@ const RetanguloComTexto = ({ texto }) => {
   );
 };
 
-export default function Home({ rating, navigation }) {
+export default function Home({ rating, navigation, route }) {
 
+  const { uid } = route.params || {};
+  const { state } = useUser(); // Obtenha o estado do usuário
+  
+
+console.log('UID do usuário:', uid);
+const username = state.username;
 
   const textos = ['300 pessoas', '2,500', '22/05/23'];
   
@@ -52,21 +63,8 @@ export default function Home({ rating, navigation }) {
   return (
 
     <View style={styles.container}>
-    <View style={styles.topBar}>
-      <View style={styles.leftContainer}>
-        <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
-      </View>
-      <View style={styles.rightContainer}>
-      <TouchableOpacity onPress={handleNotifications}>
-            <Feather name="bell" size={24} marginRight={12} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleMenu}>
-            <Feather name="menu" size={24} color="black" />
-          </TouchableOpacity>
-      </View>
-    </View>
-
-    <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
+<Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
+<SideMenu isVisible={menuVisible} onClose={toggleMenu} />
     
     <ScrollView contentContainerStyle={styles.scrollContent}>
 

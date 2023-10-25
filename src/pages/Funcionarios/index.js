@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import Navbar from '../componentes2/Navbar2';
+import Navbar from '../componentes2/NavbarFunc';
 import Imagem from '../componentes2/Imagem2.js';
 import Meio from '../componentes2/Meio2.js';
 import Botão from '../componentes2/Botão2.js';
@@ -9,13 +9,21 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, S
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute  } from '@react-navigation/native';
 import SideMenu from '../Componentes/SideMenu';
+import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
 import Card from '../Componentes/card';
 
 const { width, height } = Dimensions.get('window');
 
 export default function App() {
+  const route = useRoute();
+  const { uid } = route.params || {};
+  const { state } = useUser(); // Obtenha o estado do usuário
+  
+
+console.log('UID do usuário:', uid);
+const username = state.username;
   const navigation = useNavigation();
   const [menuVisible, setMenuVisible] = useState(false);
   const toggleMenu = () => {
@@ -32,23 +40,8 @@ export default function App() {
   };
   return (
     <View style={styles.container}>
-    <View style={styles.topBar}>
-      <View style={styles.leftContainer}>
-        <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
-      </View>
-      <View style={styles.rightContainer}>
-      <TouchableOpacity onPress={handleCriarFuncionarioNavigation}>
-            <Feather name="user-plus" size={24} marginRight={12} color="black" />
-          </TouchableOpacity>
-      <TouchableOpacity onPress={handleNotifications}>
-            <Feather name="bell" size={24} marginRight={12} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleMenu}>
-            <Feather name="menu" size={24}  color="black" />
-          </TouchableOpacity>
-
-      </View>
-    </View>
+<Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
+<SideMenu isVisible={menuVisible} onClose={toggleMenu} />
 
     <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
 <ScrollView >

@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { useNavigation, useRoute  } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, db} from "../../services/firebaseConfigurations/firebaseConfig";
-import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import { AsyncStorage } from 'react-native';
-
+import { auth, db } from "../../services/firebaseConfigurations/firebaseConfig";
+import { ref, get } from 'firebase/database';
+import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
+import { Feather, FontAwesome } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import Navbar from '../Componentes/Navbar';
 
 const { width, height } = Dimensions.get('window');
 
 export default function SignIn() {
-  const [email, setEmail] = useState(''); 
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -20,39 +20,58 @@ export default function SignIn() {
   const navigation = useNavigation();
   const route = useRoute();
   const { userType } = route.params || {};
+  const { dispatch } = useUser()
 
-
-  const handleLogin = async () => {
+  const handleLogin = async (username) => {
     try {
-      const auth = getAuth();
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const authInstance = getAuth();
+      const userCredential = await signInWithEmailAndPassword(authInstance, email, password);
       const user = userCredential.user;
 
       if (user) {
-        // O usuário está autenticado no Firebase Authentication
-        // Você pode prosseguir com o login ou navegar para a próxima tela.
-        handlePress2();
+        // User is authenticated in Firebase Authentication
+
+        // Query the database to get the userType based on the user's UID
+        const userRef = ref(db, 'users/' + user.uid);
+        const userSnapshot = await get(userRef);
+
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.val();
+          const userType = userData.userType;
+          const username = userData.nome; // Assuming the field is named "nome"
+
+          console.log('User Type:', userType);
+          console.log('Username:', username);
+          console.log('UID do usuário após o login:', user.uid);
+
+          dispatch({ type: 'SET_USER', payload: { uid: user.uid, username } });
+          // Continue with navigation to the next screen
+          handlePress2(userType, username, user.uid);
+        } else {
+          console.error('User data not found.');
+        }
       } else {
-        console.error('Usuário não autenticado. Login não permitido.');
+        console.error('User not authenticated. Login not allowed.');
       }
     } catch (error) {
-      console.error('Erro no login:', error);
+      console.error('Login error:', error);
     }
   };
 
-  const handlePress = () => {
-    navigation.navigate('Welcome');
-  };
-
-  const handlePress2 = () => {
+  const handlePress2 = (userType, username, user) => {
     console.log('User Type:', userType);
     if (userType === 'Buffet') {
-      console.log('Redirecionando para HomeScreenBuffet');
-      navigation.navigate('HomeScreenBuffet');
+      console.log('Redirecting to HomeScreenBuffet');
+      navigation.navigate('HomeScreenBuffet', { username });
     } else if (userType === 'Cliente') {
-      console.log('Redirecionando para HomeScreen');
-      navigation.navigate('HomeScreen');
+      console.log('Redirecting to HomeScreen');
+      navigation.navigate('HomeScreen', { uid: user.uid });
     }
+  };
+
+  const handlePress = (userType, username) => {
+      navigation.navigate('Welcome');
+    
   };
 
   const validateForm = async () => {
@@ -75,7 +94,7 @@ export default function SignIn() {
         if (user) {
           // O usuário está autenticado no Firebase Authentication
           // Você pode prosseguir com o login ou navegar para a próxima tela.
-          handlePress2();
+          handleLogin();
         } else {
           // Usuário não autenticado
           newErrors.email = 'Login não existe. Verifique suas credenciais.';

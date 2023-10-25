@@ -1,142 +1,131 @@
+
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions  } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
-import { NavigationContainer } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Ionicons } from '@expo/vector-icons';
 import SideMenu from '../Componentes/SideMenu';
-import BuffetPerfil from '../BuffetPerfil'
+import { useContext } from 'react';
+import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
+import { useNavigation, useRoute  } from '@react-navigation/native';
+import { ref, get } from 'firebase/database';
+import Navbar from '../componentes2/Navbar2';
+import BuffetPerfil from '../BuffetPerfil';
+
 
 const { width, height } = Dimensions.get('window');
 
-const handlePress = () => {
-  navigation.navigate('TelaNotificaçoes');
-};
-
-const Categoria = ({ text}) => (
-  <View tyle={styles.categoriaBox}>
-    <Text tyle={styles.categoriaText}>{text}</Text>
-  </View>
-);
-
-
-
-
-export default function Home({ rating, navigation  }) {
+export default function Home({ rating, navigation }) {
   const [menuVisible, setMenuVisible] = useState(false);
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
+  const route = useRoute();
+  const { uid } = route.params || {};
+  const { state } = useUser(); // Obtenha o estado do usuário
+  
 
+console.log('UID do usuário:', uid);
+const username = state.username;
+/*
+  useEffect(() => {
+    // Função para buscar o nome do usuário no Firebase Realtime Database
+    const fetchUsername = async () => {
+      try {
+        const dbRef = ref(database, `users/${uid}/nome`); // Substitua "users" pelo caminho correto em seu banco de dados
+        const snapshot = await get(dbRef);
+
+        if (snapshot.exists()) {
+          setUsername(snapshot.val());
+        } else {
+          console.log('O usuário não foi encontrado no banco de dados.');
+        }
+      } catch (error) {
+        console.error('Erro ao buscar o nome do usuário:', error);
+      }
+    };
+
+    if (uid) {
+      fetchUsername();
+    }
+  }, [uid]);
+-*/
   const textos = ['5 Estrelas', 'Cardapios', '100 pessoas', '2500 R$', '300 pessoas'];
 
-    const renderStars = () => {
-        const stars = [];
-        for (let i = 1; i <= 5; i++) {
-          stars.push(
-            <View key={i} style={styles.starContainer}>
-              <MaterialIcons
-                name={i <= rating ? 'star_border' : 'grade'}
-                size={30}
-                color={i <= rating ? 'gold' : 'gray'}
-              />
-            </View>
-          );
-        }
-        return stars;
-      };
-      const handleNotifications = () => {
-        navigation.navigate('TelaNotificacoes');
-      };
-      const handleBuffetNavigation = () => {
-        navigation.navigate('BuffetPerfil');
-      };
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <View key={i} style={styles.starContainer}>
+          <MaterialIcons
+            name={i <= rating ? 'star_border' : 'grade'}
+            size={30}
+            color={i <= rating ? 'gold' : 'gray'}
+          />
+        </View>
+      );
+    }
+    return stars;
+  };
+  const handleNotifications = () => {
+    navigation.navigate('TelaNotificacoes');
+  };
+  const handleBuffetNavigation = () => {
+    navigation.navigate('BuffetPerfil');
+  };
 
   return (
-
     <View style={styles.container}>
-    <View style={styles.topBar}>
-      <View style={styles.leftContainer}>
-        <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
-      </View>
-      <View style={styles.rightContainer}>
-      <TouchableOpacity onPress={handleNotifications}>
-            <Feather name="bell" size={24} marginRight={12} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleMenu}>
-            <Feather name="menu" size={24} color="black" />
-          </TouchableOpacity>
-      </View>
-    </View>
+<Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
+<SideMenu isVisible={menuVisible} onClose={toggleMenu} />
+      
 
- 
- <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
-    
-    <ScrollView contentContainerStyle={styles.scrollContent}>
-
-    
-
-    <View style={styles.searchContainer}>
-        <Feather name="search" size={24} color="black" />
-        <TextInput
-          placeholder="Pesquisar..."
-          style={styles.searchInput}
-        />
-      </View>
-
-      <ScrollView horizontal 
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.scrollContent2}>
-
-      <View style={styles.container2}>
-      {textos.map((texto, index) => (
-        <View key={index} style={styles.retanguloComEspacamento}>
-          <RetanguloComTexto texto={texto} />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.searchContainer}>
+          <Feather name="search" size={24} color="black" />
+          <TextInput placeholder="Pesquisar..." style={styles.searchInput} />
         </View>
-      ))}
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent2}
+        >
+          <View style={styles.container2}>
+            {textos.map((texto, index) => (
+              <View key={index} style={styles.retanguloComEspacamento}>
+                <RetanguloComTexto texto={texto} />
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+
+        <Text style={styles.title}>Buffets Proximos a você</Text>
+
+        <View style={styles.containerCard}>
+          <Image source={require('../../../assets/Brownie.png')} style={styles.image} />
+
+          <View style={styles.titleCard}>
+            <Text style={styles.titleText}>Art's Fia Buffet</Text>
+            <MaterialIcons name="place" size={30} color="black" marginTop={8}></MaterialIcons>
+          </View>
+
+          <View style={styles.rectangle}>{renderStars()}</View>
+
+          <TouchableOpacity style={styles.bottom} onPress={handleBuffetNavigation}>
+            <Text style={styles.bottomText}>Ver Buffet</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
+  );
+}
 
-    </ScrollView>
-
-      <Text style={styles.title}>Buffets Proximos a você</Text>
-
-  <View style={styles.containerCard}>
-      <Image
-        source={require('../../../assets/Brownie.png')}
-        style={styles.image}
-      />
-
-      <View style={styles.titleCard}>
-        <Text style={styles.titleText}>Art's Fia Buffet</Text>
-        <MaterialIcons name='place' size={30} color="black" marginTop={8}></MaterialIcons>
-      </View>
-
-      <View style={styles.rectangle}>
-      {renderStars()}
-    </View>
-
-
-    <TouchableOpacity style={styles.bottom} onPress={handleBuffetNavigation}>
-      <Text style={styles.bottomText}>Ver Buffet</Text>
-    </TouchableOpacity>
-
-  </View>
-
-
-  </ScrollView>
-
-
- </View>
-
-);
-};
 const RetanguloComTexto = ({ texto }) => {
   return (
     <View style={styles.retangulo}>
       <Text style={styles.texto}>{texto}</Text>
     </View>
   );
+
 };
 const styles = StyleSheet.create({
 container: {

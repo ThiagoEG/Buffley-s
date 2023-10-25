@@ -2,8 +2,11 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
+import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
 
-const MenuLateral = ({ isVisible, onClose, user }) => {
+const MenuLateral = ({ isVisible, onClose }) => {
+  const { state } = useUser(); // Obtenha o estado do usuário
+  const username = state.username;
   if (!isVisible) {
     return null;
   }
@@ -23,8 +26,8 @@ const MenuLateral = ({ isVisible, onClose, user }) => {
 <View style={styles.header}>
         <Image source={require('../../../assets/FrameLogo.png')} style={styles.logo} />
         <Image source={require('../../../assets/Buffley.png')} style={styles.profileImage} />
-        <Text style={styles.username}>Thiago</Text>
-        <Text style={styles.usernamearroba}>@Thiago</Text>
+        <Text style={styles.username}>{username}</Text>
+        <Text style={styles.usernamearroba}>@{username}</Text>
       </View>
 </View>
 <View style={styles.NavigationContainer}>

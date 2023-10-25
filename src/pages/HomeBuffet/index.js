@@ -279,11 +279,15 @@ searchContainer: {
 */
 
 import React, { useState } from 'react';
+import { useNavigation, useRoute  } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SideMenu from '../Componentes/SideMenu';
 import Card from '../Componentes/card';
+import Navbar from '../componentes2/Navbar2';
+import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
+
 import CustomModal from '../Componentes/Modal';
 
 const textos = ['300 pessoas', '2,500', '22/05/23'];
@@ -307,6 +311,13 @@ const RetanguloComTexto = ({ texto }) => {
 
 
 export default function HomeBuffet({ navigation }) {
+  const route = useRoute();
+  const { uid } = route.params || {};
+  const { state } = useUser(); // Obtenha o estado do usuário
+  
+
+console.log('UID do usuário:', uid);
+const username = state.username;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handlePress = () => {
     navigation.navigate('CriarCardapio');
@@ -332,19 +343,8 @@ export default function HomeBuffet({ navigation }) {
     return(
 
       <View style={styles.container}>
-      <View style={styles.topBar}>
-        <View style={styles.leftContainer}>
-          <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
-        </View>
-        <View style={styles.rightContainer}>
-        <TouchableOpacity onPress={handleNotifications}>
-              <Feather name="bell" size={24} marginRight={12} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={toggleMenu}>
-              <Feather name="menu" size={24} color="black" />
-            </TouchableOpacity>
-        </View>
-      </View>
+<Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
+<SideMenu isVisible={menuVisible} onClose={toggleMenu} />
     
       <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
 

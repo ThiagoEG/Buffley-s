@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, S
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Card from '../Componentes/card';
 import SideMenu from '../Componentes/SideMenu'
+import Navbar from '../componentes2/NavBarCardapio';
+import { useNavigation, useRoute  } from '@react-navigation/native';
+import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const { width, height } = Dimensions.get('window');
@@ -32,6 +35,14 @@ const RetanguloComTexto1 = ({ texto }) => {
   };
 
 export default function Home({ rating, navigation }) {
+
+  const route = useRoute();
+  const { uid } = route.params || {};
+  const { state } = useUser(); // Obtenha o estado do usuário
+  
+
+console.log('UID do usuário:', uid);
+const username = state.username;
 
   const [tipoCardapio, setTipoCardapio] = useState('aprovados');
     const handleToggleCardapio = (tipo) => {
@@ -78,23 +89,8 @@ export default function Home({ rating, navigation }) {
   return (
 
     <View style={styles.container}>
-    <View style={styles.topBar}>
-      <View style={styles.leftContainer}>
-        <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
-      </View>
-      <View style={styles.rightContainer}>
-      <TouchableOpacity onPress={handleCardapioNavigation}>
-            <Feather name="edit" size={24} marginRight={12} color="black" />
-          </TouchableOpacity>
-      <TouchableOpacity onPress={handleNotifications}>
-            <Feather name="bell" size={24} marginRight={12} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleMenu}>
-            <Feather name="menu" size={24}  color="black" />
-          </TouchableOpacity>
-
-      </View>
-    </View>
+<Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
+<SideMenu isVisible={menuVisible} onClose={toggleMenu} />
   
     <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
 

@@ -1,12 +1,15 @@
+
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions  } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
-import { NavigationContainer } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Ionicons } from '@expo/vector-icons';
 import SideMenu from '../Componentes/SideMenu';
-import BuffetPerfil from '../BuffetPerfil'
+import { useContext } from 'react';
+import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
+import { useNavigation, useRoute  } from '@react-navigation/native';
+import { ref, get } from 'firebase/database';
+import Navbar from '../componentes2/Navbar2';
+import BuffetPerfil from '../BuffetPerfil';
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -23,11 +26,19 @@ const Categoria = ({ text}) => (
 
 
 
-export default function Home({ rating, navigation  }) {
+export default function Home({ rating, navigation, route  }) {
   const [menuVisible, setMenuVisible] = useState(false);
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
+
+  const { uid } = route.params || {};
+  const { state } = useUser(); // Obtenha o estado do usuário
+  
+
+console.log('UID do usuário:', uid);
+const username = state.username;
+
 
   const textos = ['5 Estrelas', 'Cardapios', '100 pessoas', '2500 R$', '300 pessoas'];
 
@@ -56,22 +67,8 @@ export default function Home({ rating, navigation  }) {
   return (
 
     <View style={styles.container}>
-    <View style={styles.topBar}>
-      <View style={styles.leftContainer}>
-        <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
-      </View>
-      <View style={styles.rightContainer}>
-      <TouchableOpacity onPress={handleNotifications}>
-            <Feather name="bell" size={24} marginRight={12} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleMenu}>
-            <Feather name="menu" size={24} color="black" />
-          </TouchableOpacity>
-      </View>
-    </View>
-
- 
- <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
+<Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
+<SideMenu isVisible={menuVisible} onClose={toggleMenu} />
     
     <ScrollView contentContainerStyle={styles.scrollContent}>
 
