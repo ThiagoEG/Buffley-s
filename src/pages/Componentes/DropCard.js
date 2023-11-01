@@ -1,59 +1,71 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Button, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, ScrollView, TouchableWithoutFeedback, Alert } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-import Entradas from '../ReceitasBanco/Entradas';
-import PratosPrincipais from '../ReceitasBanco/PratosPrincipais';
-import Acompanhamentos from '../ReceitasBanco/Acompanhamentos';
+// Importe as bibliotecas necessárias
 
-export default function DropCard({ title, onSelectRecipe, recipes }) {
+function DropCard({ title, recipes, selectedRecipes, onSelectRecipe }) {
   const [inputText, setInputText] = useState('');
-  const [items, setItems] = useState([]);
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [searchResults, setSearchResults] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const handleAddItem = (newRecipe) => {
-    if (newRecipe.trim() !== '') {
-      setItems([...items, newRecipe]);
-      setInputText('');
-    }
-  };
-  
-
-  const handleDeleteItem = (index) => {
-    const updatedItems = items.filter((_, i) => i !== index);
-    setItems(updatedItems);
-  };
+  const [searchedRecipes, setSearchedRecipes] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [items, setItems] = useState([]);
   const navigation = useNavigation();
-  const handleSearch = () => {
-    const query = inputText.toLowerCase();
-    const results = recipes.filter((item) => item.nome.toLowerCase().includes(query));
-    setSearchResults(results);
 
-    if (results.length === 0) {
-      Alert.alert(
-        'Nenhum resultado encontrado',
-        'Deseja criar uma nova receita?',
-        [
-          {
-            text: 'Cancelar',
-            style: 'cancel',
-          },
-          {
-            text: 'Criar Receita',
-            onPress: () => {
-              navigation.navigate('CriarReceita')
+  const removeAccents = (str) => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  };
+
+  const handleCreateNewRecipe = () => {
+    navigation.navigate('AddReceitas')
+  };
+
+  const handleSearchRecipe = () => {
+    const searchText = removeAccents(inputText.trim().toLowerCase());
+
+    if (searchText) {
+      const foundRecipes = recipes.filter((recipe) => {
+        const recipeName = removeAccents(recipe.nome.toLowerCase());
+        return recipeName.includes(searchText);
+      });
+
+      if (foundRecipes.length === 0) {
+        Alert.alert(
+          'Receita não encontrada',
+          'Deseja criar uma nova receita?',
+          [
+            {
+              text: 'Cancelar',
+              style: 'cancel',
             },
-          },
-        ]
-      );
+            {
+              text: 'Criar',
+              onPress: handleCreateNewRecipe,
+            },
+          ]
+        );
+      } else {
+        setSearchedRecipes(foundRecipes);
+        setModalVisible(true);
+      }
     } else {
-      setIsModalVisible(true);
+      setSearchedRecipes(recipes);
+      setModalVisible(true);
     }
+  };
+
+  const handleAddRecipe = (recipe) => {
+    const id = items.length + 1;
+    setItems([...items, { id, recipe }]);
+    setModalVisible(false);
+    onSelectRecipe(recipe, recipe.valor); 
+  };
+
+  const handleRemoveRecipe = (id) => {
+    const updatedItems = items.filter((item) => item.id !== id);
+    setItems(updatedItems);
   };
 
   return (
@@ -66,90 +78,77 @@ export default function DropCard({ title, onSelectRecipe, recipes }) {
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
-
       <Collapsible collapsed={isCollapsed}>
-        {items.map((item, index) => (
-          <View key={index} style={styles.textComp}>
-            <Text style={{ flex: 1 }}>{item}</Text>
-            <TouchableOpacity onPress={() => handleDeleteItem(index)}>
-              <Icon name="trash" size={20} color="red" />
-            </TouchableOpacity>
-          </View>
-        ))}
-
-        <View style={{ flexDirection: 'column' }}>
-          <View style={styles.searchContainer}>
-            <Feather name="search" size={24} color="black" />
-            <TextInput
-              placeholder="Pesquisar..."
-              style={styles.searchInput}
-              value={inputText}
-              onChangeText={(text) => setInputText(text)}
-            />
-          </View>
-
-          <TouchableOpacity onPress={handleSearch} style={styles.btnAdd}>
-            <Text style={{ fontSize: 22, fontWeight: 'bold', color: 'white' }}>Pesquisar</Text>
-          </TouchableOpacity>
-        </View>
-      </Collapsible>
-
-      <Modal
-        visible={isModalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setIsModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalBackground}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Resultados da pesquisa:</Text>
-              {searchResults.map((result, index) => (
-                <View key={index} style={styles.resultItem}>
-                  <Text style={{ fontSize: 16, flex: 1 }}>{result.nome}</Text>
-                  <TouchableOpacity
-  onPress={() => {
-    onSelectRecipe(result);
-    setIsModalVisible(false);
-    handleAddItem(result.nome); // Adicione a receita atual
-  }}
->
-  <Text style={styles.resultItemText}>Adicionar</Text>
-</TouchableOpacity>
-                </View>
-              ))}
-              <Button
-  title="Fechar"
-  onPress={() => setIsModalVisible(false)}
-  color="#be3455" // Define a cor do botão
-  style={styles.closeButton} // Adicione uma classe de estilo para o botão
-/>
+        <View style={styles.itemList}>
+          {items.map((item) => (
+            <View key={item.id} style={[styles.item]}>
+              <Text style={{ flex: 1 }}>{item.recipe.nome}</Text>
+              <TouchableOpacity onPress={() => handleRemoveRecipe(item.id)}>
+                <Feather name="trash" size={20} color="red" />
+              </TouchableOpacity>
             </View>
-          </View>
+          ))}
         </View>
-      </Modal>
+
+        <View style={styles.searchContainer}>
+          <TouchableOpacity onPress={handleSearchRecipe}>
+            <Feather name="search" size={24} color="black" />
+          </TouchableOpacity>
+          <TextInput
+            placeholder="Pesquisar..."
+            style={styles.searchInput}
+            value={inputText}
+            onChangeText={(text) => setInputText(text)}
+          />
+        </View>
+
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(false);
+          }}
+        >
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>Resultados da Pesquisa</Text>
+                <ScrollView>
+                  {searchedRecipes.map((recipe) => (
+                    <View key={recipe.id} style={styles.modalRecipe}>
+                      <Text style={{ flex: 1 }}>{recipe.nome}</Text>
+                      <TouchableOpacity onPress={() => handleAddRecipe(recipe)}>
+                        <Text style={{ fontSize: 18, color: 'green' }}>Adicionar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </ScrollView>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+      </Collapsible>
     </View>
   );
 }
 
-
-
 const styles = StyleSheet.create({
   containerComp: {
     width: 360,
-    height: "auto",
+    height: 'auto',
     backgroundColor: 'white',
     elevation: 2,
     borderRadius: 5,
-    marginBottom: 12,
-    marginTop: 10,
+    marginBottom: 8,
+    marginTop: 8,
     marginHorizontal: 16,
   },
   containerDrop: {
     width: 360,
-    height: 60,
+    height: 55,
     borderRadius: 5,
-    alignItems: "center",
+    alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     backgroundColor: 'white',
@@ -157,25 +156,28 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
   },
-
-  textComp: {
-    width: 340,
-    height: 40,
+  itemList: {
     marginTop: 10,
-    marginHorizontal: 10,
+    marginHorizontal: 16,
+    width: 'auto',
+  },
+  item: {
+    width: '100%',
+    height: 40,
+    paddingHorizontal: 16,
     flexDirection: 'row',
-    backgroundColor: 'white',
-    elevation: 2,
     alignItems: 'center',
-    padding: 8,
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    backgroundColor: 'white',
+    elevation: 8,
     borderRadius: 5,
   },
-
   searchContainer: {
     width: 340,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 34,
+    marginTop: 18,
     marginHorizontal: 10,
     paddingVertical: 10,
     paddingHorizontal: 10,
@@ -192,49 +194,25 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
   },
-  btnAdd: {
-    width: '100%',
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignContent: 'center',
-    backgroundColor: '#be3455',
-    borderRadius: 5,
-    elevation: 8,
-  },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-
   modalContent: {
     backgroundColor: 'white',
     padding: 20,
-    borderRadius: 10,
-    width: '80%',
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
+    borderRadius: 5,
+    elevation: 5,
+    width: 350,
   },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  resultItem: {
+  modalRecipe: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 10,
   },
-  resultItemText: {
-    color: '#be3455',
-  },
-  closeButton: {
-    backgroundColor: 'transparent', // Define o fundo como transparente
-    color: '#be3455', // Define a cor do texto
-    fontWeight: 'bold', // Define a espessura da fonte
-    fontSize: 18, // Define o tamanho da fonte
-  },
 });
+
+export default DropCard;

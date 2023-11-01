@@ -1,15 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const LinearBorder = ({ icon, placeholder }) => {
+const LinearBorder = ({ icon, placeholder, onChangeText, value }) => {
   return (
     <View style={styles.linearComp}>
       {icon && <MaterialIcons name={icon} size={24} color={'rgba(0, 0, 0, 0.5)'} />}
       <TextInput
         placeholder={placeholder}
         placeholderTextColor={'rgba(0, 0, 0, 0.5)'}
+        onChangeText={onChangeText}
+        value={value}
       />
     </View>
   );

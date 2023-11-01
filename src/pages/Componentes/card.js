@@ -1,22 +1,27 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-const { width, height } = Dimensions.get('window');
+import { View, Text, StyleSheet } from 'react-native';
 
-const Card = ({ itens, maisBarato, maisCaro }) => {
+const Card = ({ cardapio }) => {
+  // Use o operador condicional (ternário) para fornecer um valor padrão
+  const nomeCardapio = cardapio.nomeCardapio || 'Nome do Cardápio Padrão';
+  const custoMaisBarato = cardapio.custoMaisBarato || 'Custo Mais Barato Padrão';
+  const custoMaisCaro = cardapio.custoMaisCaro || 'Custo Mais Caro Padrão';
+
   return (
     <View style={styles.card}>
       <View style={styles.item}>
-        <Text style={styles.label}>Itens:</Text>
-        <Text style={styles.text}>{itens}</Text>
+        <Text style={styles.label}>Nome:</Text>
+        <Text style={styles.text}>{nomeCardapio}</Text>
       </View>
       <View style={styles.item}>
         <Text style={styles.label}>Mais Barato:</Text>
-        <Text style={styles.text}>{maisBarato}</Text>
+        <Text style={styles.text}>{custoMaisBarato}</Text>
       </View>
       <View style={styles.item}>
         <Text style={styles.label}>Mais Caro:</Text>
-        <Text style={styles.text}>{maisCaro}</Text>
+        <Text style={styles.text}>{custoMaisCaro}</Text>
       </View>
+      {/* Adicione o restante das informações do cardápio, se necessário */}
     </View>
   );
 };
@@ -28,12 +33,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     margin: 16,
-    shadowColor: 'black', // Cor da sombra
-    shadowOffset: { width: 0, height: 2 }, // Deslocamento da sombra (horizontal, vertical)
-    shadowOpacity: 0.8, // Opacidade da sombra
-    shadowRadius: 4, // Raio da sombra
-    elevation: 10, // Elevação da sombra (para Android)
-    alignSelf: 'center'
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 10,
+    alignSelf: 'center',
   },
   item: {
     flexDirection: 'row',
@@ -46,7 +51,7 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
     marginLeft: 8,
-    color:'#be3455'
+    color: '#be3455',
   },
 });
 

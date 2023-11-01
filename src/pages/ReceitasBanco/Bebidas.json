@@ -1,0 +1,213 @@
+[
+    {
+        "id": 1,
+        "nome": "Coca-Cola",
+        "porcao": "1 lata (350ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Coca-Cola", "quantidade": "1 lata", "valor": 2.0 }
+        ]
+    },
+    {
+        "id": 2,
+        "nome": "Pepsi",
+        "porcao": "1 lata (350ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Pepsi", "quantidade": "1 lata", "valor": 2.0 }
+        ]
+    },
+    {
+        "id": 3,
+        "nome": "Whisky Escocês",
+        "porcao": "1 dose (50ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Whisky Escocês", "quantidade": "1 dose", "valor": 10.0 }
+        ]
+    },
+    {
+        "id": 4,
+        "nome": "Caipirinha",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cachaça", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Limão", "quantidade": "1 unidade", "valor": 1.0 },
+            { "nome": "Açúcar", "quantidade": "2 colheres de sopa", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 5,
+        "nome": "Margarita",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Tequila", "quantidade": "50ml", "valor": 10.0 },
+            { "nome": "Licor de laranja", "quantidade": "30ml", "valor": 5.0 },
+            { "nome": "Suco de limão", "quantidade": "30ml", "valor": 2.0 },
+            { "nome": "Açúcar", "quantidade": "1 colher de chá", "valor": 0.5 }
+        ]
+    },
+    {
+        "id": 6,
+        "nome": "Cerveja Pilsen",
+        "porcao": "1 garrafa (355ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cerveja Pilsen", "quantidade": "1 garrafa", "valor": 3.0 }
+        ]
+    },
+    {
+        "id": 7,
+        "nome": "Mojito",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Rum branco", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Suco de limão", "quantidade": "30ml", "valor": 2.0 },
+            { "nome": "Hortelã", "quantidade": "8 folhas", "valor": 1.0 },
+            { "nome": "Açúcar", "quantidade": "2 colheres de chá", "valor": 1.0 },
+            { "nome": "Água com gás", "quantidade": "60ml", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 8,
+        "nome": "Cerveja Stout",
+        "porcao": "1 garrafa (355ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cerveja Stout", "quantidade": "1 garrafa", "valor": 4.0 }
+        ]
+    },
+    {
+        "id": 9,
+        "nome": "Martini Dry",
+        "porcao": "1 copo (150ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Gin", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Vermute seco", "quantidade": "30ml", "valor": 4.0 },
+            { "nome": "Azeitona", "quantidade": "1 unidade", "valor": 0.5 }
+        ]
+    },
+    {
+        "id": 10,
+        "nome": "Tequila Sunrise",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Tequila", "quantidade": "50ml", "valor": 10.0 },
+            { "nome": "Suco de laranja", "quantidade": "120ml", "valor": 2.0 },
+            { "nome": "Grenadine", "quantidade": "15ml", "valor": 3.0 }
+        ]
+    },
+    {
+        "id": 11,
+        "nome": "Vodka Martini",
+        "porcao": "1 copo (150ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Vodka", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Vermute seco", "quantidade": "30ml", "valor": 4.0 },
+            { "nome": "Casca de limão", "quantidade": "1 tira", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 12,
+        "nome": "Cerveja IPA",
+        "porcao": "1 garrafa (355ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cerveja IPA", "quantidade": "1 garrafa", "valor": 4.0 }
+        ]
+    },
+    {
+        "id": 13,
+        "nome": "Bloody Mary",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Vodka", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Suco de tomate", "quantidade": "150ml", "valor": 2.0 },
+            { "nome": "Suco de limão", "quantidade": "30ml", "valor": 2.0 },
+            { "nome": "Molho de pimenta", "quantidade": "5 gotas", "valor": 1.0 },
+            { "nome": "Aipo", "quantidade": "1 talo", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 14,
+        "nome": "Gin and Tonic",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Gin", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Água tônica", "quantidade": "150ml", "valor": 2.0 },
+            { "nome": "Limão", "quantidade": "1 unidade", "valor": 1.0 },
+            { "nome": "Gelo", "quantidade": "a gosto", "valor": 0.5 }
+        ]
+    },
+    {
+        "id": 15,
+        "nome": "Cerveja Wheat",
+        "porcao": "1 garrafa (355ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cerveja Wheat", "quantidade": "1 garrafa", "valor": 4.0 }
+        ]
+    },
+    {
+        "id": 16,
+        "nome": "Piña Colada",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Rum branco", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Creme de coco", "quantidade": "60ml", "valor": 4.0 },
+            { "nome": "Suco de abacaxi", "quantidade": "60ml", "valor": 2.0 },
+            { "nome": "Abacaxi", "quantidade": "1 pedaço", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 17,
+        "nome": "Sangria",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Vinho tinto", "quantidade": "120ml", "valor": 5.0 },
+            { "nome": "Licor de laranja", "quantidade": "30ml", "valor": 5.0 },
+            { "nome": "Frutas diversas", "quantidade": "a gosto", "valor": 2.0 },
+            { "nome": "Refrigerante de limão", "quantidade": "60ml", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 18,
+        "nome": "Cerveja Lager",
+        "porcao": "1 garrafa (355ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cerveja Lager", "quantidade": "1 garrafa", "valor": 3.0 }
+        ]
+    },
+    {
+        "id": 19,
+        "nome": "Mimosa",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Champagne", "quantidade": "120ml", "valor": 7.0 },
+            { "nome": "Suco de laranja", "quantidade": "120ml", "valor": 2.0 }
+        ]
+    },
+    
+        {
+            "id": 20,
+            "nome": "Cerveja Pale Ale",
+            "porcao": "1 garrafa (355ml)",
+            "categoria": "Bebidas",
+            "ingredientes": [
+                { "nome": "Cerveja Pale Ale", "quantidade": "1 garrafa", "valor": 4.0 }
+            ]
+        }
+    ]
+    

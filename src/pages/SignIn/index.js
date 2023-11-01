@@ -8,6 +8,8 @@ import { useUser  } from '../../services/UserContext/index'; // Supondo que voc�
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import Navbar from '../Componentes/Navbar';
+import { useBuffet } from '../../services/BuffetContext/index';
+import { useAuth } from '../../services/AuthContext/index'; // Importe o contexto
 
 const { width, height } = Dimensions.get('window');
 
@@ -20,7 +22,9 @@ export default function SignIn() {
   const navigation = useNavigation();
   const route = useRoute();
   const { userType } = route.params || {};
-  const { dispatch } = useUser()
+  const { state, dispatch } = useUser();
+  const { buffetId, setBuffetId } = useBuffet(); // Use buffetId do contexto
+  const { state: authState } = useAuth();
 
   const handleLogin = async (username) => {
     try {
@@ -40,13 +44,25 @@ export default function SignIn() {
           const userType = userData.userType;
           const username = userData.nome; // Assuming the field is named "nome"
 
+          
           console.log('User Type:', userType);
           console.log('Username:', username);
           console.log('UID do usuário após o login:', user.uid);
+          console.log('authState.uid:', authState.uid);
 
-          dispatch({ type: 'SET_USER', payload: { uid: user.uid, username } });
+
+          dispatch({
+            type: 'SET_USER',
+            payload: {
+              uid: user.uid,
+              username,
+              isBuffet: userType === 'Buffet',
+              userEmail: user.email, // Email do usuário
+            },
+          });
+          console.log('authState.uid:',user.email);
           // Continue with navigation to the next screen
-          handlePress2(userType, username, user.uid);
+          handlePress2(userType, username, user.uid, user.email);
         } else {
           console.error('User data not found.');
         }

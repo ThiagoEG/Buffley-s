@@ -1,15 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native'
-import Routes from './src/routes'
+import { NavigationContainer } from '@react-navigation/native';
+import Routes from './src/routes';
 import { UserProvider } from './src/services/UserContext/index';
 import BottomNavigator from './src/routes/BottomNavigator';
+import { CardapioProvider } from './src/services/CardapioContext';
+import { BuffetProvider } from './src/services/BuffetContext/index';
+import { AuthProvider } from './src/services/AuthContext';
+import LoadingScreen from './src/pages/SplashScreen/';
+
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simule uma operação de carregamento, por exemplo, esperando 2 segundos.
+    setTimeout(() => {
+      setIsLoading(false); // Quando o carregamento estiver concluído, oculte a tela de carregamento.
+    }, 2000);
+  }, []);
+
+  // Renderizar a tela de carregamento enquanto isLoading for verdadeiro.
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  // Quando o carregamento estiver concluído, renderizar o conteúdo do aplicativo.
   return (
-    <UserProvider>
-      <Routes/>
-      </UserProvider>
+    <AuthProvider>
+      <BuffetProvider>
+        <CardapioProvider>
+          <UserProvider>
+              <Routes />
+          </UserProvider>
+        </CardapioProvider>
+      </BuffetProvider>
+    </AuthProvider>
   );
 }
 

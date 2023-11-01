@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions  } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Card from '../Componentes/card';
 import SideMenu from '../Componentes/SideMenu'
 import Navbar from '../componentes2/NavBarCardapio';
+import CardInfo from "../Componentes/CardBuffetInfo";
 import { useNavigation, useRoute  } from '@react-navigation/native';
 import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Ionicons } from "@expo/vector-icons";
+import { useCardapio } from '../../services/CardapioContext/index'; // Importe o contexto
+import { ref, get, set, push } from 'firebase/database';
+import { db } from '../../services/firebaseConfigurations/firebaseConfig'; // Importe a instância do banco de dados do seu arquivo de configuração Firebase
+import globalData from '../../services/Globals/globalId';
 
 const { width, height } = Dimensions.get('window');
 
@@ -16,6 +22,8 @@ const Categoria = ({ text}) => (
     <Text tyle={styles.categoriaText}>{text}</Text>
   </View>
 );
+
+
 
 const RetanguloComTexto = ({ texto }) => {
   return (
@@ -35,12 +43,17 @@ const RetanguloComTexto1 = ({ texto }) => {
   };
 
 export default function Home({ rating, navigation }) {
+  const [cardapios] = useCardapio();
+  const [cardapio, setCardapio] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const route = useRoute();
   const { uid } = route.params || {};
   const { state } = useUser(); // Obtenha o estado do usuário
   
-
+  const handleCreateNewCardapio = () => {
+    navigation.navigate('CriarCardapio');
+  };
 console.log('UID do usuário:', uid);
 const username = state.username;
 
@@ -57,6 +70,34 @@ const username = state.username;
     maisBarato: 'Salada, 100R$',
     maisCaro: 'Prato principal, 700R$',
   };
+  function generateUniqueId() {
+    return '_' + Math.random().toString(36).substr(2, 9);
+  }
+  const loadCardapios = async () => {
+    try {
+      const cardapiosRef = ref(db, 'cardapios');
+      const cardapiosSnapshot = await get(cardapiosRef);
+  
+      if (cardapiosSnapshot.exists()) {
+        const cardapiosData = cardapiosSnapshot.val();
+        const cardapiosArray = Object.keys(cardapiosData).map((cardapioId) => ({
+          id: cardapioId,
+          ...cardapiosData[cardapioId],
+        }));
+        setCardapio(cardapiosArray);
+      } else {
+        console.error('No cardápio found in the database.');
+        setCardapio([]);
+      }
+    } catch (error) {
+      console.error('Error loading cardapios:', error);
+    }
+  };
+  
+  useEffect(() => {
+    loadCardapios();
+  }, []);
+
 
     const renderStars = () => {
         const stars = [];
@@ -82,9 +123,58 @@ const username = state.username;
       const handleBuffetNavigation = () => {
         navigation.navigate('BuffetPerfil');
       };
+    
       const [menuVisible, setMenuVisible] = useState(false);
       const toggleMenu = () => {
         setMenuVisible(!menuVisible);}
+
+        if (!cardapios || cardapios.length === 0) {
+          return (
+            <View style={styles.container}>
+      <Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
+      <SideMenu isVisible={menuVisible} onClose={toggleMenu} />
+        
+          <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
+      
+          <ScrollView contentContainerStyle={styles.scrollContent}>
+      
+          <ScrollView horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent2}>
+      
+            <View style={styles.container2}>
+            {textos.map((texto, index) => (
+              <View key={index} style={styles.retanguloComEspacamento}>
+                <RetanguloComTexto texto={texto} />
+              </View>
+            ))}
+          </View>
+      <View>
+
+      </View>
+          </ScrollView>     
+      
+          <Text style={styles.title}>Cardápios aprovados</Text>
+          {cardapio.length > 0 ? (
+  cardapio.map((cardapioItem, index, ) => (
+    <CardInfo key={index} cardapioId={cardapioItem.id} />
+  ))      
+) : (
+  <TouchableOpacity onPress={handleCreateNewCardapio}>
+    <View style={styles.cardAdd}>
+      <Text style={styles.cardTitle}>Adicionar cardápio</Text>
+      <Ionicons name="add-circle-outline" size={40} marginRight={12} color="black" />
+    </View>
+  </TouchableOpacity>
+)}
+
+      
+          </ScrollView>
+      
+          </View>
+      
+          );
+        }
 
   return (
 
@@ -128,11 +218,9 @@ const username = state.username;
 </View> 
 
 <View style={{ flex: 1 }}>
-<Card
-  itens={card.itens}
-  maisBarato={card.maisBarato}
-  maisCaro={card.maisCaro}
-/>
+{cardapios.map((cardapio, index) => (
+      <Card key={index} cardapio={cardapio} />
+    ))}
 </View>
 
 <TouchableOpacity style={styles.bottom}>

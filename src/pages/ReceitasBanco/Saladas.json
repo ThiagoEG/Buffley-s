@@ -1,0 +1,319 @@
+[
+    {
+      "id": 1,
+      "nome": "Salada Caesar",
+      "porcao": "4 porções",
+      "tempoPreparo": "20 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Alface romana", "quantidade": "1 pé", "valor": 2.0 },
+        { "nome": "Peito de frango grelhado", "quantidade": "2 peitos", "valor": 5.0 },
+        { "nome": "Croutons", "quantidade": "1 xícara", "valor": 2.0 },
+        { "nome": "Queijo parmesão ralado", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Molho Caesar", "quantidade": "1/4 de xícara", "valor": 2.0 }
+      ]
+    },
+    {
+      "id": 2,
+      "nome": "Salada Caprese",
+      "porcao": "4 porções",
+      "tempoPreparo": "15 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Tomates", "quantidade": "4 unidades", "valor": 3.0 },
+        { "nome": "Mozzarella de búfala", "quantidade": "200g", "valor": 4.0 },
+        { "nome": "Manjericão fresco", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Vinagre balsâmico", "quantidade": "1 colher de sopa", "valor": 1.0 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 3,
+      "nome": "Salada Grega",
+      "porcao": "4 porções",
+      "tempoPreparo": "20 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Tomates", "quantidade": "4 unidades", "valor": 3.0 },
+        { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+        { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+        { "nome": "Azeitonas pretas", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Queijo feta", "quantidade": "200g", "valor": 4.0 },
+        { "nome": "Orégano seco", "quantidade": "1 colher de chá", "valor": 1.0 },
+        { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Vinagre de vinho tinto", "quantidade": "1 colher de sopa", "valor": 1.0 }
+      ]
+    },
+    {
+      "id": 4,
+      "nome": "Salada Waldorf",
+      "porcao": "4 porções",
+      "tempoPreparo": "15 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Maçãs", "quantidade": "2 unidades", "valor": 2.0 },
+        { "nome": "Aipo", "quantidade": "2 talos", "valor": 1.0 },
+        { "nome": "Uvas vermelhas", "quantidade": "1/2 xícara", "valor": 3.0 },
+        { "nome": "Nozes picadas", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Maionese", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 5,
+      "nome": "Salada de Frutas",
+      "porcao": "4 porções",
+      "tempoPreparo": "10 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Morangos", "quantidade": "200g", "valor": 3.0 },
+        { "nome": "Bananas", "quantidade": "2 unidades", "valor": 2.0 },
+        { "nome": "Maçãs", "quantidade": "2 unidades", "valor": 2.0 },
+        { "nome": "Uvas verdes", "quantidade": "1 xícara", "valor": 3.0 },
+        { "nome": "Mel", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+      ]
+    },
+    {
+      "id": 6,
+      "nome": "Salada de Quinoa",
+      "porcao": "4 porções",
+      "tempoPreparo": "25 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Quinoa", "quantidade": "1 xícara", "valor": 4.0 },
+        { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+        { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+        { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+        { "nome": "Salsinha picada", "quantidade": "1/4 de xícara", "valor": 2.0 },
+        { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 7,
+      "nome": "Salada de Frango",
+      "porcao": "4 porções",
+      "tempoPreparo": "20 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Peito de frango cozido e desfiado", "quantidade": "2 peitos", "valor": 5.0 },
+        { "nome": "Alface", "quantidade": "1 pé", "valor": 2.0 },
+        { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+        { "nome": "Milho cozido", "quantidade": "1 xícara", "valor": 2.0 },
+        { "nome": "Cenoura ralada", "quantidade": "1 xícara", "valor": 2.0 },
+        { "nome": "Molho de iogurte", "quantidade": "1/2 xícara", "valor": 2.0 }
+      ]
+    },
+    {
+      "id": 8,
+      "nome": "Salada de Atum",
+      "porcao": "4 porções",
+      "tempoPreparo": "15 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Atum enlatado", "quantidade": "2 latas", "valor": 6.0 },
+        { "nome": "Alface", "quantidade": "1 pé", "valor": 2.0 },
+        { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+        { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+        { "nome": "Azeitonas verdes", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Molho de mostarda", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+      ]
+    },
+    {
+      "id": 9,
+      "nome": "Salada de Batata",
+      "porcao": "4 porções",
+      "tempoPreparo": "30 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Batatas", "quantidade": "4 unidades", "valor": 3.0 },
+        { "nome": "Cenouras", "quantidade": "2 unidades", "valor": 2.0 },
+        { "nome": "Ervilhas cozidas", "quantidade": "1 xícara", "valor": 2.0 },
+        { "nome": "Maionese", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Mostarda", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Cebola roxa picada", "quantidade": "1/4 de xícara", "valor": 1.0 },
+        { "nome": "Salsinha picada", "quantidade": "1/4 de xícara", "valor": 2.0 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 10,
+      "nome": "Salada de Lentilhas",
+      "porcao": "4 porções",
+      "tempoPreparo": "25 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Lentilhas", "quantidade": "1 xícara", "valor": 2.0 },
+        { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+        { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+        { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+        { "nome": "Salsinha picada", "quantidade": "1/4 de xícara", "valor": 2.0 },
+        { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 11,
+      "nome": "Salada de Camarão",
+      "porcao": "4 porções",
+      "tempoPreparo": "20 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Camarões grandes cozidos", "quantidade": "500g", "valor": 8.0 },
+        { "nome": "Alface", "quantidade": "1 pé", "valor": 2.0 },
+        { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+        { "nome": "Abacate", "quantidade": "1 unidade", "valor": 3.0 },
+        { "nome": "Molho de coquetel de camarão", "quantidade": "1/2 xícara", "valor": 3.0 }
+      ]
+    },
+    {
+      "id": 12,
+      "nome": "Salada de Beterraba",
+      "porcao": "4 porções",
+      "tempoPreparo": "25 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Beterrabas", "quantidade": "3 unidades", "valor": 2.5 },
+        { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+        { "nome": "Nozes picadas", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Vinagre balsâmico", "quantidade": "1 colher de sopa", "valor": 1.0 },
+        { "nome": "Salsinha picada", "quantidade": "1/4 de xícara", "valor": 2.0 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 13,
+      "nome": "Salada de Grão-de-Bico",
+      "porcao": "4 porções",
+      "tempoPreparo": "20 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Grão-de-bico cozido", "quantidade": "2 xícaras", "valor": 4.0 },
+        { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+        { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+        { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+        { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+        { "nome": "Cominho em pó", "quantidade": "1 colher de chá", "valor": 1.0 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 14,
+      "nome": "Salada de Repolho",
+      "porcao": "4 porções",
+      "tempoPreparo": "15 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Repolho verde", "quantidade": "1/2 unidade", "valor": 1.0 },
+        { "nome": "Repolho roxo", "quantidade": "1/2 unidade", "valor": 1.0 },
+        { "nome": "Cenoura ralada", "quantidade": "1 xícara", "valor": 2.0 },
+        { "nome": "Maionese", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Mostarda", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Açúcar", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Vinagre de maçã", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 15,
+      "nome": "Salada de Abacaxi",
+      "porcao": "4 porções",
+      "tempoPreparo": "15 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Abacaxi em pedaços", "quantidade": "2 xícaras", "valor": 3.0 },
+        { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+        { "nome": "Pimentão vermelho", "quantidade": "1/2 unidade", "valor": 1.0 },
+        { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+        { "nome": "Coentro picado", "quantidade": "1/4 de xícara", "valor": 2.0 },
+        { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 16,
+      "nome": "Salada de Feijão Preto",
+      "porcao": "4 porções",
+      "tempoPreparo": "20 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Feijão preto cozido", "quantidade": "2 xícaras", "valor": 4.0 },
+        { "nome": "Milho cozido", "quantidade": "1 xícara", "valor": 2.0 },
+        { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+        { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+        { "nome": "Coentro picado", "quantidade": "1/4 de xícara", "valor": 2.0 },
+        { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 17,
+      "nome": "Salada de Macarrão",
+      "porcao": "4 porções",
+      "tempoPreparo": "20 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Macarrão penne cozido", "quantidade": "2 xícaras", "valor": 2.0 },
+        { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+        { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+        { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+        { "nome": "Azeitonas pretas", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Molho de salada italiano", "quantidade": "1/4 de xícara", "valor": 2.0 },
+        { "nome": "Manjericão fresco", "quantidade": "1/2 xícara", "valor": 2.0 }
+      ]
+    },
+    {
+      "id": 18,
+      "nome": "Salada de Melancia",
+      "porcao": "4 porções",
+      "tempoPreparo": "15 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Melancia em cubos", "quantidade": "4 xícaras", "valor": 3.0 },
+        { "nome": "Queijo feta esfarelado", "quantidade": "200g", "valor": 4.0 },
+        { "nome": "Hortelã picada", "quantidade": "1/4 de xícara", "valor": 2.0 },
+        { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Vinagre balsâmico", "quantidade": "1 colher de sopa", "valor": 1.0 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 19,
+      "nome": "Salada de Abobrinha",
+      "porcao": "4 porções",
+      "tempoPreparo": "20 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Abobrinha em fatias finas", "quantidade": "2 unidades", "valor": 2.0 },
+        { "nome": "Queijo parmesão ralado", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+        { "nome": "Alho picado", "quantidade": "1 dente", "valor": 0.5 },
+        { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+      ]
+    },
+    {
+      "id": 20,
+      "nome": "Salada de Espinafre",
+      "porcao": "4 porções",
+      "tempoPreparo": "15 minutos",
+      "categoria": "Saladas",
+      "ingredientes": [
+        { "nome": "Espinafre fresco", "quantidade": "1 maço", "valor": 2.0 },
+        { "nome": "Morangos", "quantidade": "200g", "valor": 3.0 },
+        { "nome": "Queijo feta esfarelado", "quantidade": "200g", "valor": 4.0 },
+        { "nome": "Nozes picadas", "quantidade": "1/2 xícara", "valor": 2.0 },
+        { "nome": "Vinagre balsâmico", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+        { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+      ]
+    }
+  ]
+  
+  

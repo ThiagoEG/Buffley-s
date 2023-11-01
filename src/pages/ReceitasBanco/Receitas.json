@@ -1,0 +1,1666 @@
+[
+    {
+        "id": 1,
+        "nome": "Coca-Cola",
+        "porcao": "1 lata (350ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Coca-Cola", "quantidade": "1 lata", "valor": 2.0 }
+        ]
+    },
+    {
+        "id": 2,
+        "nome": "Pepsi",
+        "porcao": "1 lata (350ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Pepsi", "quantidade": "1 lata", "valor": 2.0 }
+        ]
+    },
+    {
+        "id": 3,
+        "nome": "Whisky Escocês",
+        "porcao": "1 dose (50ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Whisky Escocês", "quantidade": "1 dose", "valor": 10.0 }
+        ]
+    },
+    {
+        "id": 4,
+        "nome": "Caipirinha",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cachaça", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Limão", "quantidade": "1 unidade", "valor": 1.0 },
+            { "nome": "Açúcar", "quantidade": "2 colheres de sopa", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 5,
+        "nome": "Margarita",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Tequila", "quantidade": "50ml", "valor": 10.0 },
+            { "nome": "Licor de laranja", "quantidade": "30ml", "valor": 5.0 },
+            { "nome": "Suco de limão", "quantidade": "30ml", "valor": 2.0 },
+            { "nome": "Açúcar", "quantidade": "1 colher de chá", "valor": 0.5 }
+        ]
+    },
+    {
+        "id": 6,
+        "nome": "Cerveja Pilsen",
+        "porcao": "1 garrafa (355ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cerveja Pilsen", "quantidade": "1 garrafa", "valor": 3.0 }
+        ]
+    },
+    {
+        "id": 7,
+        "nome": "Mojito",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Rum branco", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Suco de limão", "quantidade": "30ml", "valor": 2.0 },
+            { "nome": "Hortelã", "quantidade": "8 folhas", "valor": 1.0 },
+            { "nome": "Açúcar", "quantidade": "2 colheres de chá", "valor": 1.0 },
+            { "nome": "Água com gás", "quantidade": "60ml", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 8,
+        "nome": "Cerveja Stout",
+        "porcao": "1 garrafa (355ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cerveja Stout", "quantidade": "1 garrafa", "valor": 4.0 }
+        ]
+    },
+    {
+        "id": 9,
+        "nome": "Martini Dry",
+        "porcao": "1 copo (150ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Gin", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Vermute seco", "quantidade": "30ml", "valor": 4.0 },
+            { "nome": "Azeitona", "quantidade": "1 unidade", "valor": 0.5 }
+        ]
+    },
+    {
+        "id": 10,
+        "nome": "Tequila Sunrise",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Tequila", "quantidade": "50ml", "valor": 10.0 },
+            { "nome": "Suco de laranja", "quantidade": "120ml", "valor": 2.0 },
+            { "nome": "Grenadine", "quantidade": "15ml", "valor": 3.0 }
+        ]
+    },
+    {
+        "id": 11,
+        "nome": "Vodka Martini",
+        "porcao": "1 copo (150ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Vodka", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Vermute seco", "quantidade": "30ml", "valor": 4.0 },
+            { "nome": "Casca de limão", "quantidade": "1 tira", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 12,
+        "nome": "Cerveja IPA",
+        "porcao": "1 garrafa (355ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cerveja IPA", "quantidade": "1 garrafa", "valor": 4.0 }
+        ]
+    },
+    {
+        "id": 13,
+        "nome": "Bloody Mary",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Vodka", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Suco de tomate", "quantidade": "150ml", "valor": 2.0 },
+            { "nome": "Suco de limão", "quantidade": "30ml", "valor": 2.0 },
+            { "nome": "Molho de pimenta", "quantidade": "5 gotas", "valor": 1.0 },
+            { "nome": "Aipo", "quantidade": "1 talo", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 14,
+        "nome": "Gin and Tonic",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Gin", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Água tônica", "quantidade": "150ml", "valor": 2.0 },
+            { "nome": "Limão", "quantidade": "1 unidade", "valor": 1.0 },
+            { "nome": "Gelo", "quantidade": "a gosto", "valor": 0.5 }
+        ]
+    },
+    {
+        "id": 15,
+        "nome": "Cerveja Wheat",
+        "porcao": "1 garrafa (355ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cerveja Wheat", "quantidade": "1 garrafa", "valor": 4.0 }
+        ]
+    },
+    {
+        "id": 16,
+        "nome": "Piña Colada",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Rum branco", "quantidade": "50ml", "valor": 8.0 },
+            { "nome": "Creme de coco", "quantidade": "60ml", "valor": 4.0 },
+            { "nome": "Suco de abacaxi", "quantidade": "60ml", "valor": 2.0 },
+            { "nome": "Abacaxi", "quantidade": "1 pedaço", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 17,
+        "nome": "Sangria",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Vinho tinto", "quantidade": "120ml", "valor": 5.0 },
+            { "nome": "Licor de laranja", "quantidade": "30ml", "valor": 5.0 },
+            { "nome": "Frutas diversas", "quantidade": "a gosto", "valor": 2.0 },
+            { "nome": "Refrigerante de limão", "quantidade": "60ml", "valor": 1.0 }
+        ]
+    },
+    {
+        "id": 18,
+        "nome": "Cerveja Lager",
+        "porcao": "1 garrafa (355ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Cerveja Lager", "quantidade": "1 garrafa", "valor": 3.0 }
+        ]
+    },
+    {
+        "id": 19,
+        "nome": "Mimosa",
+        "porcao": "1 copo (250ml)",
+        "categoria": "Bebidas",
+        "ingredientes": [
+            { "nome": "Champagne", "quantidade": "120ml", "valor": 7.0 },
+            { "nome": "Suco de laranja", "quantidade": "120ml", "valor": 2.0 }
+        ]
+    },
+    
+        {
+            "id": 20,
+            "nome": "Cerveja Pale Ale",
+            "porcao": "1 garrafa (355ml)",
+            "categoria": "Bebidas",
+            "ingredientes": [
+                { "nome": "Cerveja Pale Ale", "quantidade": "1 garrafa", "valor": 4.0 }
+            ]
+        },
+        
+            {
+                "id": 1,
+                "nome": "Coca-Cola",
+                "porcao": "1 lata (350ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Coca-Cola", "quantidade": "1 lata", "valor": 2.0 }
+                ]
+            },
+            {
+                "id": 2,
+                "nome": "Pepsi",
+                "porcao": "1 lata (350ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Pepsi", "quantidade": "1 lata", "valor": 2.0 }
+                ]
+            },
+            {
+                "id": 3,
+                "nome": "Whisky Escocês",
+                "porcao": "1 dose (50ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Whisky Escocês", "quantidade": "1 dose", "valor": 10.0 }
+                ]
+            },
+            {
+                "id": 4,
+                "nome": "Caipirinha",
+                "porcao": "1 copo (250ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Cachaça", "quantidade": "50ml", "valor": 8.0 },
+                    { "nome": "Limão", "quantidade": "1 unidade", "valor": 1.0 },
+                    { "nome": "Açúcar", "quantidade": "2 colheres de sopa", "valor": 1.0 }
+                ]
+            },
+            {
+                "id": 5,
+                "nome": "Margarita",
+                "porcao": "1 copo (250ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Tequila", "quantidade": "50ml", "valor": 10.0 },
+                    { "nome": "Licor de laranja", "quantidade": "30ml", "valor": 5.0 },
+                    { "nome": "Suco de limão", "quantidade": "30ml", "valor": 2.0 },
+                    { "nome": "Açúcar", "quantidade": "1 colher de chá", "valor": 0.5 }
+                ]
+            },
+            {
+                "id": 6,
+                "nome": "Cerveja Pilsen",
+                "porcao": "1 garrafa (355ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Cerveja Pilsen", "quantidade": "1 garrafa", "valor": 3.0 }
+                ]
+            },
+            {
+                "id": 7,
+                "nome": "Mojito",
+                "porcao": "1 copo (250ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Rum branco", "quantidade": "50ml", "valor": 8.0 },
+                    { "nome": "Suco de limão", "quantidade": "30ml", "valor": 2.0 },
+                    { "nome": "Hortelã", "quantidade": "8 folhas", "valor": 1.0 },
+                    { "nome": "Açúcar", "quantidade": "2 colheres de chá", "valor": 1.0 },
+                    { "nome": "Água com gás", "quantidade": "60ml", "valor": 1.0 }
+                ]
+            },
+            {
+                "id": 8,
+                "nome": "Cerveja Stout",
+                "porcao": "1 garrafa (355ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Cerveja Stout", "quantidade": "1 garrafa", "valor": 4.0 }
+                ]
+            },
+            {
+                "id": 9,
+                "nome": "Martini Dry",
+                "porcao": "1 copo (150ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Gin", "quantidade": "50ml", "valor": 8.0 },
+                    { "nome": "Vermute seco", "quantidade": "30ml", "valor": 4.0 },
+                    { "nome": "Azeitona", "quantidade": "1 unidade", "valor": 0.5 }
+                ]
+            },
+            {
+                "id": 10,
+                "nome": "Tequila Sunrise",
+                "porcao": "1 copo (250ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Tequila", "quantidade": "50ml", "valor": 10.0 },
+                    { "nome": "Suco de laranja", "quantidade": "120ml", "valor": 2.0 },
+                    { "nome": "Grenadine", "quantidade": "15ml", "valor": 3.0 }
+                ]
+            },
+            {
+                "id": 11,
+                "nome": "Vodka Martini",
+                "porcao": "1 copo (150ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Vodka", "quantidade": "50ml", "valor": 8.0 },
+                    { "nome": "Vermute seco", "quantidade": "30ml", "valor": 4.0 },
+                    { "nome": "Casca de limão", "quantidade": "1 tira", "valor": 1.0 }
+                ]
+            },
+            {
+                "id": 12,
+                "nome": "Cerveja IPA",
+                "porcao": "1 garrafa (355ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Cerveja IPA", "quantidade": "1 garrafa", "valor": 4.0 }
+                ]
+            },
+            {
+                "id": 13,
+                "nome": "Bloody Mary",
+                "porcao": "1 copo (250ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Vodka", "quantidade": "50ml", "valor": 8.0 },
+                    { "nome": "Suco de tomate", "quantidade": "150ml", "valor": 2.0 },
+                    { "nome": "Suco de limão", "quantidade": "30ml", "valor": 2.0 },
+                    { "nome": "Molho de pimenta", "quantidade": "5 gotas", "valor": 1.0 },
+                    { "nome": "Aipo", "quantidade": "1 talo", "valor": 1.0 }
+                ]
+            },
+            {
+                "id": 14,
+                "nome": "Gin and Tonic",
+                "porcao": "1 copo (250ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Gin", "quantidade": "50ml", "valor": 8.0 },
+                    { "nome": "Água tônica", "quantidade": "150ml", "valor": 2.0 },
+                    { "nome": "Limão", "quantidade": "1 unidade", "valor": 1.0 },
+                    { "nome": "Gelo", "quantidade": "a gosto", "valor": 0.5 }
+                ]
+            },
+            {
+                "id": 15,
+                "nome": "Cerveja Wheat",
+                "porcao": "1 garrafa (355ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Cerveja Wheat", "quantidade": "1 garrafa", "valor": 4.0 }
+                ]
+            },
+            {
+                "id": 16,
+                "nome": "Piña Colada",
+                "porcao": "1 copo (250ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Rum branco", "quantidade": "50ml", "valor": 8.0 },
+                    { "nome": "Creme de coco", "quantidade": "60ml", "valor": 4.0 },
+                    { "nome": "Suco de abacaxi", "quantidade": "60ml", "valor": 2.0 },
+                    { "nome": "Abacaxi", "quantidade": "1 pedaço", "valor": 1.0 }
+                ]
+            },
+            {
+                "id": 17,
+                "nome": "Sangria",
+                "porcao": "1 copo (250ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Vinho tinto", "quantidade": "120ml", "valor": 5.0 },
+                    { "nome": "Licor de laranja", "quantidade": "30ml", "valor": 5.0 },
+                    { "nome": "Frutas diversas", "quantidade": "a gosto", "valor": 2.0 },
+                    { "nome": "Refrigerante de limão", "quantidade": "60ml", "valor": 1.0 }
+                ]
+            },
+            {
+                "id": 18,
+                "nome": "Cerveja Lager",
+                "porcao": "1 garrafa (355ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Cerveja Lager", "quantidade": "1 garrafa", "valor": 3.0 }
+                ]
+            },
+            {
+                "id": 19,
+                "nome": "Mimosa",
+                "porcao": "1 copo (250ml)",
+                "categoria": "Bebidas",
+                "ingredientes": [
+                    { "nome": "Champagne", "quantidade": "120ml", "valor": 7.0 },
+                    { "nome": "Suco de laranja", "quantidade": "120ml", "valor": 2.0 }
+                ]
+            },
+            
+                {
+                    "id": 20,
+                    "nome": "Cerveja Pale Ale",
+                    "porcao": "1 garrafa (355ml)",
+                    "categoria": "Bebidas",
+                    "ingredientes": [
+                        { "nome": "Cerveja Pale Ale", "quantidade": "1 garrafa", "valor": 4.0 }
+                    ]
+                },
+                {
+                    "id": 1,
+                    "nome": "Coxinha de Frango",
+                    "porcao": "20 unidades",
+                    "tempoPreparo": "60 minutos",
+                    "categoria": "Petiscos",
+                    "ingredientes": [
+                        { "nome": "Peito de Frango", "quantidade": "500g", "valor": 6.0 },
+                        { "nome": "Massa de coxinha", "quantidade": "20 unidades", "valor": 4.0 },
+                        { "nome": "Requeijão", "quantidade": "1/2 xícara", "valor": 2.0 },
+                        { "nome": "Óleo para fritar", "quantidade": "q.b.", "valor": 2.5 }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "nome": "Bolinho de Queijo",
+                    "porcao": "15 unidades",
+                    "tempoPreparo": "40 minutos",
+                    "categoria": "Petiscos",
+                    "ingredientes": [
+                        { "nome": "Queijo muçarela", "quantidade": "200g", "valor": 3.0 },
+                        { "nome": "Massa de mandioca", "quantidade": "15 unidades", "valor": 3.5 },
+                        { "nome": "Óleo para fritar", "quantidade": "q.b.", "valor": 2.0 }
+                    ]
+                },
+                {
+                    "id": 3,
+                    "nome": "Rissole de Camarão",
+                    "porcao": "12 unidades",
+                    "tempoPreparo": "45 minutos",
+                    "categoria": "Petiscos",
+                    "ingredientes": [
+                        { "nome": "Camarões pequenos", "quantidade": "250g", "valor": 8.0 },
+                        { "nome": "Massa para rissole", "quantidade": "12 unidades", "valor": 5.0 },
+                        { "nome": "Creme de leite", "quantidade": "1/2 xícara", "valor": 2.5 },
+                        { "nome": "Limão", "quantidade": "1 unidade", "valor": 1.0 }
+                    ]
+                },
+                {
+                    "id": 4,
+                    "nome": "Pastel de Carne",
+                    "porcao": "10 unidades",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Petiscos",
+                    "ingredientes": [
+                        { "nome": "Carne moída", "quantidade": "300g", "valor": 4.0 },
+                        { "nome": "Massa para pastel", "quantidade": "10 unidades", "valor": 3.0 },
+                        { "nome": "Cebola", "quantidade": "1 unidade", "valor": 1.0 },
+                        { "nome": "Óleo para fritar", "quantidade": "q.b.", "valor": 2.0 }
+                    ]
+                },
+                {
+                    "id": 5,
+                    "nome": "Bolinho de Bacalhau",
+                    "porcao": "20 unidades",
+                    "tempoPreparo": "50 minutos",
+                    "categoria": "Petiscos",
+                    "ingredientes": [
+                        { "nome": "Bacalhau dessalgado", "quantidade": "200g", "valor": 7.0 },
+                        { "nome": "Batata", "quantidade": "4 unidades", "valor": 3.0 },
+                        { "nome": "Salsinha", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                        { "nome": "Óleo para fritar", "quantidade": "q.b.", "valor": 2.5 }
+                    ]
+                },
+                {
+                    "id": 6,
+                    "nome": "Empadinha de Palmito",
+                    "porcao": "12 unidades",
+                    "tempoPreparo": "45 minutos",
+                    "categoria": "Petiscos",
+                    "ingredientes": [
+                        { "nome": "Palmito", "quantidade": "1 lata", "valor": 5.0 },
+                        { "nome": "Massa para empadinha", "quantidade": "12 unidades", "valor": 4.0 },
+                        { "nome": "Azeitonas verdes", "quantidade": "1/2 xícara", "valor": 2.0 },
+                        { "nome": "Óleo para pincelar", "quantidade": "q.b.", "valor": 1.0 }
+                    ]
+                },
+                {
+                    "id": 7,
+                    "nome": "Esfiha de Carne",
+                    "porcao": "16 unidades",
+                    "tempoPreparo": "55 minutos",
+                    "categoria": "Petiscos",
+                    "ingredientes": [
+                        { "nome": "Carne moída", "quantidade": "400g", "valor": 5.0 },
+                        { "nome": "Massa para esfiha", "quantidade": "16 unidades", "valor": 3.5 },
+                        { "nome": "Cebola", "quantidade": "1 unidade", "valor": 1.0 },
+                        { "nome": "Limão", "quantidade": "1 unidade", "valor": 1.0 }
+                    ]
+                },
+                {
+                    "id": 8,
+                    "nome": "Quibe Frito",
+                    "porcao": "20 unidades",
+                    "tempoPreparo": "40 minutos",
+                    "categoria": "Petiscos",
+                    "ingredientes": [
+                        { "nome": "Trigo para quibe", "quantidade": "1 xícara", "valor": 2.0 },
+                        { "nome": "Carne moída", "quantidade": "500g", "valor": 6.0 },
+                        { "nome": "Hortelã fresca", "quantidade": "1/2 xícara", "valor": 2.5 },
+                        { "nome": "Óleo para fritar", "quantidade": "q.b.", "valor": 2.0 }
+                    ]
+                },
+                {
+                    "id": 9,
+                    "nome": "Pasteizinhos de Queijo",
+                    "porcao": "20 unidades",
+                    "tempoPreparo": "35 minutos",
+                    "categoria": "Petiscos",
+                    "ingredientes": [
+                        { "nome": "Queijo prato", "quantidade": "200g", "valor": 3.5 },
+                        { "nome": "Massa para pastel", "quantidade": "20 unidades", "valor": 3.0 },
+                        { "nome": "Orégano", "quantidade": "1 colher de chá", "valor": 1.0 },
+                        { "nome": "Óleo para fritar", "quantidade": "q.b.", "valor": 2.0 }
+                    ]
+                },
+                {
+                    "id": 10,
+                    "nome": "Croquetes de Frango",
+                    "porcao": "16 unidades",
+                    "tempoPreparo": "50 minutos",
+                    "categoria": "Petiscos",
+                    "ingredientes": [
+                        { "nome": "Frango cozido e desfiado", "quantidade": "300g", "valor": 4.5 },
+                        { "nome": "Molho bechamel", "quantidade": "1/2 xícara", "valor": 2.5 },
+                        { "nome": "Pão ralado", "quantidade": "1 xícara", "valor": 2.0 },
+                        { "nome": "Óleo para fritar", "quantidade": "q.b.", "valor": 2.5 }
+                    ]
+                },
+                {
+                    "id": 11,
+                    "nome": "Bruschetta de Tomate e Manjericão",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Entradas",
+                    "ingredientes": [
+                        { "nome": "Pão italiano", "quantidade": "4 fatias", "valor": 2.0 },
+                        { "nome": "Tomate maduro", "quantidade": "2 unidades", "valor": 1.5 },
+                        { "nome": "Manjericão fresco", "quantidade": "1/2 xícara", "valor": 2.0 },
+                        { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                        { "nome": "Alho", "quantidade": "1 dente", "valor": 0.5 }
+                    ]
+                },
+                {
+                    "id": 12,
+                    "nome": "Carpaccio de Beterraba",
+                    "porcao": "2 porções",
+                    "tempoPreparo": "10 minutos",
+                    "categoria": "Entradas",
+                    "ingredientes": [
+                        { "nome": "Beterraba", "quantidade": "2 unidades", "valor": 2.0 },
+                        { "nome": "Queijo de cabra", "quantidade": "1/2 xícara", "valor": 3.0 },
+                        { "nome": "Nozes", "quantidade": "1/4 de xícara", "valor": 2.5 },
+                        { "nome": "Mel", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+                    ]
+                },
+                {
+                    "id": 13,
+                    "nome": "Canapés de Salmão Defumado",
+                    "porcao": "12 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Entradas",
+                    "ingredientes": [
+                        { "nome": "Pão de forma", "quantidade": "6 fatias", "valor": 1.0 },
+                        { "nome": "Salmão defumado", "quantidade": "100g", "valor": 4.0 },
+                        { "nome": "Cream cheese", "quantidade": "1/2 xícara", "valor": 2.5 },
+                        { "nome": "Cebolinha", "quantidade": "2 colheres de sopa", "valor": 1.0 }
+                    ]
+                },
+                {
+                    "id": 14,
+                    "nome": "Tábua de Queijos e Frutas",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "10 minutos",
+                    "categoria": "Entradas",
+                    "ingredientes": [
+                        { "nome": "Queijo brie", "quantidade": "100g", "valor": 3.0 },
+                        { "nome": "Queijo cheddar", "quantidade": "100g", "valor": 2.5 },
+                        { "nome": "Uvas", "quantidade": "1 cacho", "valor": 1.5 },
+                        { "nome": "Framboesas", "quantidade": "1 xícara", "valor": 3.0 }
+                    ]
+                },
+                {
+                    "id": 15,
+                    "nome": "Rolinhos de Presunto e Queijo",
+                    "porcao": "6 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Entradas",
+                    "ingredientes": [
+                        { "nome": "Presunto fatiado", "quantidade": "12 fatias", "valor": 3.0 },
+                        { "nome": "Queijo suíço", "quantidade": "6 fatias", "valor": 2.0 },
+                        { "nome": "Mostarda", "quantidade": "2 colheres de sopa", "valor": 1.0 }
+                    ]
+                },
+                {
+                    "id": 16,
+                    "nome": "Mini Quiches de Espinafre",
+                    "porcao": "12 porções",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Entradas",
+                    "ingredientes": [
+                        { "nome": "Massa para torta", "quantidade": "1 pacote", "valor": 2.5 },
+                        { "nome": "Espinafre", "quantidade": "1 xícara", "valor": 1.0 },
+                        { "nome": "Queijo feta", "quantidade": "1/2 xícara", "valor": 2.5 },
+                        { "nome": "Ovo", "quantidade": "3 unidades", "valor": 1.5 }
+                    ]
+                },
+                {
+                    "id": 17,
+                    "nome": "Ceviche de Camarão",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Entradas",
+                    "ingredientes": [
+                        { "nome": "Camarão cru", "quantidade": "300g", "valor": 6.0 },
+                        { "nome": "Limão", "quantidade": "4 unidades", "valor": 1.0 },
+                        { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+                        { "nome": "Coentro fresco", "quantidade": "1/2 xícara", "valor": 2.0 }
+                    ]
+                },
+                {
+                    "id": 18,
+                    "nome": "Espetinhos de Cogumelos",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Entradas",
+                    "ingredientes": [
+                      { "nome": "Cogumelos", "quantidade": "200g", "valor": 3.0 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Alecrim fresco", "quantidade": "1 colher de chá", "valor": 0.5 }
+                    ]
+                  },
+            
+                  {
+                    "id": 19,
+                    "nome": "Dip de Abacate e Tomate",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "10 minutos",
+                    "categoria": "Entradas",
+                    "ingredientes": [
+                      { "nome": "Abacate", "quantidade": "2 unidades", "valor": 3.0 },
+                      { "nome": "Tomate", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Cebola", "quantidade": "1/2 unidade", "valor": 0.5 },
+                      { "nome": "Coentro fresco", "quantidade": "1/4 de xícara", "valor": 2.0 }
+                    ]
+                  },
+            
+                  {
+                    "id": 20,
+                    "nome": "Sopa de Abóbora",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Entradas",
+                    "ingredientes": [
+                      { "nome": "Abóbora", "quantidade": "500g", "valor": 2.0 },
+                      { "nome": "Creme de leite", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Caldo de legumes", "quantidade": "2 xícaras", "valor": 3.0}
+                    ]
+                  },
+                  {
+                    "id": 1,
+                    "nome": "Purê de Batata",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Batatas", "quantidade": "4 unidades", "valor": 2.5 },
+                      { "nome": "Manteiga", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Leite", "quantidade": "1/2 xícara", "valor": 1.0 },
+                      { "nome": "Sal", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 2,
+                    "nome": "Arroz Branco",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Arroz", "quantidade": "2 xícaras", "valor": 2.0 },
+                      { "nome": "Água", "quantidade": "4 xícaras", "valor": 0.5 },
+                      { "nome": "Sal", "quantidade": "1 colher de chá", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 3,
+                    "nome": "Feijão Tropeiro",
+                    "porcao": "6 porções",
+                    "tempoPreparo": "40 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Feijão preto cozido", "quantidade": "2 xícaras", "valor": 2.5 },
+                      { "nome": "Farinha de mandioca", "quantidade": "1 xícara", "valor": 1.5 },
+                      { "nome": "Linguiça calabresa", "quantidade": "200g", "valor": 3.5 },
+                      { "nome": "Cebola", "quantidade": "1 unidade", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 4,
+                    "nome": "Legumes Grelhados",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "25 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Abobrinha", "quantidade": "2 unidades", "valor": 1.5 },
+                      { "nome": "Pimentão vermelho", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 5,
+                    "nome": "Salada de Batata",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Batatas", "quantidade": "4 unidades", "valor": 2.5 },
+                      { "nome": "Cebola roxa", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Maionese", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Mostarda", "quantidade": "2 colheres de sopa", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 6,
+                    "nome": "Cuscuz Paulista",
+                    "porcao": "6 porções",
+                    "tempoPreparo": "40 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Farinha de milho", "quantidade": "1 xícara", "valor": 1.5 },
+                      { "nome": "Sardinha em lata", "quantidade": "1 lata", "valor": 2.0 },
+                      { "nome": "Tomate", "quantidade": "2 unidades", "valor": 1.0 },
+                      { "nome": "Azeitonas verdes", "quantidade": "1/2 xícara", "valor": 1.5 }
+                    ]
+                  },
+                  {
+                    "id": 7,
+                    "nome": "Arroz de Couve-Flor",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "25 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Couve-flor", "quantidade": "1 unidade", "valor": 2.0 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Alho", "quantidade": "2 dentes", "valor": 0.5 },
+                      { "nome": "Sal", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 8,
+                    "nome": "Batata Rústica",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Batatas", "quantidade": "4 unidades", "valor": 2.0 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Alecrim fresco", "quantidade": "1 colher de chá", "valor": 1.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 9,
+                    "nome": "Couve Refogada",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Couve", "quantidade": "1 maço", "valor": 1.5 },
+                      { "nome": "Alho", "quantidade": "2 dentes", "valor": 0.5 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Sal", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 10,
+                    "nome": "Salada de Quinoa",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Quinoa", "quantidade": "1 xícara", "valor": 3.0 },
+                      { "nome": "Tomate", "quantidade": "2 unidades", "valor": 1.0 },
+                      { "nome": "Pepino", "quantidade": "1 unidade", "valor": 0.5 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 11,
+                    "nome": "Cuscuz de Legumes",
+                    "porcao": "6 porções",
+                    "tempoPreparo": "25 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Cuscuz", "quantidade": "2 xícaras", "valor": 1.5 },
+                      { "nome": "Abobrinha", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Cenoura", "quantidade": "1 unidade", "valor": 0.5 },
+                      { "nome": "Ervilhas", "quantidade": "1/2 xícara", "valor": 1.5 }
+                    ]
+                  },
+                  {
+                    "id": 12,
+                    "nome": "Ratatouille",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "35 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Abobrinha", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Berinjela", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Pimentão vermelho", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Tomate", "quantidade": "2 unidades", "valor": 1.0 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 13,
+                    "nome": "Purê de Ervilhas",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Ervilhas", "quantidade": "2 xícaras", "valor": 2.0 },
+                      { "nome": "Manteiga", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Creme de leite", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 14,
+                    "nome": "Brócolis com Alho e Limão",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Brócolis", "quantidade": "1 maço", "valor": 1.5 },
+                      { "nome": "Alho", "quantidade": "2 dentes", "valor": 0.5 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Limão", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Sal", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 15,
+                    "nome": "Salada de Beterraba",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "25 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Beterraba", "quantidade": "4 unidades", "valor": 2.0 },
+                      { "nome": "Cebola roxa", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Vinagre balsâmico", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 16,
+                    "nome": "Molho de Mostarda e Mel",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "10 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Mostarda", "quantidade": "1/2 xícara", "valor": 2.5 },
+                      { "nome": "Mel", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                      { "nome": "Vinagre de vinho branco", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 17,
+                    "nome": "Feijão Carioca",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "40 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Feijão carioca", "quantidade": "2 xícaras", "valor": 2.5 },
+                      { "nome": "Cebola", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Alho", "quantidade": "2 dentes", "valor": 0.5 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 18,
+                    "nome": "Salada de Lentilhas",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Lentilhas", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Tomate", "quantidade": "2 unidades", "valor": 1.0 },
+                      { "nome": "Cebola", "quantidade": "1 unidade", "valor": 0.5 },
+                      { "nome": "Salsinha", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 19,
+                    "nome": "Champignon Salteado",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Guarnições",
+                    "ingredientes": [
+                      { "nome": "Champignon", "quantidade": "200g", "valor": 3.0 },
+                      { "nome": "Manteiga", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Alho", "quantidade": "2 dentes", "valor": 0.5 },
+                      { "nome": "Salsinha", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 1,
+                    "nome": "Frango ao Curry",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "40 minutos",
+                    "categoria": "Pratos Principais",
+                    "ingredientes": [
+                      { "nome": "Peito de frango", "quantidade": "500g", "valor": 6.0 },
+                      { "nome": "Creme de leite", "quantidade": "1 xícara", "valor": 2.5 },
+                      { "nome": "Curry em pó", "quantidade": "2 colheres de chá", "valor": 1.0 },
+                      { "nome": "Cebola", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Alho", "quantidade": "2 dentes", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 2,
+                    "nome": "Salmão Grelhado",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Pratos Principais",
+                    "ingredientes": [
+                      { "nome": "Salmão", "quantidade": "4 filés", "valor": 8.0 },
+                      { "nome": "Azeite de Oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Limão", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 3,
+                    "nome": "Bife à Parmegiana",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "45 minutos",
+                    "categoria": "Pratos Principais",
+                    "ingredientes": [
+                      { "nome": "Bifes de carne", "quantidade": "4 unidades", "valor": 9.0 },
+                      { "nome": "Molho de tomate", "quantidade": "2 xícaras", "valor": 3.0 },
+                      { "nome": "Queijo muçarela", "quantidade": "200g", "valor": 3.0 },
+                      { "nome": "Farinha de rosca", "quantidade": "1 xícara", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 4,
+                    "nome": "Strogonoff de Carne",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Pratos Principais",
+                    "ingredientes": [
+                      { "nome": "Carne (filé mignon ou contrafilé)", "quantidade": "500g", "valor": 7.0 },
+                      { "nome": "Creme de leite", "quantidade": "1 lata", "valor": 3.0 },
+                      { "nome": "Cebola", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Ketchup", "quantidade": "4 colheres de sopa", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 5,
+                    "nome": "Risoto de Camarão",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "35 minutos",
+                    "categoria": "Pratos Principais",
+                    "ingredientes": [
+                      { "nome": "Arroz arbóreo", "quantidade": "2 xícaras", "valor": 2.5 },
+                      { "nome": "Camarões grandes", "quantidade": "300g", "valor": 8.0 },
+                      { "nome": "Caldo de peixe", "quantidade": "4 xícaras", "valor": 2.0 },
+                      { "nome": "Vinho branco", "quantidade": "1/2 xícara", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 6,
+                    "nome": "Filé de Peixe ao Molho de Limão",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "25 minutos",
+                    "categoria": "Pratos Principais",
+                    "ingredientes": [
+                      { "nome": "Filés de peixe (tilápia, pescada, etc.)", "quantidade": "4 unidades", "valor": 8.0 },
+                      { "nome": "Limão", "quantidade": "2 unidades", "valor": 1.5 },
+                      { "nome": "Creme de leite", "quantidade": "1 xícara", "valor": 2.5 },
+                      { "nome": "Alho", "quantidade": "2 dentes", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 7,
+                    "nome": "Costeletas de Porco Grelhadas",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Pratos Principais",
+                    "ingredientes": [
+                      { "nome": "Costeletas de porco", "quantidade": "4 unidades", "valor": 7.0 },
+                      { "nome": "Mostarda", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Mel", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 8,
+                    "nome": "Lasanha à Bolonhesa",
+                    "porcao": "6 porções",
+                    "tempoPreparo": "60 minutos",
+                    "categoria": "Pratos Principais",
+                    "ingredientes": [
+                      { "nome": "Massa de lasanha", "quantidade": "12 folhas", "valor": 4.0 },
+                      { "nome": "Carne moída", "quantidade": "500g", "valor": 6.0 },
+                      { "nome": "Molho de tomate", "quantidade": "2 xícaras", "valor": 3.0 },
+                      { "nome": "Queijo muçarela", "quantidade": "300g", "valor": 4.0 }
+                    ]
+                  },
+                  {
+                    "id": 9,
+                    "nome": "Picanha Grelhada",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "40 minutos",
+                    "categoria": "Pratos Principais",
+                    "ingredientes": [
+                      { "nome": "Picanha", "quantidade": "1 peça", "valor": 12.0 },
+                      { "nome": "Sal grosso", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 10,
+                    "nome": "Filé à Parmegiana",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "45 minutos",
+                    "categoria": "Pratos Principais",
+                    "ingredientes": [
+                      { "nome": "Filés de carne", "quantidade": "4 unidades", "valor": 9.0 },
+                      { "nome": "Molho de tomate", "quantidade": "2 xícaras", "valor": 3.0 },
+                      { "nome": "Queijo muçarela", "quantidade": "200g", "valor": 3.0 },
+                      { "nome": "Farinha de rosca", "quantidade": "1 xícara", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 1,
+                    "nome": "Salada Caesar",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Alface romana", "quantidade": "1 pé", "valor": 2.0 },
+                      { "nome": "Peito de frango grelhado", "quantidade": "2 peitos", "valor": 5.0 },
+                      { "nome": "Croutons", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Queijo parmesão ralado", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Molho Caesar", "quantidade": "1/4 de xícara", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 2,
+                    "nome": "Salada Caprese",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Tomates", "quantidade": "4 unidades", "valor": 3.0 },
+                      { "nome": "Mozzarella de búfala", "quantidade": "200g", "valor": 4.0 },
+                      { "nome": "Manjericão fresco", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Vinagre balsâmico", "quantidade": "1 colher de sopa", "valor": 1.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 3,
+                    "nome": "Salada Grega",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Tomates", "quantidade": "4 unidades", "valor": 3.0 },
+                      { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+                      { "nome": "Azeitonas pretas", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Queijo feta", "quantidade": "200g", "valor": 4.0 },
+                      { "nome": "Orégano seco", "quantidade": "1 colher de chá", "valor": 1.0 },
+                      { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Vinagre de vinho tinto", "quantidade": "1 colher de sopa", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 4,
+                    "nome": "Salada Waldorf",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Maçãs", "quantidade": "2 unidades", "valor": 2.0 },
+                      { "nome": "Aipo", "quantidade": "2 talos", "valor": 1.0 },
+                      { "nome": "Uvas vermelhas", "quantidade": "1/2 xícara", "valor": 3.0 },
+                      { "nome": "Nozes picadas", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Maionese", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 5,
+                    "nome": "Salada de Frutas",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "10 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Morangos", "quantidade": "200g", "valor": 3.0 },
+                      { "nome": "Bananas", "quantidade": "2 unidades", "valor": 2.0 },
+                      { "nome": "Maçãs", "quantidade": "2 unidades", "valor": 2.0 },
+                      { "nome": "Uvas verdes", "quantidade": "1 xícara", "valor": 3.0 },
+                      { "nome": "Mel", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 6,
+                    "nome": "Salada de Quinoa",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "25 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Quinoa", "quantidade": "1 xícara", "valor": 4.0 },
+                      { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+                      { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+                      { "nome": "Salsinha picada", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                      { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 7,
+                    "nome": "Salada de Frango",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Peito de frango cozido e desfiado", "quantidade": "2 peitos", "valor": 5.0 },
+                      { "nome": "Alface", "quantidade": "1 pé", "valor": 2.0 },
+                      { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+                      { "nome": "Milho cozido", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Cenoura ralada", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Molho de iogurte", "quantidade": "1/2 xícara", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 8,
+                    "nome": "Salada de Atum",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Atum enlatado", "quantidade": "2 latas", "valor": 6.0 },
+                      { "nome": "Alface", "quantidade": "1 pé", "valor": 2.0 },
+                      { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+                      { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+                      { "nome": "Azeitonas verdes", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Molho de mostarda", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 9,
+                    "nome": "Salada de Batata",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Batatas", "quantidade": "4 unidades", "valor": 3.0 },
+                      { "nome": "Cenouras", "quantidade": "2 unidades", "valor": 2.0 },
+                      { "nome": "Ervilhas cozidas", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Maionese", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Mostarda", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Cebola roxa picada", "quantidade": "1/4 de xícara", "valor": 1.0 },
+                      { "nome": "Salsinha picada", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 10,
+                    "nome": "Salada de Lentilhas",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "25 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Lentilhas", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+                      { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+                      { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Salsinha picada", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                      { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 11,
+                    "nome": "Salada de Camarão",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Camarões grandes cozidos", "quantidade": "500g", "valor": 8.0 },
+                      { "nome": "Alface", "quantidade": "1 pé", "valor": 2.0 },
+                      { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+                      { "nome": "Abacate", "quantidade": "1 unidade", "valor": 3.0 },
+                      { "nome": "Molho de coquetel de camarão", "quantidade": "1/2 xícara", "valor": 3.0 }
+                    ]
+                  },
+                  {
+                    "id": 12,
+                    "nome": "Salada de Beterraba",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "25 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Beterrabas", "quantidade": "3 unidades", "valor": 2.5 },
+                      { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+                      { "nome": "Nozes picadas", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Vinagre balsâmico", "quantidade": "1 colher de sopa", "valor": 1.0 },
+                      { "nome": "Salsinha picada", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 13,
+                    "nome": "Salada de Grão-de-Bico",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Grão-de-bico cozido", "quantidade": "2 xícaras", "valor": 4.0 },
+                      { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+                      { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+                      { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+                      { "nome": "Cominho em pó", "quantidade": "1 colher de chá", "valor": 1.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 14,
+                    "nome": "Salada de Repolho",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Repolho verde", "quantidade": "1/2 unidade", "valor": 1.0 },
+                      { "nome": "Repolho roxo", "quantidade": "1/2 unidade", "valor": 1.0 },
+                      { "nome": "Cenoura ralada", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Maionese", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Mostarda", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Açúcar", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Vinagre de maçã", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 15,
+                    "nome": "Salada de Abacaxi",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Abacaxi em pedaços", "quantidade": "2 xícaras", "valor": 3.0 },
+                      { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Pimentão vermelho", "quantidade": "1/2 unidade", "valor": 1.0 },
+                      { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+                      { "nome": "Coentro picado", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                      { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 16,
+                    "nome": "Salada de Feijão Preto",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Feijão preto cozido", "quantidade": "2 xícaras", "valor": 4.0 },
+                      { "nome": "Milho cozido", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+                      { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+                      { "nome": "Coentro picado", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                      { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 17,
+                    "nome": "Salada de Macarrão",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Macarrão penne cozido", "quantidade": "2 xícaras", "valor": 2.0 },
+                      { "nome": "Tomates", "quantidade": "2 unidades", "valor": 3.0 },
+                      { "nome": "Pepino", "quantidade": "1 unidade", "valor": 1.0 },
+                      { "nome": "Cebola roxa", "quantidade": "1/2 unidade", "valor": 0.5 },
+                      { "nome": "Azeitonas pretas", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Molho de salada italiano", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                      { "nome": "Manjericão fresco", "quantidade": "1/2 xícara", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 18,
+                    "nome": "Salada de Melancia",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Melancia em cubos", "quantidade": "4 xícaras", "valor": 3.0 },
+                      { "nome": "Queijo feta esfarelado", "quantidade": "200g", "valor": 4.0 },
+                      { "nome": "Hortelã picada", "quantidade": "1/4 de xícara", "valor": 2.0 },
+                      { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Vinagre balsâmico", "quantidade": "1 colher de sopa", "valor": 1.0 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 19,
+                    "nome": "Salada de Abobrinha",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "20 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Abobrinha em fatias finas", "quantidade": "2 unidades", "valor": 2.0 },
+                      { "nome": "Queijo parmesão ralado", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Suco de limão", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+                      { "nome": "Alho picado", "quantidade": "1 dente", "valor": 0.5 },
+                      { "nome": "Sal e pimenta", "quantidade": "a gosto", "valor": 0.5 }
+                    ]
+                  },
+                  {
+                    "id": 20,
+                    "nome": "Salada de Espinafre",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "15 minutos",
+                    "categoria": "Saladas",
+                    "ingredientes": [
+                      { "nome": "Espinafre fresco", "quantidade": "1 maço", "valor": 2.0 },
+                      { "nome": "Morangos", "quantidade": "200g", "valor": 3.0 },
+                      { "nome": "Queijo feta esfarelado", "quantidade": "200g", "valor": 4.0 },
+                      { "nome": "Nozes picadas", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Vinagre balsâmico", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Azeite de oliva", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 1,
+                    "nome": "Bolo de Chocolate",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "60 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Farinha de trigo", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Açúcar", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Cacau em pó", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Ovos", "quantidade": "2 unidades", "valor": 2.0 },
+                      { "nome": "Leite", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Fermento em pó", "quantidade": "1 colher de chá", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 2,
+                    "nome": "Torta de Limão",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "45 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Biscoitos de maisena", "quantidade": "200g", "valor": 2.5 },
+                      { "nome": "Manteiga derretida", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Leite condensado", "quantidade": "1 lata", "valor": 3.0 },
+                      { "nome": "Suco de limão", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Creme de leite", "quantidade": "1 lata", "valor": 3.0 }
+                    ]
+                  },
+                  {
+                    "id": 3,
+                    "nome": "Cheesecake de Morango",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "60 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Biscoitos de Graham", "quantidade": "200g", "valor": 2.5 },
+                      { "nome": "Manteiga derretida", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Cream cheese", "quantidade": "400g", "valor": 4.0 },
+                      { "nome": "Açúcar", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Ovos", "quantidade": "3 unidades", "valor": 3.0 },
+                      { "nome": "Essência de baunilha", "quantidade": "1 colher de chá", "valor": 1.0 },
+                      { "nome": "Geleia de morango", "quantidade": "1/2 xícara", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 4,
+                    "nome": "Pudim de Leite",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "50 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Leite condensado", "quantidade": "1 lata", "valor": 3.0 },
+                      { "nome": "Leite", "quantidade": "2 latas (use a lata de leite condensado como medida)", "valor": 3.0 },
+                      { "nome": "Açúcar", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Ovos", "quantidade": "4 unidades", "valor": 4.0 },
+                      { "nome": "Essência de baunilha", "quantidade": "1 colher de chá", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 5,
+                    "nome": "Bolo de Morango",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "60 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Farinha de trigo", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Açúcar", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Morangos", "quantidade": "200g", "valor": 3.0 },
+                      { "nome": "Ovos", "quantidade": "2 unidades", "valor": 2.0 },
+                      { "nome": "Leite", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Fermento em pó", "quantidade": "1 colher de chá", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 6,
+                    "nome": "Sorvete de Baunilha",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Creme de leite", "quantidade": "1 lata", "valor": 3.0 },
+                      { "nome": "Leite condensado", "quantidade": "1 lata", "valor": 3.0 },
+                      { "nome": "Essência de baunilha", "quantidade": "1 colher de chá", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 7,
+                    "nome": "Tiramisu",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "45 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Queijo mascarpone", "quantidade": "250g", "valor": 4.0 },
+                      { "nome": "Ovos", "quantidade": "2 unidades", "valor": 2.0 },
+                      { "nome": "Açúcar", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Café forte", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Biscoitos de champanhe", "quantidade": "200g", "valor": 2.5 },
+                      { "nome": "Cacau em pó", "quantidade": "2 colheres de sopa", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 8,
+                    "nome": "Bolo de Cenoura",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "50 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Cenouras", "quantidade": "3 unidades", "valor": 2.5 },
+                      { "nome": "Açúcar", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Óleo", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Ovos", "quantidade": "3 unidades", "valor": 3.0 },
+                      { "nome": "Farinha de trigo", "quantidade": "2 xícaras", "valor": 2.0 },
+                      { "nome": "Fermento em pó", "quantidade": "1 colher de sopa", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 9,
+                    "nome": "Pavê de Chocolate",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "40 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Biscoitos de maisena", "quantidade": "200g", "valor": 2.5 },
+                      { "nome": "Leite condensado", "quantidade": "1 lata", "valor": 3.0 },
+                      { "nome": "Leite", "quantidade": "2 latas (use a lata de leite condensado como medida)", "valor": 3.0 },
+                      { "nome": "Cacau em pó", "quantidade": "3 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Amido de milho", "quantidade": "2 colheres de sopa", "valor": 1.0 },
+                      { "nome": "Chocolate meio amargo", "quantidade": "150g", "valor": 3.0 }
+                    ]
+                  },
+                  {
+                    "id": 10,
+                    "nome": "Torta de Chocolate",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "50 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Biscoitos de chocolate", "quantidade": "200g", "valor": 2.5 },
+                      { "nome": "Manteiga derretida", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Chocolate meio amargo", "quantidade": "200g", "valor": 4.0 },
+                      { "nome": "Creme de leite", "quantidade": "1 lata", "valor": 3.0 }
+                    ]
+                  },
+                  {
+                    "id": 11,
+                    "nome": "Bolo de Morango com Chantilly",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "60 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Farinha de trigo", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Açúcar", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Morangos", "quantidade": "200g", "valor": 3.0 },
+                      { "nome": "Ovos", "quantidade": "2 unidades", "valor": 2.0 },
+                      { "nome": "Leite", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Fermento em pó", "quantidade": "1 colher de chá", "valor": 1.0 },
+                      { "nome": "Chantilly", "quantidade": "1 xícara", "valor": 3.0 }
+                    ]
+                  },
+                  {
+                    "id": 12,
+                    "nome": "Creme Brûlée",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "60 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Creme de leite", "quantidade": "1 xícara", "valor": 3.0 },
+                      { "nome": "Açúcar", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Gemas de ovo", "quantidade": "4 unidades", "valor": 4.0 },
+                      { "nome": "Essência de baunilha", "quantidade": "1 colher de chá", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 13,
+                    "nome": "Bolo de Coco",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "50 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Farinha de trigo", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Açúcar", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Coco ralado", "quantidade": "1 xícara", "valor": 2.5 },
+                      { "nome": "Ovos", "quantidade": "2 unidades", "valor": 2.0 },
+                      { "nome": "Leite de coco", "quantidade": "1 xícara", "valor": 2.5 },
+                      { "nome": "Fermento em pó", "quantidade": "1 colher de chá", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 14,
+                    "nome": "Pavê de Morango",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "45 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Biscoitos de maisena", "quantidade": "200g", "valor": 2.5 },
+                      { "nome": "Leite condensado", "quantidade": "1 lata", "valor": 3.0 },
+                      { "nome": "Leite", "quantidade": "2 latas (use a lata de leite condensado como medida)", "valor": 3.0 },
+                      { "nome": "Morangos", "quantidade": "200g", "valor": 3.0 }
+                    ]
+                  },
+                  {
+                    "id": 15,
+                    "nome": "Torta de Maçã",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "50 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Maçãs", "quantidade": "4 unidades", "valor": 2.0 },
+                      { "nome": "Açúcar", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Canela em pó", "quantidade": "1 colher de chá", "valor": 1.0 },
+                      { "nome": "Farinha de trigo", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Manteiga derretida", "quantidade": "1/2 xícara", "valor": 2.0 }
+                    ]
+                  },
+                  {
+                    "id": 16,
+                    "nome": "Brigadeiro",
+                    "porcao": "20 unidades",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Leite condensado", "quantidade": "1 lata", "valor": 3.0 },
+                      { "nome": "Chocolate em pó", "quantidade": "4 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Manteiga", "quantidade": "2 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Granulado", "quantidade": "100g", "valor": 2.5 }
+                    ]
+                  },
+                  {
+                    "id": 17,
+                    "nome": "Pudim de Chocolate",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "50 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Leite condensado", "quantidade": "1 lata", "valor": 3.0 },
+                      { "nome": "Leite", "quantidade": "2 latas (use a lata de leite condensado como medida)", "valor": 3.0 },
+                      { "nome": "Chocolate em pó", "quantidade": "4 colheres de sopa", "valor": 2.0 },
+                      { "nome": "Açúcar", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Ovos", "quantidade": "4 unidades", "valor": 4.0 }
+                    ]
+                  },
+                  {
+                    "id": 18,
+                    "nome": "Cupcake de Baunilha",
+                    "porcao": "12 unidades",
+                    "tempoPreparo": "40 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Farinha de trigo", "quantidade": "2 xícaras", "valor": 2.5 },
+                      { "nome": "Açúcar", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Leite", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Manteiga derretida", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Ovos", "quantidade": "2 unidades", "valor": 2.0 },
+                      { "nome": "Essência de baunilha", "quantidade": "1 colher de chá", "valor": 1.0 },
+                      { "nome": "Fermento em pó", "quantidade": "1 colher de chá", "valor": 1.0 }
+                    ]
+                  },
+                  {
+                    "id": 19,
+                    "nome": "Sorvete de Morango",
+                    "porcao": "4 porções",
+                    "tempoPreparo": "30 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Morangos", "quantidade": "200g", "valor": 3.0 },
+                      { "nome": "Açúcar", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Creme de leite", "quantidade": "1 lata", "valor": 3.0 }
+                    ]
+                  },
+                  {
+                    "id": 20,
+                    "nome": "Bolo de Fubá",
+                    "porcao": "8 porções",
+                    "tempoPreparo": "50 minutos",
+                    "categoria": "Sobremesas",
+                    "ingredientes": [
+                      { "nome": "Fubá", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Açúcar", "quantidade": "1 xícara", "valor": 2.0 },
+                      { "nome": "Leite", "quantidade": "2 xícaras", "valor": 2.0 },
+                      { "nome": "Óleo", "quantidade": "1/2 xícara", "valor": 2.0 },
+                      { "nome": "Ovos", "quantidade": "3 unidades", "valor": 3.0 },
+                      { "nome": "Fermento em pó", "quantidade": "1 colher de sopa", "valor": 1.0 }
+                    ]
+                  }
+                ]
+                
+                
+                
+                
+            

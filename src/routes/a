@@ -1,480 +1,228 @@
-/*import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions  } from 'react-native';
-import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
-import Card from '../Componentes/card';
-import SideMenu from '../Componentes/SideMenu'
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useCardapio } from '../../services/CardapioContext/index';
+/*import React, { useState, useEffect } from 'react';
+import { ScrollView, StatusBar, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import Dropdown from '../Componentes/DropDown';
+import DropCard from '../Componentes/DropCard'; // Importe o DropCard
+import Navbar from '../Componentes/Navbar';
+import Entradas from '../ReceitasBanco/Entradas';
+import Acompanhamentos from '../ReceitasBanco/Acompanhamentos';
+import Saladas from '../ReceitasBanco/Saladas';
+import Bebidas from '../ReceitasBanco/Bebidas';
+import Sobremesas from '../ReceitasBanco/Sobremesas';
+import Guarnicoes from '../ReceitasBanco/Guarnicoes';
+import PratosPrincipais from '../ReceitasBanco/PratosPrincipais';
+import LinearButton from '../Componentes/LinearButton';
+import { Picker } from '@react-native-picker/picker';
+import CardInfo from '../Componentes/CardBuffetInfo';
+import { useNavigation } from '@react-navigation/native';
 
-const { width, height } = Dimensions.get('window');
+const calcularCustoTotal = (receita) => {
+  let custoTotal = 0;
+  receita.ingredientes.forEach((ingrediente) => {
+    custoTotal += ingrediente.valor;
+  });
+  return custoTotal;
+};
+
+const calcularCategoriaMaisBarata = (selectedRecipes) => {
+  let categorias = {};
+  selectedRecipes.forEach((recipe) => {
+    const categoria = recipe.categoria;
+    const custo = calcularCustoTotal(recipe);
+    if (!categorias[categoria]) {
+      categorias[categoria] = custo;
+    } else {
+      categorias[categoria] += custo;
+    }
+  }); // <--- Adicione um parêntese aqui
+  let categoriaMaisBarata = null;
+  let custoMaisBarato = Number.MAX_VALUE;
+  for (const categoria in categorias) {
+    if (categorias[categoria] < custoMaisBarato) {
+      custoMaisBarato = categorias[categoria];
+      categoriaMaisBarata = categoria;
+    }
+  }
+  return { categoria: categoriaMaisBarata, custo: custoMaisBarato };
+};
+
+const calcularCategoriaMaisCara = (selectedRecipes) => {
+  let categorias = {};
+  selectedRecipes.forEach((recipe) => {
+    const categoria = recipe.categoria;
+    const custo = calcularCustoTotal(recipe);
+    if (!categorias[categoria]) {
+      categorias[categoria] = custo;
+    } else {
+      categorias[categoria] += custo;
+    }
+  }); // <--- Adicione um parêntese aqui
+  let categoriaMaisCara = null;
+  let custoMaisCaro = 0;
+  for (const categoria in categorias) {
+    if (categorias[categoria] > custoMaisCaro) {
+      custoMaisCaro = categorias[categoria];
+      categoriaMaisCara = categoria;
+    }
+  }
+  return { categoria: categoriaMaisCara, custo: custoMaisCaro };
+};
+
+export default function CriarCardapio() {
+  // ... (código existente acima)
+
+  const navigation = useNavigation(); // Obtenha a instância de navegação
+  const [selectedRecipes, setSelectedRecipes] = useState([]);
+  const [totalCost, setTotalCost] = useState(0);
+  const [numeroConvidados, setNumeroConvidados] = useState(0);
+  const [nomeCardapio, setNomeCardapio] = useState('');
+  const [custoMaisBarato, setCustoMaisBarato] = useState(0);
+  const [custoMaisCaro, setCustoMaisCaro] = useState(0);
+
+  const criarCardapio = () => {
+    navigation.navigate('DetalhesCardapio', {
+      nomeCardapio: nomeCardapio,
+      custoMaisBarato: custoMaisBarato,
+      custoMaisCaro: custoMaisCaro,
+      quantidadeItens: selectedRecipes.length,
+      totalCost: totalCost,
+      numeroConvidados: numeroConvidados,
+      categoriaMaisBarata: selectedRecipes.length > 0 ? calcularCategoriaMaisBarata(selectedRecipes).categoria : '',
+      categoriaMaisCara: selectedRecipes.length > 0 ? calcularCategoriaMaisCara(selectedRecipes).categoria : '',
+    });
+  };
+  
 
 
-const Categoria = ({ text}) => (
-  <View tyle={styles.categoriaBox}>
-    <Text tyle={styles.categoriaText}>{text}</Text>
-  </View>
-);
+  const handleSelectRecipe = (recipe) => {
+    setSelectedRecipes([...selectedRecipes, recipe]);
+    const custoReceita = calcularCustoTotal(recipe);
+    setTotalCost(totalCost + custoReceita);
+  };
 
-const RetanguloComTexto = ({ texto }) => {
+  useEffect(() => {
+    const maisBarato = calcularCategoriaMaisBarata(selectedRecipes);
+    const maisCaro = calcularCategoriaMaisCara(selectedRecipes);
+    setCustoMaisBarato(maisBarato.custo);
+    setCustoMaisCaro(maisCaro.custo);
+  }, [totalCost, nomeCardapio, selectedRecipes]);
+
   return (
-    <View style={styles.retangulo}>
-      <Text style={styles.texto}>{texto}</Text>
+    <View style={styles.container}>
+      <StatusBar hidden={true} />
+      <ScrollView>
+        <Navbar />
+
+        <View style={styles.containerCardapio}>
+          <View style={styles.totalCostContainer}>
+            <Text style={{ fontSize: 20, fontWeight: '400', color: '#318051' }}>Custo Total: R$ {totalCost.toFixed(2)}</Text>
+          </View>
+          <View style={styles.inputName}>
+            <Text style={{ fontSize: 24, fontWeight: 'bold', marginHorizontal: 16 }}>Nome</Text>
+            <TextInput
+              placeholder="Digite o nome do Cardápio"
+              style={styles.Input}
+              value={nomeCardapio}
+              onChangeText={(text) => setNomeCardapio(text)}
+            />
+          </View>
+          <View style={styles.inputs}>
+            <View style={styles.inputData}>
+              <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Convidados</Text>
+              <Picker
+                style={{
+                  borderRadius: 5,
+                  height: 40,
+                  width: 150,
+                  elevation: 5,
+                  backgroundColor: 'white',
+                }}
+                selectedValue={numeroConvidados}
+                onValueChange={(itemValue) => setNumeroConvidados(itemValue)}
+              >
+                <Picker.Item label="Selecione o número de convidados" value={0} />
+                <Picker.Item label="50" value={200} />
+                <Picker.Item label="100" value={200} />
+                <Picker.Item label="150" value={150} />
+                <Picker.Item label="200" value={200} />
+              </Picker>
+            </View>
+            <View style={styles.inputDrop}>
+              <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Data</Text>
+              <Dropdown />
+            </View>
+          </View>
+          {/* Adicione os DropCard para diferentes categorias de receitas aqui *//*}
+       /*   <DropCard
+            title="Entradas"
+            recipes={Entradas}
+            selectedRecipes={selectedRecipes}
+            onSelectRecipe={handleSelectRecipe}
+          />
+          <DropCard
+            title="Pratos principais"
+            recipes={PratosPrincipais}
+            selectedRecipes={selectedRecipes}
+            onSelectRecipe={handleSelectRecipe}
+          />
+
+          {/* Adicione DropCard para outras categorias de receitas aqui conforme necessário *//*}
+         /* <TouchableOpacity style={styles.buttonContainer} onPress={criarCardapio}>
+            <LinearButton text="Criar" />
+          </TouchableOpacity>
+      /*  </View>
+      </ScrollView>
     </View>
   );
-};
-
-
-const RetanguloComTexto1 = ({ texto }) => {
-    return (
-      <View style={styles.retangulo1}>
-        <Text style={styles.texto}>{texto}</Text>
-      </View>
-    );
-  };
-
-export default function Home({ rating, navigation, route  }) {
-
-  const [tipoCardapio, setTipoCardapio] = useState('aprovados');
-  const { state } = useCardapio();
-  const cardapios = state.cardapios;
-
-  const handleToggleCardapio = (tipo) => {
-    setTipoCardapio(tipo);}
-
-
-  const textos = ['Aprovados', 'Recusados'];
-  
-  const textos1 = ['300 pessoas', '2,500', '22/05/23'];
-
-  const card = {
-    itens: '15 Itens',
-    maisBarato: 'Salada, 100R$',
-    maisCaro: 'Prato principal, 700R$',
-  };
-
-    const renderStars = () => {
-        const stars = [];
-        for (let i = 1; i <= 5; i++) {
-          stars.push(
-            <View key={i} style={styles.starContainer}>
-              <MaterialIcons
-                name={i <= rating ? 'star_border' : 'grade'}
-                size={30}
-                color={i <= rating ? 'gold' : 'gray'}
-              />
-            </View>
-          );
-        }
-        return stars;
-      };
-      const handleNotifications = () => {
-        navigation.navigate('TelaNotificacoes');
-      };
-      const handleCardapioNavigation = () => {
-        navigation.navigate('CriarCardapio');
-      };
-      const handleBuffetNavigation = () => {
-        navigation.navigate('BuffetPerfil');
-      };
-      const [menuVisible, setMenuVisible] = useState(false);
-      const toggleMenu = () => {
-        setMenuVisible(!menuVisible);}
-
-  return (
-
-    <View style={styles.container}>
-    <View style={styles.topBar}>
-      <View style={styles.leftContainer}>
-        <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
-      </View>
-      <View style={styles.rightContainer}>
-      <TouchableOpacity onPress={handleCardapioNavigation}>
-            <Feather name="edit" size={24} marginRight={12} color="black" />
-          </TouchableOpacity>
-      <TouchableOpacity onPress={handleNotifications}>
-            <Feather name="bell" size={24} marginRight={12} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleMenu}>
-            <Feather name="menu" size={24}  color="black" />
-          </TouchableOpacity>
-
-      </View>
-    </View>
-  
-    <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
-
-    <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent2}>
-          <View style={styles.container2}>
-            {textos.map((texto, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.retanguloComEspacamento}
-                onPress={() => handleToggleCardapio(texto.toLowerCase())}
-              >
-                <RetanguloComTexto texto={texto} />
-              </TouchableOpacity>
-            ))}
-          </View>
-        </ScrollView>
-
-        <Text style={styles.title}>
-          {tipoCardapio === 'aprovados' ? 'Cardápios Aprovados' : 'Cardápios Recusados'}
-        </Text>
-
-        {tipoCardapio === 'aprovados'
-    ? cardapios.aprovados.map((cardapio, index) => (
-      <View style={{ flex: 1 }}>
-      <Card
-        itens={card.itens}
-        maisBarato={card.maisBarato}
-        maisCaro={card.maisCaro}
-      />
-      </View>
-      ))
-    : cardapios.recusados.map((cardapio, index) => (
-        <Text key={index}>{cardapio.nome}</Text>
-        // Exiba outras informações do cardápio recusado conforme necessário
-      ))}
-
-    </ScrollView>
-
-    </View>
-
-    /*
-    
-    <View style={styles.container}>
-    <View style={styles.topBar}>
-      <View style={styles.leftContainer}>
-        <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
-      </View>
-      <View style={styles.rightContainer}>
-        <Feather name="bell" size={24} marginRight={12} color="black" />
-        <Feather name="menu" size={24} marginRight={12} color="black" />
-      </View>
-    </View>
-
-    
-    <ScrollView contentContainerStyle={styles.scrollContent}>
-
-    
-
-    <View style={styles.searchContainer}>
-        <Feather name="search" size={24} color="black" />
-        <TextInput
-          placeholder="Pesquisar..."
-          style={styles.searchInput}
-        />
-      </View>
-
-      <ScrollView horizontal 
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.scrollContent2}>
-
-      <View style={styles.container2}>
-      {textos.map((texto, index) => (
-        <View key={index} style={styles.retanguloComEspacamento}>
-          <RetanguloComTexto texto={texto} />
-        </View>
-      ))}
-    </View>
-
-    </ScrollView>
-
-      <Text style={styles.title}>Buffets Proximos a você</Text>
-
-  <View style={styles.containerCard}>
-      <Image
-        source={require('../../../assets/Brownie.png')}
-        style={styles.image}
-      />
-
-      <View style={styles.titleCard}>
-        <Text style={styles.titleText}>Art's Fia Buffet</Text>
-        <Icon name='place' size={30} color="black" marginTop={8}></Icon>
-      </View>
-
-      <View style={styles.rectangle}>
-      {renderStars()}
-    </View>
-
-
-    <TouchableOpacity style={styles.bottom}>
-      <Text style={styles.bottomText}>Ver Receitas</Text>
-    </TouchableOpacity>
-
-  </View>
-
-
-  </ScrollView>
-
-
- </View>
-    
-    */
-/*
-);
-};
+}
 
 const styles = StyleSheet.create({
-container: {
-  flex: 1,
-  backgroundColor: 'white',
-  width: width,  // Use width e height para tornar o tamanho responsivo
-  height: height,
-  alignSelf: 'center',
-},
-topBar: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  width: '100%',
-  height: height * 0.09,  // Defina uma porcentagem adequada
-  backgroundColor: 'white',
-  paddingHorizontal: 20,
-  borderBottomLeftRadius: 15, 
-  borderBottomRightRadius: 15,
-  shadowOffset: { width: 10, height: 0 },
-    shadowOpacity: 5,
-    shadowRadius: 2,
-    elevation: 8,
-},
-
-leftContainer: {
-  flexDirection: 'row',
-  alignItems: 'center',
-},
-username: {
-  marginRight: 10,
-  fontSize: 18,
-  fontWeight: 'bold',
-},
-rightContainer: {
-  flexDirection: 'row',
-  alignItems: 'center',
-},
-
-searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: height * 0.03,  // Porcentagem em relação à altura
-    marginHorizontal: width * 0.05,  // Porcentagem em relação à largura
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowOffset: { width: 10, height: 0 },
-    shadowOpacity: 5,
-    shadowRadius: 2,
-    elevation: 8,
-  },
-  searchInput: {
+  container: {
     flex: 1,
-    marginLeft: 10,
-    fontSize: 16,
+    alignSelf: 'center',
+    width: '100%',
+    backgroundColor: 'white',
   },
-
-  title:{
-    fontSize: 24,
-    marginTop: 32,
-    marginLeft: 32,
-    fontWeight: 'bold',
-  },
-
-  containerCard: {
-    width: 360,
-    paddingVertical: 16,
+  Input: {
+    width: 350,
+    height: 50,
+    elevation: 8,
+    backgroundColor: 'white',
     paddingHorizontal: 16,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: 'black',
-    alignSelf:'center',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-    marginTop: 32,
-    marginVertical:32,
-
-    /* 
-       width: 360,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: 'black',
-    alignSelf:'center',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-    marginTop: 32,
-    marginVertical:32,
-
-        width: width * 0.9,  // 90% da largura da tela
-    paddingVertical: height * 0.02,  // 2% da altura da tela
-    paddingHorizontal: width * 0.04,  // 4% da largura da tela
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: 'black',
-    alignSelf:'center',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 6,
-    marginTop: 32,
-    marginVertical:32,
-    *//*
-  },
-  image: {
-    width: 330,
-    height: 160,
-    borderRadius: 10,
-    resizeMode: 'contain',
-  },
-
-  titleCard:{
-    flexDirection: 'row',
-    justifyContent:'space-between',
-    marginHorizontal: 16,
-    marginTop: 10,
-  },
-
-  titleText:{
-    fontSize: 32,
-    fontWeight: 'bold'
-  },
-
-  categorias:{
-    flexDirection: 'row',
-    margin: 10,
-  },
-
-  containerSquare: {
-    flexDirection: 'row',
-    marginHorizontal: 8,
-    marginTop: 10,
-  },
-  square: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 30,
-    paddingHorizontal: 8,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    borderRadius: 4,
-    marginRight: 8,
-    shadowColor: 'black',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  squareTextOnly: {
-    height: 30,
-    paddingHorizontal: 8,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    borderRadius: 4,
-    marginRight: 8,
-    shadowColor: 'black',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  icon: {
-    marginRight: 4,
-  },
-  text: {
-    fontSize: 12,
-  },
-
-  bottom:{
-    width: 330,
-    height: 42,
-    backgroundColor: '#be3455',
+    marginTop: 8,
     borderRadius: 5,
-    alignItems: 'center',
-    justifyContent:'center',
-    marginTop: 16, 
+    marginHorizontal: 16,
   },
-
-  bottomText:{
-    color: 'white',
-    fontWeight: 'bold',
-  },
-
-  scrollContent: {
-    paddingBottom: 92, // Altura da navbar
-  },
-
-  rectangle: {
-    flexDirection: 'row',
-    marginHorizontal: 15,
-    marginTop: 10,
-
-  },
-  starContainer: {
-    marginRight: 5,
-  },
-
-  container2: {
+  inputs: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 4,
+    width: 350,
+    marginTop: 10,
+    marginBottom: 24,
+    paddingHorizontal: 16,
   },
-
-/*
-  retangulo: {
-    height: 32,
-    backgroundColor: 'white',
+  inputData: {
+    flex: 1,
+    marginRight: 26,
+  },
+  inputDrop: {
+    flex: 1,
+    marginLeft: 40,
+  },
+  totalCostContainer: {
+    marginBottom: 16,
+    marginLeft: 16,
+  },
+  containerCardapio: {
+    flex: 1,
+    alignSelf: 'center',
+  },
+  buttonContainer: {
+    marginTop: 12,
+    width: '100%',
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 15,
-    marginTop: 24,
-    marginHorizontal: 16,
     borderRadius: 5,
-    elevation: 8,
   },
-*//*
-
-
-  retanguloComEspacamento: {
-    marginRight: -16
-  },
-
-  retangulo: {
-    height: 42,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 15,
-    marginTop: 24,
-    marginHorizontal: 16,
-    borderRadius: 5,
-    elevation: 8,
-  },
-  retangulo1:
-  {
-    height: 32,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 15,
-    marginTop: 24,
-    marginRight: 38,
-    borderRadius: 5,
-    elevation: 8,
-  },
-  texto: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-
-  scrollContent2:{
-    paddingBottom: 5, // Altura da navbar
-  }
 });
-
 */

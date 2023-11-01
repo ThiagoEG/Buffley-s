@@ -1,48 +1,31 @@
-// CardapioContext.js
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useState, useMemo } from 'react';
 
 const CardapioContext = createContext();
 
-const initialState = {
-  cardapios: {
-    aprovados: [],
-    recusados: [],
-  },
-};
-
-const cardapiosReducer = (state, action) => {
-  switch (action.type) {
-    case 'ADD_CARDÁPIO':
-      return {
-        ...state,
-        cardapios: {
-          ...state.cardapios,
-          aprovados: [...state.cardapios.aprovados, action.payload],
-        },
-      };
-    case 'ADD_CARDÁPIO_RECUSADO':
-      return {
-        ...state,
-        cardapios: {
-          ...state.cardapios,
-          recusados: [...state.cardapios.recusados, action.payload],
-        },
-      };
-    default:
-      return state;
-  }
-};
-
 export function CardapioProvider({ children }) {
-  const [state, dispatch] = useReducer(cardapiosReducer, initialState);
+  const [cardapios, setCardapios] = useState([]);
+  const [cardapio, setCardapio] = useState({
+    nomeCardapio: '',
+    custoMaisBarato: 0,
+    custoMaisCaro: 0,
+    quantidadeItens: 0,
+    totalCost: 0,
+    numeroConvidados: 0,
+    categoriaMaisBarata: '',
+    categoriaMaisCara: '',
+  });
+
+  const value = useMemo(() => [cardapios, setCardapios], [cardapios]);
 
   return (
-    <CardapioContext.Provider value={{ state, dispatch }}>
-      {children}
-    </CardapioContext.Provider>
+    <CardapioContext.Provider value={value}>{children}</CardapioContext.Provider>
   );
 }
 
 export function useCardapio() {
-  return useContext(CardapioContext);
+  const context = useContext(CardapioContext);
+  if (!context) {
+    throw new Error('useCardapio deve ser usado dentro de um CardapioProvider');
+  }
+  return context;
 }

@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { ref, get } from 'firebase/database';
+import { auth, db} from "../../services/firebaseConfigurations/firebaseConfig"; // Certifique-se de importar suas configurações do Firebase e o Firestore.
+import { registerUser } from '../../services/firebaseConfigurations/authUtils'; // Importe a função de registro
 
-const LinearButton = (title) => {
 
+const LinearButton = ({ title, onPress }) => {
   return (
-    <TouchableOpacity style={styles.buttonContainer}>
+    <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
       <LinearGradient
-        colors={['#be3455', '#ffffff']} // Cores do gradiente
+        colors={['#be3455', '#ffffff']}
         style={styles.button}
         start={{ x: 0, y: 0 }}
         end={{ x: 2, y: 2 }}
       >
-        <Text style={styles.buttonText}>Criar</Text>
+        <Text style={styles.buttonText}>{title}</Text>
       </LinearGradient>
     </TouchableOpacity>
   );

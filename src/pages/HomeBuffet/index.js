@@ -289,9 +289,9 @@ import Navbar from '../componentes2/Navbar2';
 import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
 
 import CustomModal from '../Componentes/Modal';
-
+/*
 const textos = ['300 pessoas', '2,500', '22/05/23'];
-  
+  */
 const card = {
   itens: '15 Itens',
   maisBarato: 'Salada, 100R$',
@@ -299,14 +299,14 @@ const card = {
 };
 
 const { width, height } = Dimensions.get('window');
-
+/*
 const RetanguloComTexto = ({ texto }) => {
     return (
       <View style={styles.retangulo}>
         <Text style={styles.texto}>{texto}</Text>
       </View>
     );
-  };
+  };*/
 
 
 
@@ -374,34 +374,7 @@ const username = state.username;
 
       <Text style={styles.title}>Seus cardápios</Text>
 
-      <View style={styles.containerCard}>
 
-<View style={styles.titleCard}>
-  <Text style={styles.titleText}>Art's Fia Buffet</Text>
-  <Icon name='star' size={30} color="green" marginTop={8}></Icon>
-</View>
-
-<View style={styles.container2}>
-{textos.map((texto, index) => (
-  <View key={index} style={styles.retanguloComEspacamento}>
-    <RetanguloComTexto texto={texto} />
-  </View>
-))}
-</View>
-
-<View >
-<Card
-  itens={card.itens}
-  maisBarato={card.maisBarato}
-  maisCaro={card.maisCaro}
-/>
-</View>
-
-<TouchableOpacity onPress={handlePress} style={styles.bottom}>
-<Text style={styles.bottomText}>Visualizar</Text>
-</TouchableOpacity>
-
-</View>
 
 </ScrollView>
 
