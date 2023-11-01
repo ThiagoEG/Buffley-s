@@ -84,7 +84,11 @@ const username = state.username;
           id: cardapioId,
           ...cardapiosData[cardapioId],
         }));
-        setCardapio(cardapiosArray);
+  
+        // Filtrar os cardápios com base no UID do usuário atual
+        const cardapiosDoUsuario = cardapiosArray.filter((cardapio) => cardapio.userID === state.uid);
+  
+        setCardapio(cardapiosDoUsuario);
       } else {
         console.error('No cardápio found in the database.');
         setCardapio([]);
@@ -93,6 +97,7 @@ const username = state.username;
       console.error('Error loading cardapios:', error);
     }
   };
+  
   
   useEffect(() => {
     loadCardapios();

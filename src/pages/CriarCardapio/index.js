@@ -25,6 +25,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { ref, set, push } from 'firebase/database';
 import { db } from '../../services/firebaseConfigurations/firebaseConfig'; // Importe a instância do banco de dados do seu arquivo de configuração Firebase
 import { globalData, setCurrentCardapioId } from '../../services/Globals/globalId';
+import { useUser } from '../../services/UserContext/index';
 
 const calcularCustoTotal = (receita) => {
   let custoTotal = 0;
@@ -100,6 +101,8 @@ export default function Cardapio() {
   const [custoMaisCaro, setCustoMaisCaro] = useState(0);
   const route = useRoute();
   const [errorMessage, setErrorMessage] = useState('');
+  const { state } = useUser();
+  const [uidDoBuffetConectado, setUidDoBuffetConectado] = useState(null);
   const cardapio = route.params?.cardapio;
   const [novoCardapio, setNovoCardapio] = useState({
     nomeCardapio: '',
@@ -110,6 +113,8 @@ export default function Cardapio() {
     categoriaMaisCara: '',
   });
   
+
+  const userID = state.uid;
 
 
   const handleSubmit = async () => {
@@ -125,6 +130,7 @@ export default function Cardapio() {
       numeroConvidados,
       categoriaMaisBarata: selectedRecipes.length > 0 ? calcularCategoriaMaisBarata(selectedRecipes).categoria : '',
       categoriaMaisCara: selectedRecipes.length > 0 ? calcularCategoriaMaisCara(selectedRecipes).categoria : '',
+      userID: userID, 
     };
   
     try {

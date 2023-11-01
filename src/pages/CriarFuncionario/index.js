@@ -4,7 +4,7 @@ import LinearBorder from '../Componentes/LinearBorder';
 import Navbar from '../Componentes/Navbar';
 import LinearButton from '../Componentes/LinearButton';
 import { Picker } from '@react-native-picker/picker';
-import { ref, push, get, serverTimestamp } from 'firebase/database'; // Importações específicas para o Realtime Database
+import { ref, set, push, get, serverTimestamp } from 'firebase/database'; // Importações específicas para o Realtime Database
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 import { useAuth } from '../../services/AuthContext/index';
 import { useUser } from '../../services/UserContext/index';
@@ -26,27 +26,23 @@ export default function AddCardapio() {
   useEffect(() => {
     const userID = state.uid;
     if (userID) {
-      // O usuário está autenticado, verifique o UID do buffet
+      // O usuário está autenticado, envie apenas o UID do usuário para o banco
       const userTypeRef = ref(db, `users/${userID}/`);
-      get(userTypeRef)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            const userEmail = snapshot.val();
-            console.log('UID do buffet:', userEmail);
-            setUidDoBuffetConectado(userEmail);
-          } else {
-            setErrorMessage('O nó não existe no banco de dados.');
-          }
+      set(userTypeRef, userID) // Defina o valor do nó como o UID do usuário
+        .then(() => {
+          console.log('UID do usuário enviado para o banco:', userID);
+          setUidDoBuffetConectado(userID);
         })
         .catch((error) => {
-          console.error('Erro ao recuperar o UID do buffet:', error);
-          setErrorMessage('Erro ao recuperar o UID do buffet.');
+          console.error('Erro ao enviar o UID do usuário para o banco:', error);
+          setErrorMessage('Erro ao enviar o UID do usuário para o banco.');
         })
         .finally(() => {
           setIsUidChecked(true);
         });
     }
   }, [state.uid]);
+  
 
   const handleNomeChange = (text) => {
     setNome(text);

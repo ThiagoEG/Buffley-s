@@ -21,7 +21,12 @@ const { width, height } = Dimensions.get('window');
 
 export default function App() {
   const [employeeList, setEmployeeList] = useState([]);
+  const { state } = useUser();
   const [loading, setLoading] = useState(true); // Estado para rastrear o carregamento
+
+
+  const userId = state.uid
+  console.log("Id do usuario:", userId)
 
   useEffect(() => {
     const employeeRef = ref(db, 'funcionarios');
@@ -33,8 +38,8 @@ export default function App() {
 
         // Você pode filtrar os funcionários aqui se necessário
         // const filteredEmployees = employees.filter(...);
-
-        setEmployeeList(employees);
+        const filteredEmployees = employees.filter((employee) => employee.buffetUID  === userId);
+        setEmployeeList(filteredEmployees);
         setLoading(false); // Define o carregamento como concluído
       } else {
         setEmployeeList([]);
@@ -45,13 +50,16 @@ export default function App() {
 
   const renderEmployees = () => {
     if (loading) {
-      return <View style={styles.carregamento}><Text>Carregando...</Text><ActivityIndicator size="large" color="#000" /></View>; // Mostra o indicador de carregamento
+      return (
+        <View style={styles.carregamento}>
+          <Text>Carregando...</Text>
+          <ActivityIndicator size="large" color="#000" />
+        </View>
+      ); // Mostra o indicador de carregamento
     }
 
     if (employeeList.length === 0) {
-      return ( 
-        <Text>Nenhum funcionário disponível</Text>
-      );
+      return <Text>Nenhum funcionário disponível</Text>;
     }
 
     return employeeList.map((employee, index) => (
