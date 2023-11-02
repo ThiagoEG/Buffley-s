@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import LinearBorder from '../Componentes/LinearBorder';
 import Navbar from '../Componentes/Navbar';
 import LinearButton from '../Componentes/LinearButton';
 import { Picker } from '@react-native-picker/picker';
-import { ref, set, push, get, serverTimestamp } from 'firebase/database'; // Importações específicas para o Realtime Database
+import { ref, push, set, get, onValue } from 'firebase/database'; // Importações específicas para o Realtime Database
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 import { useAuth } from '../../services/AuthContext/index';
 import { useUser } from '../../services/UserContext/index';
 import { useNavigation } from '@react-navigation/native';
+import ImagePickerExample from '../Componentes/ImagePicker';
+import { StatusBar } from 'expo-status-bar';
+import { v4 as uuidv4 } from 'uuid'; // Importe a função v4 da biblioteca uuid
 
 export default function AddCardapio() {
   const navigation = useNavigation();
@@ -22,6 +25,10 @@ export default function AddCardapio() {
   const [errorMessage, setErrorMessage] = useState('');
   const [uidDoBuffetConectado, setUidDoBuffetConectado] = useState(null);
   const [isUidChecked, setIsUidChecked] = useState(false);
+  const [imageUri, setImageUri] = useState(null);
+
+  // Adicione um estado para rastrear a lista de funcionários
+  const [employeeList, setEmployeeList] = useState([]);
 
   useEffect(() => {
     const userID = state.uid;
@@ -42,7 +49,26 @@ export default function AddCardapio() {
         });
     }
   }, [state.uid]);
-  
+
+  // Adicione uma função para atualizar a lista de funcionários
+  const updateEmployeeList = () => {
+    const employeeRef = ref(db, 'funcionarios');
+
+    onValue(employeeRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const employees = Object.values(data);
+        const filteredEmployees = employees.filter((employee) => employee.buffetUID === uidDoBuffetConectado);
+        setEmployeeList(filteredEmployees);
+      } else {
+        setEmployeeList([]);
+      }
+    });
+  };
+
+  useEffect(() => {
+    updateEmployeeList(); // Atualize a lista de funcionários quando o componente for montado
+  }, [uidDoBuffetConectado]);
 
   const handleNomeChange = (text) => {
     setNome(text);
@@ -64,6 +90,10 @@ export default function AddCardapio() {
     setTipoFuncionario(value);
   };
 
+  const handleImagemChange = (imageUri) => {
+    setImageUri(imageUri);
+  };
+
   const handleSubmit = () => {
     if (!isUidChecked) {
       setErrorMessage('A verificação do UID do buffet ainda não foi concluída.');
@@ -80,19 +110,32 @@ export default function AddCardapio() {
       return;
     }
 
+    // Gere um ID único para o funcionário usando a função uuidv4()
+    const idFuncionario = uuidv4();
+    const dataCadastro = new Date().toISOString();
+    // Restante do código para criar o objeto funcionário
     const funcionarioData = {
+      idFuncionario, // Adicione o ID gerado ao objeto do funcionário
       nome,
       cargo,
       salario,
       telefone,
       tipoFuncionario,
       buffetUID: uidDoBuffetConectado,
-      dataCadastro: serverTimestamp(), // Adicione a data de cadastro do funcionário
+      dataCadastro: dataCadastro,
+      imagem: imageUri,
     };
-
+  
     const funcionariosRef = ref(db, 'funcionarios');
-
-    push(funcionariosRef, funcionarioData)
+  
+    // Gere um ID exclusivo para o funcionário
+    const novoFuncionarioRef = push(funcionariosRef);
+  
+    // Obtenha o ID gerado
+    const funcionarioID = novoFuncionarioRef.key;
+  
+    // Defina os dados do funcionário no ID gerado
+    set(novoFuncionarioRef, funcionarioData)
       .then(() => {
         console.log('Funcionário adicionado com sucesso ao Firebase Realtime Database.');
         setErrorMessage('');
@@ -106,28 +149,56 @@ export default function AddCardapio() {
 
   return (
     <View style={styles.container}>
+      <StatusBar hidden={true} />
       <Navbar />
-      <Text style={styles.title}>Cadastrar funcionário</Text>
-      <View style={styles.formContainer}>
-        <LinearBorder icon="person" placeholder="Nome do funcionário" onChangeText={handleNomeChange} />
-        <LinearBorder icon="payment" placeholder="Salário" onChangeText={handleSalarioChange} />
-        <LinearBorder icon="work" placeholder="Cargo" onChangeText={handleCargoChange} />
-        <LinearBorder icon="phone" placeholder="Telefone" onChangeText={handleTelefoneChange} />
-        <Text style={styles.subTitle}>Tipo de funcionário</Text>
-        <View style={styles.containerPicker}>
-          <Picker
-            selectedValue={tipoFuncionario}
-            onValueChange={handleTipoFuncionarioChange}
-          >
-            <Picker.Item label="Fixo" value="Fixo" />
-            <Picker.Item label="FreeLancer" value="FreeLancer" />
-          </Picker>
+      <ScrollView>
+        <View style={styles.containerForm}>
+          <Text style={styles.title}>Cadastrar funcionário</Text>
+          <LinearBorder
+            icon="person"
+            placeholder="Nome do funcionário"
+            value={nome}
+            onChangeText={handleNomeChange}
+          />
+          <LinearBorder
+            icon="work"
+            placeholder="Cargo"
+            value={cargo}
+            onChangeText={handleCargoChange}
+          />
+          <LinearBorder
+            icon="call"
+            placeholder="Telefone"
+            keyboardType="numeric"
+            value={telefone}
+            onChangeText={handleTelefoneChange}
+          />
+          <Text style={styles.subTitle}>Tipo funcionário</Text>
+          <View style={styles.containerPicker}>
+            <Picker
+              selectedValue={tipoFuncionario}
+              onValueChange={handleTipoFuncionarioChange}
+            >
+              <Picker.Item label="Fixo" value="Fixo" />
+              <Picker.Item label="FreeLancer" value="FreeLancer" />
+            </Picker>
+          </View>
+          <LinearBorder
+            icon="payment"
+            placeholder="Salário"
+            keyboardType="numeric"
+            value={salario}
+            onChangeText={handleSalarioChange}
+          />
+
+          <ImagePickerExample setImageUri={setImageUri} onChangeText={handleImagemChange} />
+
+          <View style={styles.buttonContainer}>
+            {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
+            <LinearButton title="Criar Funcionário" onPress={handleSubmit} />
+          </View>
         </View>
-      </View>
-      <View style={styles.buttonContainer}>
-        {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
-        <LinearButton title="Criar Funcionário" onPress={handleSubmit} />
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -135,33 +206,33 @@ export default function AddCardapio() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+  },
+  containerForm: {
+    flex: 1,
+    marginBottom: 20,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    marginTop: 26,
-    marginLeft: 26,
-  },
-  formContainer: {
-    flex: 1,
-    alignSelf: 'center',
-  },
-  containerPicker: {
-    width: 340,
-    alignSelf: 'center',
     marginTop: 16,
-    borderRadius: 5,
-    height: 50,
-    backgroundColor: 'white',
-    borderWidth: 3,
-    borderColor: 'rgba(255, 203, 210, 0.8)',
+    color: 'black',
+    marginLeft: 16,
   },
   subTitle: {
     fontSize: 20,
     fontWeight: '300',
-    marginLeft: 26,
+    marginLeft: 16,
     marginTop: 16,
+  },
+  containerPicker: {
+    width: 340,
+    marginTop: 10,
+    borderRadius: 5,
+    height: 50,
+    borderWidth: 3,
+    borderColor: 'rgba(255, 203, 210, 0.8)',
+    alignSelf: 'center',
+    textAlign: 'center',
   },
   buttonContainer: {
     marginTop: 10,

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const LinearBorder = ({ icon, placeholder, onChangeText, value }) => {
+const LinearBorder = ({ icon, placeholder, onChangeText, value, keyboardType }) => {
   return (
     <View style={styles.linearComp}>
       {icon && <MaterialIcons name={icon} size={24} color={'rgba(0, 0, 0, 0.5)'} />}
@@ -11,6 +11,7 @@ const LinearBorder = ({ icon, placeholder, onChangeText, value }) => {
         placeholderTextColor={'rgba(0, 0, 0, 0.5)'}
         onChangeText={onChangeText}
         value={value}
+        keyboardType={keyboardType}
       />
     </View>
   );
