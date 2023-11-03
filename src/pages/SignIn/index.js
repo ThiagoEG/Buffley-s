@@ -277,48 +277,57 @@ const styles = StyleSheet.create({
     color: 'red',
     marginLeft: '5%'
   },
-  button: {
-    marginTop: '20%',
-    backgroundColor: '#cd4465',
-    borderRadius: 10,
-    width: '95%',
-    height: '20%',
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    bottom: '35%',
-  },
-  buttonText: {
-    fontSize: 16,
-    alignSelf: 'center',
-    color: '#FFF',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-  },
-  button2: {
-    bottom: '25%',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#cd4465',
-    width: '95%',
-    height: '20%',
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText2: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    color: '#BB2649',
-  },
-  line: {
-    height: 5,
-    backgroundColor: 'gray',
-    marginVertical: '1%',
-    bottom: '30%',
-    width: '70%',
-    alignSelf: 'center'
-  },
+ 
+
+
+
+
+
+
+
+button: {
+  marginTop: '20%',
+  backgroundColor: '#cd4465',
+  borderRadius: 10,
+  width: '90%',
+  height: '20%',
+  alignSelf: 'center',
+  alignItems: 'center',
+  justifyContent: 'center',
+  bottom: '35%',
+},
+buttonText: {
+  fontSize: 16,
+  alignSelf: 'center',
+  color: '#FFF',
+  fontWeight: 'bold',
+  alignSelf: 'center',
+},
+button2: {
+  bottom: '25%',
+  backgroundColor: 'white',
+  borderRadius: 10,
+  borderWidth: 2,
+  borderColor: '#cd4465',
+  width: '90%',
+  height: '20%',
+  alignSelf: 'center',
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+buttonText2: {
+  fontSize: 16,
+  fontWeight: 'bold',
+  alignSelf: 'center',
+  color: '#BB2649',
+},
+line: {
+  height: 4,
+  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  marginVertical: '1%',
+  bottom: '30%',
+  width: '70%',
+  alignSelf: 'center',
+  borderRadius: 2,
+},
 });

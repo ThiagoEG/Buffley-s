@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { createAppContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -38,10 +38,11 @@ const iconesDasGuias = {
   };
 
   const iconesDasGuias2 = {
-    HomeBuffet: 'home', // Substitua 'home' pelo nome real do ícone que você deseja usar
-    CardapiosBuffet: 'business', // Substitua 'person' pelo nome real do ícone que você deseja usar
-    Funcionarios: 'clipboard-outline', // Substitua 'settings' pelo nome real do ícone que você deseja usar
+    Home: 'home-outline', // Substitua 'home' pelo nome real do ícone que você deseja usar
+    Cardapios: 'clipboard-edit-outline', // Substitua 'person' pelo nome real do ícone que você deseja usar
+    Funcionarios: 'briefcase-outline', // Substitua 'settings' pelo nome real do ícone que você deseja usar
   };
+
 
 
   
@@ -74,7 +75,7 @@ function HomeScreen() {
     );
   }
 
- export function HomeScreenBuffet() {
+  export function HomeScreenBuffet() {
     return (
       <Tab.Navigator
         initialRouteName="Home"
@@ -85,13 +86,13 @@ function HomeScreen() {
             // Você pode personalizar a cor e o tamanho do ícone com base em 'focused' aqui
             // Por exemplo:
             // const corDoIcone = focused ? 'azul' : 'cinza';
-  
-            return <Ionicons name={iconName} size={size} color={color} />;
+            return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
           },
         })}
       >
-        <Tab.Screen name="HomeBuffet" component={HomeBuffet} options={{headerShown: false}}/>
-        <Tab.Screen name="CardapiosBuffet" component={CardapiosBuffet} options={{headerShown: false}}/>
+        
+        <Tab.Screen name="Cardapios" component={CardapiosBuffet} options={{headerShown: false}}/>
+        <Tab.Screen name="Home" component={HomeBuffet} options={{headerShown: false}}/>
         <Tab.Screen name="Funcionarios" component={Funcionarios} options={{headerShown: false}}/>
       </Tab.Navigator>
     );
@@ -174,7 +175,7 @@ function Routes() {
   */
 function StackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="SignIn">
+    <Stack.Navigator initialRouteName="HomeScreen">
       <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
       <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />

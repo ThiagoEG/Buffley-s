@@ -11,7 +11,7 @@ export default function Seta() {
 
   return (
     <View>
-      <TouchableOpacity onPress={goBackToHomeScreen}>
+      <TouchableOpacity onPress={goBackToHomeScreen} >
         <Image source={require('../../../assets/Arrow.png')} style={styles.container} />
       </TouchableOpacity>
     </View>
@@ -22,6 +22,6 @@ const styles = StyleSheet.create({
   container: {
     marginLeft: 10,
     height: 35,
-    width: 42,
+    width: 40,
   },
 });

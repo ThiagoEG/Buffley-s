@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   username: {
-    fontSize: 16,
+    fontSize: 28,
     fontWeight: 'bold',
   },
 });

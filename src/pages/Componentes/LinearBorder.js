@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     height: 45,
     width: 340,
-    marginHorizontal: 35,
     borderColor: 'rgba(255, 203, 210, 0.8)',
     borderRadius: 5,
     marginTop: 22,
@@ -30,6 +29,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 16,
     gap: 10,
+    alignSelf: 'center',
   },
 });
 

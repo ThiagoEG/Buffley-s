@@ -39,7 +39,7 @@ const EmployeeCard = ({ nome, cargo, tipoFuncionario, telefone, imagem, salario,
           <MaterialIcons
             name="delete"
             size={35}
-            color="red"
+            color="#d51a46"
           />
         </View>
       </TouchableOpacity>

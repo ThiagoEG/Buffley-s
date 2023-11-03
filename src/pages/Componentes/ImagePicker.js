@@ -26,16 +26,15 @@ export default function ImagePickerExample({ setImageUri }) {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 12,
-    width:'100%', paddingHorizontal: 20, }}>
+    <View style={{height: 50, alignItems: 'center', justifyContent: 'center', marginTop: 12, paddingHorizontal: 20, }}>
       <View
         style={{
           flexDirection: 'row',
           flex: 1,
           alignItems: 'center',
           justifyContent: 'space-between',
-          width: '100%',
-          marginHorizontal: 16,
+          gap: 10,
+          width: "100%",
         }}
       >
         <Text

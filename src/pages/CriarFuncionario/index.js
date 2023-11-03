@@ -23,14 +23,14 @@ export default function AddCardapio() {
   const [telefone, setTelefone] = useState('');
   const [tipoFuncionario, setTipoFuncionario] = useState('Fixo');
   const [errorMessage, setErrorMessage] = useState('');
-  const [uidDoBuffetConectado, setUidDoBuffetConectado] = useState(null);
-  const [isUidChecked, setIsUidChecked] = useState(false);
+ // const [uidDoBuffetConectado, setUidDoBuffetConectado] = useState(null);
+ // const [isUidChecked, setIsUidChecked] = useState(false);
   const [imageUri, setImageUri] = useState(null);
-
+  const userID = state.uid;
   // Adicione um estado para rastrear a lista de funcionários
   const [employeeList, setEmployeeList] = useState([]);
 
-  useEffect(() => {
+ /* useEffect(() => {
     const userID = state.uid;
     if (userID) {
       // O usuário está autenticado, envie apenas o UID do usuário para o banco
@@ -48,7 +48,7 @@ export default function AddCardapio() {
           setIsUidChecked(true);
         });
     }
-  }, [state.uid]);
+  }, [state.uid]);*/
 
   // Adicione uma função para atualizar a lista de funcionários
   const updateEmployeeList = () => {
@@ -58,7 +58,7 @@ export default function AddCardapio() {
       if (snapshot.exists()) {
         const data = snapshot.val();
         const employees = Object.values(data);
-        const filteredEmployees = employees.filter((employee) => employee.buffetUID === uidDoBuffetConectado);
+        const filteredEmployees = employees.filter((employee) => employee.buffetUID === userID);
         setEmployeeList(filteredEmployees);
       } else {
         setEmployeeList([]);
@@ -68,7 +68,7 @@ export default function AddCardapio() {
 
   useEffect(() => {
     updateEmployeeList(); // Atualize a lista de funcionários quando o componente for montado
-  }, [uidDoBuffetConectado]);
+  }, [userID]);
 
   const handleNomeChange = (text) => {
     setNome(text);
@@ -95,13 +95,8 @@ export default function AddCardapio() {
   };
 
   const handleSubmit = () => {
-    if (!isUidChecked) {
+    if (!userID) {
       setErrorMessage('A verificação do UID do buffet ainda não foi concluída.');
-      return;
-    }
-
-    if (!uidDoBuffetConectado) {
-      setErrorMessage('UID do buffet não encontrado. Certifique-se de estar conectado a um buffet.');
       return;
     }
 
@@ -121,7 +116,7 @@ export default function AddCardapio() {
       salario,
       telefone,
       tipoFuncionario,
-      buffetUID: uidDoBuffetConectado,
+      buffetUID: userID,
       dataCadastro: dataCadastro,
       imagem: imageUri,
     };

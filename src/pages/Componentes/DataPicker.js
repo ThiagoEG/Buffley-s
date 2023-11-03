@@ -27,8 +27,8 @@ const DatePickerComponent = () => {
   };
 
   return (
-    <View>
-      <TouchableOpacity onPress={showDatepicker}>
+    <View style={{alignSelf: 'center'}}>
+      <TouchableOpacity onPress={showDatepicker} >
         <View style={styles.datePickerButton}>
           <MaterialIcons name="date-range" size={24} color="gray" />
           <Text style={styles.datePickerButtonText}>
@@ -54,8 +54,7 @@ const styles = {
   datePickerButton: {
     borderWidth: 3,
     height: 45,
-    width: '110%',
-    marginHorizontal: 35,
+    width: 340,
     borderColor: 'rgba(255, 203, 210, 0.8)',
     borderRadius: 5,
     marginTop: 22,

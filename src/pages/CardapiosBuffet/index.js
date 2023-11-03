@@ -571,6 +571,23 @@ searchContainer: {
 
   scrollContent2:{
     paddingBottom: 5, // Altura da navbar
+  },
+  
+  cardAdd:{
+    marginTop:12,
+    marginHorizontal: 16,
+    height: 150,
+    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    elevation: 8,
+  },
+  cardTitle:{
+    fontSize: 26,
+    fontWeight: "normal",
+    marginRight: 8,
   }
 });
 
