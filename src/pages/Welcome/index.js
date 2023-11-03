@@ -10,6 +10,7 @@ import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { ref, get } from 'firebase/database';
 import { auth, db} from "../../services/firebaseConfigurations/firebaseConfig"; // Certifique-se de importar suas configurações do Firebase e o Firestore.
 import { registerUser } from '../../services/firebaseConfigurations/authUtils'; // Importe a função de registro
+import ImagePickerExample from '../Componentes/ImagePicker';
 
 
 export default function Welcome({user }) {
@@ -203,6 +204,8 @@ export default function Welcome({user }) {
           onChangeText={setTelefone}
         />
 
+        <ImagePickerExample/>
+        
         <View style={styles.radioButtonsContainer}>
           <Animatable.View
             animation="fadeIn" // Adicione uma animação de fade-in para os botões de opção
