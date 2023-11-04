@@ -10,6 +10,7 @@ export function UserProvider({ children }) {
     isBuffet: false,
     buffetUID: null,
     userEmail: null, // Adicionamos o userEmail ao estado
+    userProfileImage: null
   });
 
   return <UserContext.Provider value={{ state, dispatch }}>{children}</UserContext.Provider>;
@@ -28,7 +29,8 @@ function userReducer(state, action) {
         username: action.payload.username,
         isBuffet: action.payload.isBuffet,
         userEmail: action.payload.userEmail, // Atualizamos o userEmail quando o usuário faz login
-        buffetUID: action.payload.userEmail
+        buffetUID: action.payload.userEmail,
+        userProfileImage: action.payload.userProfileImage
       };
     case 'CLEAR_USER':
       return {
@@ -37,6 +39,7 @@ function userReducer(state, action) {
         isBuffet: false,
         buffetUID: null,
         userEmail: null, // Limpamos o userEmail ao fazer logout
+        userProfileImage: null
       };
     default:
       return state;

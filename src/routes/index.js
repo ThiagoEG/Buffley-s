@@ -17,15 +17,11 @@ import BuffetPerfil from '../pages/BuffetPerfil'
 import Funcionarios from '../pages/Funcionarios'
 import Home from '../pages/Home'
 import BuffetsParceiros from '../pages/BuffetsParceiros'
-import Home2 from '../pages/Home2'
 import Welcome from '../pages/Welcome'
 import SignIn from '../pages/SignIn'
 import Cardapio from '../pages/Cardapio'
 import CardapiosBuffet from '../pages/CardapiosBuffet'
 import TelaInicial from '../pages/TelaInicial/telaInicial'
-import TelaFreelancer1 from '../pages/TelaFreelancer1'
-import TelaFreelancer2 from '../pages/TelaFreelancer2'
-import TelaFreelancer3 from '../pages/TelaFreelancer3'
 import CriarCardapio from '../pages/CriarCardapio'
 import CriarReceita from '../pages/CriarReceita'
 import CriarFuncionario from '../pages/CriarFuncionario'
@@ -97,81 +93,6 @@ function HomeScreen() {
     );
   }  
 
-/*
-
-function Routes(props)
-{
-    return(
-        <NavigationContainer>
-            <Stack.Navigator>
-            
-
-                        <Stack.Screen
-                name="SignIn"
-                component={SignIn}
-                options={{headerShown: false}}
-            />
-
-<Stack.Screen
-                name="Welcome"
-                component={Welcome}
-                options={{headerShown: false}}
-            />
-
-                                                <Stack.Screen
-                name="HomeScreen"
-                component={HomeScreen}
-                options={{headerShown: false}}
-                
-            />
-                                                            <Stack.Screen
-                name="HomeScreenBuffet"
-                component={HomeScreenBuffet}
-                options={{headerShown: false}}
-                
-            />
-            
-
-
-
-            
-
-
-        </Stack.Navigator>
-        </NavigationContainer>
-        
-    )    
-    
-}
-
-*/
-  
-  /*
-  
-  function StackNavigator() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
-      <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
-      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="HomeScreenBuffet" component={HomeScreenBuffet} options={{ headerShown: false }} />
-    </Stack.Navigator>
-  );
-}
-
-function Routes() {
-  return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="HomeScreen">
-        <Drawer.Screen name="Inicio" component={StackNavigator} options={{ headerShown: false }} />
-        <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
-        <Drawer.Screen name="HomeScreenBuffet" component={HomeScreenBuffet} options={{ headerShown: false }} />
-      </Drawer.Navigator>
-    </NavigationContainer>
-  );
-}
-  
-  */
 function StackNavigator() {
   return (
     <Stack.Navigator initialRouteName="SignIn">

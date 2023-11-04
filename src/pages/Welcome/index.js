@@ -10,6 +10,8 @@ import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { ref, get } from 'firebase/database';
 import { auth, db} from "../../services/firebaseConfigurations/firebaseConfig"; // Certifique-se de importar suas configurações do Firebase e o Firestore.
 import { registerUser } from '../../services/firebaseConfigurations/authUtils'; // Importe a função de registro
+import ImagePickerExample from '../Componentes/ImagePicker';
+import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
 
 
 export default function Welcome({user }) {
@@ -18,19 +20,22 @@ export default function Welcome({user }) {
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
   const [errors, setErrors] = useState({});
+  const [imageUri, setImageUri] = useState(null);
   const [errorText, setErrorText] = useState('');
   const navigation = useNavigation();
-  
+  const { state, dispatch } = useUser();
+  const handleImagemChange = (imageUri) => {
+    setImageUri(imageUri);
+  };
 
-
   
-  const handleRegister = async (email, senha, nome, telefone, userType) => {
+  const handleRegister = async (email, senha, nome, telefone, userType, imagem) => {
     try {
       // Resto do código para verificar se o usuário já está registrado
       // ...
   
       // Se o usuário não existir, prossiga com o registro
-      const userCredential = await registerUser(email, senha, nome, telefone, userType);
+      const userCredential = await registerUser(email, senha, nome, telefone, userType, imagem);
     const user = userCredential.user;
   
       // Resto do código para adicionar os dados do usuário ao Firestore
@@ -129,7 +134,7 @@ export default function Welcome({user }) {
     const isValid = validateForm();
 
     if (isValid) {
-      handleRegister(email, senha, nome, telefone, selectedOption);
+      handleRegister(email, senha, nome, telefone, selectedOption, imageUri);
     }
   };
 
@@ -203,6 +208,8 @@ export default function Welcome({user }) {
           onChangeText={setTelefone}
         />
 
+<ImagePickerExample setImageUri={setImageUri} onChangeText={handleImagemChange} />
+        
         <View style={styles.radioButtonsContainer}>
           <Animatable.View
             animation="fadeIn" // Adicione uma animação de fade-in para os botões de opção

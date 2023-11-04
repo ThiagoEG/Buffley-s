@@ -201,35 +201,6 @@ searchContainer: {
     marginTop: 32,
     marginVertical:32,
 
-    /* 
-       width: 360,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: 'black',
-    alignSelf:'center',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-    marginTop: 32,
-    marginVertical:32,
-
-        width: width * 0.9,  // 90% da largura da tela
-    paddingVertical: height * 0.02,  // 2% da altura da tela
-    paddingHorizontal: width * 0.04,  // 4% da largura da tela
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: 'black',
-    alignSelf:'center',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 6,
-    marginTop: 32,
-    marginVertical:32,
-    */
   },
   image: {
     width: 330,

@@ -5,15 +5,15 @@ import Imagem from '../componentes2/Imagem2.js';
 import Meio from '../componentes2/Meio2.js';
 import Botão from '../componentes2/Botão2.js';
 import Stars from '../componentes2/Stars2.js';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions, ActivityIndicator  } from 'react-native';
-import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions, ActivityIndicator, Alert  } from 'react-native';
+import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation, useRoute  } from '@react-navigation/native';
 import SideMenu from '../Componentes/SideMenu';
 import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
 import Card from '../componentes2/Card2';
-import { ref, push, onValue } from 'firebase/database'; // Importações específicas para o Realtime Database
+import { ref, get, remove, onValue } from 'firebase/database'; // Importações específicas para o Realtime Database
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 
 
@@ -24,7 +24,50 @@ export default function App() {
   const { state } = useUser();
   const [loading, setLoading] = useState(true); // Estado para rastrear o carregamento
 
+  const handleDeleteEmployee = (idFuncionario) => {
+    const funcionarioRef = ref(db, 'funcionarios');
+  
+    get(funcionarioRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          let funcionarioKey = null;
+  
+          // Encontre a chave do funcionário com base no idFuncionario
+          Object.keys(data).forEach((key) => {
+            if (data[key].idFuncionario === idFuncionario) {
+              funcionarioKey = key;
+            }
+          });
+  
+          if (funcionarioKey) {
+            // Exclua o funcionário do banco de dados permanentemente
+            remove(ref(db, `funcionarios/${funcionarioKey}`))
+              .then(() => {
+                console.log('Funcionário excluído permanentemente com sucesso.');
+  
+                // Atualize o estado para remover o funcionário excluído da lista
+                setEmployeeList((prevEmployeeList) => {
+                  return prevEmployeeList.filter((employee) => employee.idFuncionario !== idFuncionario);
+                });
 
+                Alert.alert('Funcionário excluído com sucesso');
+              })
+              .catch((error) => {
+                console.error('Erro ao excluir o funcionário', error);
+              });
+          } else {
+            console.log('Funcionário não encontrado.');
+          }
+        } else {
+          console.log('Não existem funcionários no banco de dados.');
+        }
+      })
+      .catch((error) => {
+        console.error('Erro ao consultar o funcionário:', error);
+      });
+        <ActivityIndicator size="large" color="red"  />
+  };
   const userId = state.uid
   console.log("Id do usuario:", userId)
 
@@ -59,7 +102,12 @@ export default function App() {
     }
 
     if (employeeList.length === 0) {
-      return <Text>Nenhum funcionário disponível</Text>;
+      return <TouchableOpacity onPress={handleCriarFuncionarioNavigation} >
+              <View style={styles.cardAdd}>
+                <Text style={styles.cardTitle}>Adicionar funcionario</Text>
+                <Ionicons name="add-circle-outline" size={40} marginRight={12} color="black" />
+              </View>
+            </TouchableOpacity>
     }
 
     return employeeList.map((employee, index) => (
@@ -68,6 +116,9 @@ export default function App() {
         nome={employee.nome}
         cargo={employee.cargo}
         tipoFuncionario={employee.tipoFuncionario}
+        imagem={employee.imagem}
+        salario={employee.salario}
+        onDelete={() => handleDeleteEmployee(employee.idFuncionario)}
       />
     ));
   };
@@ -87,15 +138,14 @@ export default function App() {
   };
   return (
     <View style={styles.container}>
-<Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
-<SideMenu isVisible={menuVisible} onClose={toggleMenu} />
+
+    <Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
+    <SideMenu isVisible={menuVisible} onClose={toggleMenu} />
 
     <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
-<ScrollView >
 
-    
-{renderEmployees()}
-    </ScrollView>
+        
+    {renderEmployees()}
 
     </View>
 
@@ -143,5 +193,22 @@ const styles = StyleSheet.create({
     {
       alignItems: 'center',
       marginTop: '15%'
+    },
+
+    cardAdd:{
+      marginTop:12,
+      marginHorizontal: 16,
+      height: 150,
+      backgroundColor: 'white',
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 10,
+      elevation: 8,
+    },
+    cardTitle:{
+      fontSize: 26,
+      fontWeight: "normal",
+      marginRight: 8,
     }
 });

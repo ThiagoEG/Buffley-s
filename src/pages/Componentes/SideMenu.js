@@ -1,12 +1,35 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
-import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
+import { useUser } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
+import { ref, get } from 'firebase/database'; // Importações específicas para o Realtime Database
+import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 
 const MenuLateral = ({ isVisible, onClose }) => {
   const { state } = useUser(); // Obtenha o estado do usuário
+  const [userPhotoUrl, setUserPhotoUrl] = useState('');
   const username = state.username;
+
+  useEffect(() => {
+    if (state.uid) {
+      // Recupere a URL da foto do usuário no Firebase Realtime Database usando o UID do usuário
+      const userUid = state.uid;
+      const databaseRef = ref(db, `users/${userUid}/imagem`); // Assuma que 'imagem' é o nome do nó com a URL da imagem
+
+      // Obtenha o valor da URL da imagem
+      get(databaseRef) 
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const photoUrl = snapshot.val();
+            setUserPhotoUrl(photoUrl);
+          }
+        });
+    }
+  }, [state.uid]);
+
+
+
   if (!isVisible) {
     return null;
   }
@@ -25,7 +48,7 @@ const MenuLateral = ({ isVisible, onClose }) => {
 <View style={styles.HeaderContainer}>
 <View style={styles.header}>
         <Image source={require('../../../assets/FrameLogo.png')} style={styles.logo} />
-        <Image source={require('../../../assets/Buffley.png')} style={styles.profileImage} />
+        <Image source={{uri: userPhotoUrl}} style={styles.profileImage} />
         <Text style={styles.username}>{username}</Text>
         <Text style={styles.usernamearroba}>@{username}</Text>
       </View>

@@ -3,6 +3,11 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dropdown from '../Componentes/DropDown'
+import LinearBorder from '../Componentes/LinearBorder';
+import DatePickerComponent from '../Componentes/DataPicker';
+import Navbar from '../Componentes/Navbar';
+import MultiSelectComponent from '../Componentes/DropDonwSelect';
+import { tiposDeCarnes, bebidas, bolos, entradas, saladas, guarnicoes } from '../../Banco/PreferenciasBanco';
 
 export default function Welcome() {
   const [nome, setNome] = useState('');
@@ -11,17 +16,17 @@ export default function Welcome() {
   const [errors, setErrors] = useState({});
   const navigation = useNavigation();
 
+  const item = [
+    { label: 'Item 1', value: '1' },
+    { label: 'Item 2', value: '2' },
+   
+  ];
+
   const handlePress = () => {
     navigation.navigate('HomeScreen');
   };
 
-/*  const handlePress2 = () => {
-    if (selectedOption === 'Buffet') {
-      // Lógica para o Buffet
-    } else if (selectedOption === 'Cliente') {
-      // Lógica para o Cliente
-    }
-  };*/
+
 
   const [selectedOption, setSelectedOption] = useState('Buffet');
 
@@ -47,42 +52,31 @@ export default function Welcome() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Navbar/>
       <View style={styles.containerForm}>
         <Text style={styles.sectionTitle}>Dados</Text>
 
-        <View style={styles.inputContainer}>
-          <Icon name="user" size={24} color="#808080" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Nome"
-            placeholderTextColor="#808080"
-            onChangeText={text => setNome(text)}
+        <LinearBorder icon="person" placeholder="Nome do Cardápio" 
+          onChangeText={text => setNome(text)}
+        />
+
+        <View style={{flexDirection: "row"}[styles.componets]}>
+          <LinearBorder icon="groups" placeholder="Quantidade de pessoas" 
+            onChangeText={text => setQtdPessoas(text)} 
+            keyboardType="numeric"
           />
+          <DatePickerComponent onChangeText={text => setQtdPessoas(text)} />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Icon name="group" size={24} color="#808080" style={styles.icon} />
-          <TextInput
-            style={styles.inputSmall}
-            placeholder="Qtde de Pessoas"
-            placeholderTextColor="#808080"
-            onChangeText={text => setQtdPessoas(text)}
-          />
-          <TextInput
-            style={styles.inputSmall}
-            placeholder="Data"
-            placeholderTextColor="#808080"
-            onChangeText={text => setData(text)}
-          />
-        </View>
+        
+        <Text style={[styles.sectionTitle1]}>Preferências</Text>
 
-        <Text style={styles.sectionTitle}>Preferências</Text>
-
-        <Dropdown placeholder="Carnes"></Dropdown>
-        <Dropdown placeholder="Bebidas"></Dropdown>
-        <Dropdown placeholder="Bolos"></Dropdown>
-        <Dropdown placeholder="Entradas"></Dropdown>
-
+        <MultiSelectComponent placeholder="Carnes" data={tiposDeCarnes}/>
+        <MultiSelectComponent placeholder="Bebidas" data={bebidas}/>
+        <MultiSelectComponent placeholder="Bolos" data={bolos}/>
+        <MultiSelectComponent placeholder="Entradas" data={entradas}/>
+        <MultiSelectComponent placeholder="Guarnições" data={guarnicoes}/>
+        <MultiSelectComponent placeholder="Saladas" data={saladas}/>
       </View>
       
       <View style={styles.bottomContainer}>
@@ -101,16 +95,22 @@ const styles = StyleSheet.create({
   },
   containerForm: {
     flex: 1,
-    padding: '5%',
     backgroundColor: '#FFF',
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
-    marginTop: 28,
-    marginBottom: 12,
-    alignSelf: 'center',
+    marginTop: 12,
+    marginLeft: 16,
     color: 'black',
+  },
+  sectionTitle1:{
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginTop: 12,
+    marginLeft: 16,
+    color: 'black',
+    marginBottom: 16,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -168,4 +168,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 10,
   },
+  componets:{
+    width: '100%',
+    flexDirection: "row"
+  }
 });

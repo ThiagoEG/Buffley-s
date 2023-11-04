@@ -238,78 +238,6 @@ const username = state.username;
 
     </View>
 
-    /*
-    
-    <View style={styles.container}>
-    <View style={styles.topBar}>
-      <View style={styles.leftContainer}>
-        <Text style={styles.username} marginLeft={12}>Seu Nome</Text>
-      </View>
-      <View style={styles.rightContainer}>
-        <Feather name="bell" size={24} marginRight={12} color="black" />
-        <Feather name="menu" size={24} marginRight={12} color="black" />
-      </View>
-    </View>
-
-    
-    <ScrollView contentContainerStyle={styles.scrollContent}>
-
-    
-
-    <View style={styles.searchContainer}>
-        <Feather name="search" size={24} color="black" />
-        <TextInput
-          placeholder="Pesquisar..."
-          style={styles.searchInput}
-        />
-      </View>
-
-      <ScrollView horizontal 
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.scrollContent2}>
-
-      <View style={styles.container2}>
-      {textos.map((texto, index) => (
-        <View key={index} style={styles.retanguloComEspacamento}>
-          <RetanguloComTexto texto={texto} />
-        </View>
-      ))}
-    </View>
-
-    </ScrollView>
-
-      <Text style={styles.title}>Buffets Proximos a você</Text>
-
-  <View style={styles.containerCard}>
-      <Image
-        source={require('../../../assets/Brownie.png')}
-        style={styles.image}
-      />
-
-      <View style={styles.titleCard}>
-        <Text style={styles.titleText}>Art's Fia Buffet</Text>
-        <Icon name='place' size={30} color="black" marginTop={8}></Icon>
-      </View>
-
-      <View style={styles.rectangle}>
-      {renderStars()}
-    </View>
-
-
-    <TouchableOpacity style={styles.bottom}>
-      <Text style={styles.bottomText}>Ver Receitas</Text>
-    </TouchableOpacity>
-
-  </View>
-
-
-  </ScrollView>
-
-
- </View>
-    
-    */
-
 );
 };
 
@@ -392,36 +320,6 @@ searchContainer: {
     elevation: 4,
     marginTop: 32,
     marginVertical:32,
-
-    /* 
-       width: 360,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: 'black',
-    alignSelf:'center',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-    marginTop: 32,
-    marginVertical:32,
-
-        width: width * 0.9,  // 90% da largura da tela
-    paddingVertical: height * 0.02,  // 2% da altura da tela
-    paddingHorizontal: width * 0.04,  // 4% da largura da tela
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: 'black',
-    alignSelf:'center',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 6,
-    marginTop: 32,
-    marginVertical:32,
-    */
   },
   image: {
     width: 330,
@@ -522,19 +420,6 @@ searchContainer: {
     paddingHorizontal: 4,
   },
 
-/*
-  retangulo: {
-    height: 32,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 15,
-    marginTop: 24,
-    marginHorizontal: 16,
-    borderRadius: 5,
-    elevation: 8,
-  },
-*/
 
 
   retanguloComEspacamento: {
@@ -571,6 +456,23 @@ searchContainer: {
 
   scrollContent2:{
     paddingBottom: 5, // Altura da navbar
+  },
+  
+  cardAdd:{
+    marginTop:12,
+    marginHorizontal: 16,
+    height: 150,
+    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    elevation: 8,
+  },
+  cardTitle:{
+    fontSize: 26,
+    fontWeight: "normal",
+    marginRight: 8,
   }
 });
 

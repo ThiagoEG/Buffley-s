@@ -25,29 +25,7 @@ export default function Home({ rating, navigation }) {
 
 console.log('UID do usuário:', uid);
 const username = state.username;
-/*
-  useEffect(() => {
-    // Função para buscar o nome do usuário no Firebase Realtime Database
-    const fetchUsername = async () => {
-      try {
-        const dbRef = ref(database, `users/${uid}/nome`); // Substitua "users" pelo caminho correto em seu banco de dados
-        const snapshot = await get(dbRef);
 
-        if (snapshot.exists()) {
-          setUsername(snapshot.val());
-        } else {
-          console.log('O usuário não foi encontrado no banco de dados.');
-        }
-      } catch (error) {
-        console.error('Erro ao buscar o nome do usuário:', error);
-      }
-    };
-
-    if (uid) {
-      fetchUsername();
-    }
-  }, [uid]);
--*/
   const textos = ['5 Estrelas', 'Cardapios', '100 pessoas', '2500 R$', '300 pessoas'];
 
   const renderStars = () => {

@@ -8,7 +8,7 @@ import { getDatabase, ref, set } from 'firebase/database';
 const nome = "Nome do Usuário"; // Defina o nome do usuário
 // Resto do código
 
-const registerUser = async (email, senha, nome, telefone, userType) => {
+const registerUser = async (email, senha, nome, telefone, userType, imagem) => {
   if (!nome) {
     throw new Error('Nome do usuário não definido.');
   }
@@ -25,6 +25,7 @@ const registerUser = async (email, senha, nome, telefone, userType) => {
       senha: senha,
       telefone: telefone,
       userType: userType,
+      imagem: imagem
     };
 
     const db = getDatabase(); // Obtenha a instância do Firebase Realtime Database

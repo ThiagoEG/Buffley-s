@@ -27,12 +27,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 0,
     bottom: 0,
+
   },
   button: {
-    width: '100%',
+    width: '80%',
     height: 45,
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center',
   },
   buttonText: {
     color: 'white',
