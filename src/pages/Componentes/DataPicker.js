@@ -52,16 +52,16 @@ const DatePickerComponent = () => {
 
 const styles = {
   datePickerButton: {
-    borderWidth: 3,
-    height: 45,
-    width: 340,
-    borderColor: 'rgba(255, 203, 210, 0.8)',
-    borderRadius: 5,
-    marginTop: 22,
+
+    height: 50,
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 16,
     gap: 10,
+    borderRadius: 0,
+    width: 170,
+    elevation: 5,
+    backgroundColor: 'white',
   },
   datePickerButtonText: {
     color: 'rgba(0, 0, 0, 0.5)',

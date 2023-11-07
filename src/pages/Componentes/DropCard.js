@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 // Importe as bibliotecas necessárias
 
-function DropCard({ title, recipes, selectedRecipes, onSelectRecipe }) {
+function DropCard({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCost, setSelectedRecipes  }) {
   const [inputText, setInputText] = useState('');
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [searchedRecipes, setSearchedRecipes] = useState([]);
@@ -15,22 +15,26 @@ function DropCard({ title, recipes, selectedRecipes, onSelectRecipe }) {
   const navigation = useNavigation();
 
   const removeAccents = (str) => {
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (str) { // Verifique se o texto não é undefined ou nulo
+      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    } else {
+      return ''; // Ou retorne um valor padrão, dependendo do seu caso
+    }
   };
 
   const handleCreateNewRecipe = () => {
-    navigation.navigate('AddReceitas')
+    navigation.navigate('CriarReceita')
   };
 
   const handleSearchRecipe = () => {
     const searchText = removeAccents(inputText.trim().toLowerCase());
-
+  
     if (searchText) {
       const foundRecipes = recipes.filter((recipe) => {
-        const recipeName = removeAccents(recipe.nome.toLowerCase());
-        return recipeName.includes(searchText);
+        const recipeName = recipe && recipe.nome && removeAccents(recipe.nome.toLowerCase()); // Verifique se recipe e recipe.nome não são nulos
+        return recipeName && recipeName.includes(searchText); // Verifique novamente se recipeName não é nulo
       });
-
+  
       if (foundRecipes.length === 0) {
         Alert.alert(
           'Receita não encontrada',
@@ -55,6 +59,8 @@ function DropCard({ title, recipes, selectedRecipes, onSelectRecipe }) {
       setModalVisible(true);
     }
   };
+  
+  
 
   const handleAddRecipe = (recipe) => {
     const id = items.length + 1;
@@ -63,10 +69,33 @@ function DropCard({ title, recipes, selectedRecipes, onSelectRecipe }) {
     onSelectRecipe(recipe, recipe.valor); 
   };
 
-  const handleRemoveRecipe = (id) => {
-    const updatedItems = items.filter((item) => item.id !== id);
-    setItems(updatedItems);
+  const calcularCustoTotal = (recipe) => {
+    if (recipe && recipe.ingredientes) {
+      let custoTotal = 0;
+      recipe.ingredientes.forEach((ingrediente) => {
+        custoTotal += ingrediente.valor;
+      });
+      return custoTotal;
+    } else {
+      return 0; // Ou um valor padrão adequado se a estrutura não for válida
+    }
   };
+
+
+  const handleRemoveRecipe = (id, recipe) => {
+    // Calcule o custo da receita a ser removida
+    const custoReceita = calcularCustoTotal(recipe);
+    // Atualize o custo total subtraindo o custo da receita removida
+    setTotalCost((prevTotalCost) => prevTotalCost - custoReceita);
+    // Atualize a lista de receitas selecionadas removendo a receita
+    setSelectedRecipes((prevSelectedRecipes) =>
+      prevSelectedRecipes.filter((item) => item !== recipe)
+    );
+    // Atualize a lista de items, removendo o item pelo id
+    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+  
+  
 
   return (
     <View style={styles.containerComp}>
@@ -83,7 +112,7 @@ function DropCard({ title, recipes, selectedRecipes, onSelectRecipe }) {
           {items.map((item) => (
             <View key={item.id} style={[styles.item]}>
               <Text style={{ flex: 1 }}>{item.recipe.nome}</Text>
-              <TouchableOpacity onPress={() => handleRemoveRecipe(item.id)}>
+              <TouchableOpacity onPress={() => handleRemoveRecipe(item.id, item.recipe)}>
                 <Feather name="trash" size={20} color="red" />
               </TouchableOpacity>
             </View>
@@ -142,7 +171,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 8,
     marginTop: 8,
-    marginHorizontal: 16,
+    alignSelf: 'center',
   },
   containerDrop: {
     width: 360,

@@ -1,23 +1,57 @@
 import React, { useState } from "react";
-import { View, StyleSheet, StatusBar, Text, TextInput, ScrollView } from "react-native";
+import { View, StyleSheet, StatusBar, Text, TextInput, ScrollView, FlatList, TouchableOpacity, Alert } from "react-native";
 import Navbar from "../Componentes/Navbar";
 import LinearBorder from "../Componentes/LinearBorder";
 import LinearButton from "../Componentes/LinearButton";
 import { Picker } from '@react-native-picker/picker';
-import { ref, push } from 'firebase/database';
+import { ref, push, set } from 'firebase/database';
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function CriarReceita() {
-    const [nomeReceita, setNomeReceita] = useState('');
-    const [ingredientes, setIngredientes] = useState('');
+    const [nome, setNome] = useState('');
+    const [ingredientes, setIngredientes] = useState([]);
     const [tempoDePreparo, setTempoDePreparo] = useState('');
-    const [numeroDePorcoes, setNumeroDePorcoes] = useState('');
+    const [porcao, setPorcao] = useState('');
     const [categoria, setCategoria] = useState('Entradas');
-    const [precoEstimado, setPrecoEstimado] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [novoIngrediente, setNovoIngrediente] = useState('');
+    const [novaQuantidade, setNovaQuantidade] = useState('');
+    const [novoValor, setNovoValor] = useState('');
+    const navigation = useNavigation();
+    
+
+    const adicionarIngrediente = () => {
+        if (novoIngrediente && novaQuantidade && novoValor) {
+          setIngredientes([
+            ...ingredientes,
+            {
+              nome: novoIngrediente,
+              quantidade: novaQuantidade,
+              valor: novoValor,
+            },
+          ]);
+    
+          setNovoIngrediente('');
+          setNovaQuantidade('');
+          setNovoValor('');
+        } else {
+          Alert.alert('Campos em branco', 'Preencha todos os campos do ingrediente antes de adicioná-lo.');
+        }
+      };
+    
+      const removerIngrediente = (index) => {
+        const novosIngredientes = [...ingredientes];
+        novosIngredientes.splice(index, 1);
+        setIngredientes(novosIngredientes);
+      };
+
+      
 
     const handleNomeReceitaChange = (text) => {
-        setNomeReceita(text);
+        setNome(text);
     };
 
     const handleIngredientesChange = (text) => {
@@ -29,156 +63,242 @@ export default function CriarReceita() {
     };
 
     const handleNumeroDePorcoesChange = (text) => {
-        setNumeroDePorcoes(text);
+        setPorcao(text);
     };
 
     const handleCategoriaChange = (value) => {
         setCategoria(value);
     };
 
-    const handlePrecoEstimadoChange = (text) => {
-        setPrecoEstimado(text);
-    };
 
     const handleSubmit = () => {
-      if (!nomeReceita || !ingredientes || !tempoDePreparo || !numeroDePorcoes || !precoEstimado) {
+        console.log('Tentando salvar a receita...');
+        if (!nome || !ingredientes || !tempoDePreparo || porcao) {
+          console.log('Campos obrigatórios não preenchidos.');
           setErrorMessage('Preencha todos os campos obrigatórios.');
           return;
-      }
-  
-      const receitaData = {
-          nomeReceita,
+        }
+      
+        const receitaData = {
+          nome,
           ingredientes,
           tempoDePreparo,
-          numeroDePorcoes,
+          porcao,
           categoria,
-          precoEstimado,
-      };
-  
-      const receitasRef = ref(db, 'Receitas');
-  
-      const newRecipeRef = push(receitasRef);
-      const newRecipeId = newRecipeRef.key; // ID exclusivo gerado
-  
-      // Adicione o ID exclusivo como um campo na receita
-      receitaData.id = newRecipeId;
-  
-      set(newRecipeRef, receitaData)
+        };
+      
+        const receitasRef = ref(db, 'receitas');
+      
+        const newRecipeRef = push(receitasRef);
+        const newRecipeId = newRecipeRef.key;
+      
+        receitaData.id = newRecipeId;
+      
+        set(newRecipeRef, receitaData)
           .then(() => {
-              console.log('Receita adicionada com sucesso ao Firebase Realtime Database.');
-              console.log('ID da nova receita:', newRecipeId);
-              setErrorMessage('');
+            console.log('Receita adicionada com sucesso ao Firebase Realtime Database.');
+            console.log('ID da nova receita:', newRecipeId);
+            setErrorMessage('');
           })
           .catch((error) => {
-              console.error('Erro ao adicionar receita:', error);
-              setErrorMessage('Erro ao adicionar a receita');
+            console.error('Erro ao adicionar receita:', error);
+            setErrorMessage('Erro ao adicionar a receita');
           });
-  };
-  
+      
+        setNome('');
+        setPorcao('');
+        setTempoDePreparo('');
+        setCategoria('');
+        setIngredientes([]);
+        
+        navigation.navigate('Cardapio');
+        
+        Alert.alert("Sucesso", "Receita adicionada com sucesso!");
+      };
   
 
     return (
         <View style={styles.container}>
-            <StatusBar hidden={true} />
-            <Navbar />
-            <ScrollView>
-                <View style={styles.containerForm}>
-                    <Text style={styles.title}>Criar Receita</Text>
-                    <LinearBorder
-                        icon="person"
-                        placeholder="Nome da receita"
-                        onChangeText={handleNomeReceitaChange}
-                    />
-                    <Text style={styles.subTitle}>Categoria</Text>
-                    <View style={styles.containerPicker}>
+      <StatusBar hidden={true} />
+      <Navbar />
+      <ScrollView>
+        <View style={styles.containerForm}>
+          <Text style={styles.title}>Adicionar Receita</Text>
+          <LinearBorder
+            icon="person"
+            placeholder="Nome da Receita"
+            value={nome}
+            onChangeText={handleNomeReceitaChange}
+          />
+          <LinearBorder
+            icon="kitchen"
+            placeholder="Número de Porções"
+            keyboardType="numeric"
+            value={porcao}
+            onChangeText={handleNumeroDePorcoesChange}
+          />
+          <LinearBorder
+            icon="timer"
+            placeholder="Tempo de Preparo (minutos)"
+            keyboardType="numeric"
+            value={tempoDePreparo}
+            onChangeText={handleTempoDePreparoChange}
+          />
+
+          <Text style={styles.subTitle}>Categoria</Text>
+          <View style={styles.containerPicker}>
                         <Picker
                             style={styles.PickerInput}
                             selectedValue={categoria}
                             onValueChange={handleCategoriaChange}>
                             <Picker.Item label="Entradas" value="Entradas" />
                             <Picker.Item label="Acompanhamentos" value="Acompanhamentos" />
-                            <Picker.Item label="Guarnições" value="Guarnições" />
-                            <Picker.Item label="Pratos Principais" value="Pratos Principais" />
+                            <Picker.Item label="Prato Principal" value="Pratos Principais" />
                             <Picker.Item label="Sobremesas" value="Sobremesas" />
                             <Picker.Item label="Bebidas" value="Bebidas" />
                             <Picker.Item label="Saladas" value="Saladas" />
                         </Picker>
                     </View>
-                    <Text style={styles.subTitle}>Ingredientes</Text>
-                    <LinearBorder
-                        placeholder="Adicione os ingredientes linha a linha (Nome, Quantidade, Valor)"
-                        multiline
-                        onChangeText={handleIngredientesChange}
-                    />
-                    <Text style={styles.subTitle}>Número de Porções</Text>
-                    <LinearBorder
-                        icon="person"
-                        placeholder="Número de Porções"
-                        onChangeText={handleNumeroDePorcoesChange}
-                    />
-                    <Text style={styles.subTitle}>Tempo de Preparo</Text>
-                    <LinearBorder
-                        icon="timer"
-                        placeholder="Tempo de Preparo (minutos)"
-                        onChangeText={handleTempoDePreparoChange}
-                    />
-                    <Text style={styles.subTitle}>Preço Estimado</Text>
-                    <LinearBorder
-                        icon="payments"
-                        placeholder="Preço Estimado"
-                        onChangeText={handlePrecoEstimadoChange}
-                    />
-                </View>
-            </ScrollView>
-            <View style={styles.buttonContainer}>
-                {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
-                <LinearButton title="Criar Receita" style={styles.Button} onPress={handleSubmit} />
-            </View>
+
+          <Text style={styles.subTitle}>Ingredientes</Text>
+          <FlatList
+            data={ingredientes}
+            renderItem={({ item, index }) => (
+              <View style={styles.ingredientRow}>
+                <Text style={styles.ingredientText}>
+                  {item.nome}: {item.quantidade} ({item.valor})
+                </Text>
+                <TouchableOpacity onPress={() => removerIngrediente(index)}>
+                  <MaterialIcons name="delete" size={20} color="red" />
+                </TouchableOpacity>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            style={styles.ingredientesList}
+          />
+          <LinearBorder
+            placeholder="Nome do Ingrediente"
+            value={novoIngrediente}
+            onChangeText={setNovoIngrediente}
+          />
+          <LinearBorder
+            placeholder="Quantidade"
+            value={novaQuantidade}
+            onChangeText={setNovaQuantidade}
+          />
+          <LinearBorder
+            placeholder="Valor do Ingrediente"
+            keyboardType="numeric"
+            value={novoValor}
+            onChangeText={setNovoValor}
+          />
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={adicionarIngrediente}
+          >
+            <LinearGradient
+              colors={["#d1921c", "#ffffff"]}
+              style={styles.button}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 2, y: 2 }}
+            >
+              <Text style={styles.buttonText}>Adicionar Ingrediente</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={[styles.buttonContainer]}
+            onPress={handleSubmit}
+          >
+            <LinearGradient
+              colors={["#be3455", "#ffffff"]}
+              style={styles.button}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 2, y: 2 }}
+            >
+              <Text style={styles.buttonText}>Salvar Receita</Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
+      </ScrollView>
+    </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
-    },
-    title: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        marginTop: 16,
-        color: 'black',
-        marginLeft: 16,
-    },
-    containerForm: {
+        backgroundColor: "white"
+      },
+      containerForm: {
         flex: 1,
-        alignSelf: 'center',
-    },
-    subTitle: {
+        marginBottom: 20,
+      },
+      title: {
+        fontSize: 32,
+        fontWeight: "bold",
+        marginTop: 16,
+        color: "black",
+        marginLeft: 16,
+      },
+      subTitle: {
         fontSize: 20,
-        fontWeight: '300',
+        fontWeight: "300",
         marginLeft: 16,
         marginTop: 16,
-    },
-    containerPicker: {
-        width: 340,
+      },
+      ingredientesList: {
+        marginTop: 12,
+        marginBottom: 12,
+        elevation: 2,
+        backgroundColor: 'white',
+        width: '90%',
+        padding: 10,
         alignSelf: 'center',
+        borderRadius: 5,
+      },
+      ingredientRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 5,
+      },
+      ingredientText: {
+        fontSize: 16,
+      },
+      buttonContainer: {
+        marginTop: 10,
+        width: "90%",
+        height: 40,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 5,
+        alignSelf: "center",
+      },
+      button: {
+        width: "100%",
+        height: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 5,
+      },
+      buttonText: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "bold",
+      },
+      containerPicker: {
+        width: '80%',
         marginTop: 10,
         borderRadius: 5,
         height: 45,
         backgroundColor: 'white',
         borderWidth: 3,
         borderColor: 'rgba(255, 203, 210, 0.8)',
-    },
-    PickerInput: {
-        textAlign: 'center',
-    },
-    buttonContainer: {
-        position: 'absolute',
-        bottom: 0,
-        width: '100%',
-    },
-    Button: {
-        // Estilos para o botão
-    }
+        marginHorizontal: 35,
+      },
+
+      tamanho:{
+        width: '85%'
+      }
 });

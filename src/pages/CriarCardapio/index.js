@@ -1,28 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, Text, TextInput, View, } from 'react-native';
 import Dropdown from '../Componentes/DropDown';
 import DatePickerComponent from '../Componentes/DataPicker'; // Certifique-se de que o componente de DatePicker esteja importado corretamente
 import DropCard from '../Componentes/DropCard';
 import Navbar from '../Componentes/Navbar';
-import Entradas from '../ReceitasBanco/Entradas';
-import Acompanhamentos from '../ReceitasBanco/Acompanhamentos';
-import Saladas from '../ReceitasBanco/Saladas';
-import Bebidas from '../ReceitasBanco/Bebidas';
-import Sobremesas from '../ReceitasBanco/Sobremesas';
-import Guarnicoes from '../ReceitasBanco/Guarnicoes';
-import PratosPrincipais from '../ReceitasBanco/PratosPrincipais';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ref, set, push } from 'firebase/database';
+import { ref, set, push, get } from 'firebase/database';
 import { db } from '../../services/firebaseConfigurations/firebaseConfig'; // Importe a instância do banco de dados do seu arquivo de configuração Firebase
 import { globalData, setCurrentCardapioId } from '../../services/Globals/globalId';
 import { useUser } from '../../services/UserContext/index';
@@ -104,6 +90,15 @@ export default function Cardapio() {
   const { state } = useUser();
   const [uidDoBuffetConectado, setUidDoBuffetConectado] = useState(null);
   const cardapio = route.params?.cardapio;
+  const [recipesByCategory, setRecipesByCategory] = useState({});
+  const categoriasDesejadas = [
+    "Entradas",
+    "Acompanhamentos",
+    'Prato Principal',
+    'Sobremesas',
+    'Bebidas',
+    'Saladas',
+  ];  
   const [novoCardapio, setNovoCardapio] = useState({
     nomeCardapio: '',
     quantidadeItens: 0,
@@ -116,10 +111,11 @@ export default function Cardapio() {
 
   const userID = state.uid;
 
-
+  
   const handleSubmit = async () => {
     if (!nomeCardapio || !numeroConvidados || totalCost <= 0) {
       setErrorMessage('Preencha todos os campos obrigatórios.');
+
       return;
     }
   
@@ -170,6 +166,41 @@ export default function Cardapio() {
     setCustoMaisCaro(maisCaro.custo);
   }, [totalCost, nomeCardapio, selectedRecipes]);
 
+
+  const fetchRecipesByCategory = async (categoria) => {
+    const recipesRef = ref(db, 'receitas');
+    const snapshot = await get(recipesRef);
+    const recipes = [];
+  
+    if (snapshot.exists()) {
+      const recipesData = snapshot.val();
+      for (const id in recipesData) {
+        const recipe = recipesData[id];
+        if (recipe.categoria === categoria) {
+          recipes.push({ id, ...recipe });
+        }
+      }
+    }
+  
+    return recipes;
+  };
+  
+
+  useEffect(() => {
+    const fetchDataForCategories = async () => {
+      const categoriesData = {};
+
+      for (const categoria of categoriasDesejadas) {
+        const recipes = await fetchRecipesByCategory(categoria);
+        categoriesData[categoria] = recipes;
+      }
+
+      setRecipesByCategory(categoriesData);
+    };
+
+    fetchDataForCategories();
+  }, []);
+
   return (
     <View style={styles.container}>
       <StatusBar hidden={true} />
@@ -215,60 +246,24 @@ export default function Cardapio() {
               </Picker>
             </View>
             <View style={styles.inputDrop}>
-              <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Data</Text>
+              <Text style={{ fontSize: 24, fontWeight: 'bold', }}>Data</Text>
               <DatePickerComponent />
             </View>
           </View>
-          <DropCard
-          title="Entradas"
-          recipes={Entradas}
-          selectedRecipes={selectedRecipes}
-          onSelectRecipe={handleSelectRecipe}
-          cardInfoTitle="Entradas"
-        />
-        <DropCard
-          title="Pratos principais"
-          recipes={PratosPrincipais}
-          selectedRecipes={selectedRecipes}
-          onSelectRecipe={handleSelectRecipe}
-          cardInfoTitle="Entradas"
-        />
 
-        <DropCard
-          title="Acompanhamentos"
-          recipes={Acompanhamentos}
-          selectedRecipes={selectedRecipes}
-          onSelectRecipe={handleSelectRecipe}
-          cardInfoTitle="Entradas"
-        />
-        <DropCard
-          title="Guarnições"
-          recipes={Guarnicoes}
-          selectedRecipes={selectedRecipes}
-          onSelectRecipe={handleSelectRecipe}
-          cardInfoTitle="Entradas"
-        />
-        <DropCard
-          title="Saladas"
-          recipes={Saladas}
-          selectedRecipes={selectedRecipes}
-          onSelectRecipe={handleSelectRecipe}
-          cardInfoTitle="Entradas"
-        />
-        <DropCard
-          title="Sobremesas"
-          recipes={Sobremesas}
-          selectedRecipes={selectedRecipes}
-          onSelectRecipe={handleSelectRecipe}
-          cardInfoTitle="Entradas"
-        />
-        <DropCard
-          title="Bebidas"
-          recipes={Bebidas}
-          selectedRecipes={selectedRecipes}
-          onSelectRecipe={handleSelectRecipe}
-          cardInfoTitle="Entradas"
-        />
+          {categoriasDesejadas.map((categoria) => (
+              <DropCard
+              title={categoria}
+              recipes={recipesByCategory[categoria] || []}
+              selectedRecipes={selectedRecipes}
+              onSelectRecipe={handleSelectRecipe}
+              setSelectedRecipes={setSelectedRecipes} // Passe a função para remover receitas
+              cardInfoTitle={categoria}
+              setTotalCost={setTotalCost}
+            />
+            
+          ))}
+
           {/* ... Outros DropCard ... */}
           <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit}>
             <LinearGradient
@@ -290,7 +285,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignSelf: 'center',
-    width: '100%',
     backgroundColor: 'white',
   },
   Input: {
@@ -306,26 +300,27 @@ const styles = StyleSheet.create({
   inputs: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: 350,
+    width: '100%',
     marginTop: 10,
     marginBottom: 24,
     paddingHorizontal: 16,
   },
   inputData: {
     flex: 1,
-    marginRight: 26,
   },
   inputDrop: {
     flex: 1,
-    marginLeft: 40,
+    alignItems: 'flex-start',
+    textAlign: 'left',
+    marginRight: 8,
   },
   totalCostContainer: {
     marginBottom: 16,
     marginLeft: 16,
   },
   containerCardapio: {
-    flex: 1,
     alignSelf: 'center',
+    marginHorizontal: 10,
   },
   button: {
     marginTop: 10,
