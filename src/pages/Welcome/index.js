@@ -7,12 +7,12 @@ import * as Animatable from 'react-native-animatable';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { AsyncStorage } from 'react-native';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { ref, get } from 'firebase/database';
 import { auth, db} from "../../services/firebaseConfigurations/firebaseConfig"; // Certifique-se de importar suas configurações do Firebase e o Firestore.
 import { registerUser } from '../../services/firebaseConfigurations/authUtils'; // Importe a função de registro
 import ImagePickerExample from '../Componentes/ImagePicker';
 import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
-
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../../services/firebaseConfigurations/firebaseConfig';
 
 export default function Welcome({user }) {
   const [nome, setNome] = useState('');
@@ -130,11 +130,31 @@ export default function Welcome({user }) {
     return Object.keys(errors).length === 0;
   };
 
-  const cadastrar = () => {
+  const cadastrar = async () => {
     const isValid = validateForm();
-
+  
     if (isValid) {
-      handleRegister(email, senha, nome, telefone, selectedOption, imageUri);
+      try {
+        // Fazer o upload da imagem selecionada para o Firebase Storage
+        if (imageUri) {
+          const storageRef = ref(storage, 'caminho/para/imagem.jpg'); // Substitua pelo caminho desejado no Storage
+          const response = await fetch(imageUri);
+          const blob = await response.blob();
+          await uploadBytes(storageRef, blob);
+  
+          // Obter a URL da imagem no Firebase Storage
+          const imageUrl = await getDownloadURL(storageRef);
+  
+          // Continuar com o registro, passando a URL da imagem
+          handleRegister(email, senha, nome, telefone, selectedOption, imageUrl);
+        } else {
+          // Se nenhuma imagem foi selecionada, prosseguir com o registro sem imagem
+          handleRegister(email, senha, nome, telefone, selectedOption, null);
+        }
+      } catch (error) {
+        console.error('Erro no upload da imagem:', error);
+        setErrorText('Erro no upload da imagem');
+      }
     }
   };
 

@@ -1,15 +1,16 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import SideMenu from '../Componentes/SideMenu';
 import { useContext } from 'react';
 import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
 import { useNavigation, useRoute  } from '@react-navigation/native';
-import { ref, get } from 'firebase/database';
+import { ref, set, push, get, onValue } from 'firebase/database';
+import { db } from '../../services/firebaseConfigurations/firebaseConfig'; // Importe a instância do banco de dados do seu arquivo de configuração Firebase
 import Navbar from '../componentes2/Navbar2';
 import BuffetPerfil from '../BuffetPerfil';
-
+import CardBuffet from '../Componentes/CardBuffetHomeCliente'
 
 const { width, height } = Dimensions.get('window');
 
@@ -21,7 +22,23 @@ export default function Home({ rating, navigation }) {
   const route = useRoute();
   const { uid } = route.params || {};
   const { state } = useUser(); // Obtenha o estado do usuário
-  
+  const [buffetData, setBuffetData] = useState([]);
+
+  useEffect(() => {
+    const buffetRef = ref(db, 'buffets');
+    
+    onValue(buffetRef, (snapshot) => {
+      const buffetList = [];
+      snapshot.forEach((childSnapshot) => {
+        const buffet = childSnapshot.val();
+        buffetList.push(buffet);
+      });
+
+      setBuffetData(buffetList);
+    });
+
+  }, []);
+
 
 console.log('UID do usuário:', uid);
 const username = state.username;
@@ -32,13 +49,12 @@ const username = state.username;
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(
-        <View key={i} style={styles.starContainer}>
-          <MaterialIcons
-            name={i <= rating ? 'star_border' : 'grade'}
-            size={30}
-            color={i <= rating ? 'gold' : 'gray'}
-          />
-        </View>
+        <FontAwesome
+          key={i}
+          name={i <= avaliacao ? 'star' : 'star-o'}
+          size={20}
+          color={i <= avaliacao ? 'gold' : 'gray'}
+        />
       );
     }
     return stars;
@@ -79,18 +95,9 @@ const username = state.username;
         <Text style={styles.title}>Buffets Proximos a você</Text>
 
         <View style={styles.containerCard}>
-          <Image source={require('../../../assets/Brownie.png')} style={styles.image} />
-
-          <View style={styles.titleCard}>
-            <Text style={styles.titleText}>Art's Fia Buffet</Text>
-            <MaterialIcons name="place" size={30} color="black" marginTop={8}></MaterialIcons>
-          </View>
-
-          <View style={styles.rectangle}>{renderStars()}</View>
-
-          <TouchableOpacity style={styles.bottom} onPress={handleBuffetNavigation}>
-            <Text style={styles.bottomText}>Ver Buffet</Text>
-          </TouchableOpacity>
+        {buffetData.map((buffet, index) => (
+    <CardBuffet key={index} buffetData={buffet} />
+  ))}
         </View>
       </ScrollView>
     </View>
@@ -105,6 +112,8 @@ const RetanguloComTexto = ({ texto }) => {
   );
 
 };
+
+
 const styles = StyleSheet.create({
 container: {
   flex: 1,
@@ -171,20 +180,7 @@ searchContainer: {
   },
 
   containerCard: {
-    width: 360,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: 'black',
-    alignSelf:'center',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-    marginTop: 32,
-    marginVertical:32,
-
+    width: '100%',
     /* 
        width: 360,
     paddingVertical: 16,
