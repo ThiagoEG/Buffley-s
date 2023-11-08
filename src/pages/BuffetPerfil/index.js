@@ -1,14 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Dimensions, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native'; // Importe useRoute
 import Navbar from '../Componentes/Navbar';
 import Imagem from '../Componentes/Imagem';
 import Stars from '../Componentes/Stars';
 import CardCardapio from '../componentes2/CardCardapio';
 
-export default function App() {
+export default function BuffetPerfil() {
   const navigation = useNavigation();
+  const route = useRoute(); // Receba os parâmetros da rota
+
+  // Obtenha os dados do buffet a partir dos parâmetros
+  const { buffetData } = route.params;
 
   const handlePress = () => {
     navigation.navigate('Preferencias');
@@ -17,9 +21,9 @@ export default function App() {
   return (
     <ScrollView style={styles.container}>
       <Navbar />
-      <Imagem />
+      <Image style={styles.cardImage} source={{ uri: buffetData.imagem }} />
       <Stars />
-      <Text style={styles.title}>Art's Fia Buffet</Text>
+      <Text style={styles.title}>{buffetData.nome}</Text>
       <Text style={styles.subtitle}>Cardápios Disponíveis</Text>
       <CardCardapio />
       <CardCardapio />
@@ -59,4 +63,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 16,
   },
+  cardImage: {
+    marginTop: 25,
+    height: 200,
+    width: 370,
+    alignSelf: "center",
+    borderRadius: 10
+  },
 });
+  

@@ -51,14 +51,15 @@ const username = state.username;
       stars.push(
         <FontAwesome
           key={i}
-          name={i <= avaliacao ? 'star' : 'star-o'}
+          name={i <= buffetData.avaliacao ? 'star' : 'star-o'}
           size={20}
-          color={i <= avaliacao ? 'gold' : 'gray'}
+          color={i <= buffetData.avaliacao ? 'gold' : 'gray'}
         />
       );
     }
     return stars;
   };
+  
   const handleNotifications = () => {
     navigation.navigate('TelaNotificacoes');
   };
@@ -95,10 +96,11 @@ const username = state.username;
         <Text style={styles.title}>Buffets Proximos a você</Text>
 
         <View style={styles.containerCard}>
-        {buffetData.map((buffet, index) => (
-    <CardBuffet key={index} buffetData={buffet} />
+  {buffetData.map((buffet, index) => (
+    <CardBuffet key={index} buffetData={buffet} avaliacao={buffet.avaliacao} />
   ))}
-        </View>
+</View>
+
       </ScrollView>
     </View>
   );
