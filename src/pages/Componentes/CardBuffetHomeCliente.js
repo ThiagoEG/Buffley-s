@@ -1,13 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { db } from '../../services/firebaseConfigurations/firebaseConfig'; // Importe sua configuração do Firebase Firestore
+import { ref, set, child  } from 'firebase/database'; // Importe as funções apropriadas do Firebase Realtime Database
+
+const getBuffetIds = async () => {
+  const buffetsRef = ref(db, 'buffets');
+  const snapshot = await get(child(buffetsRef));
+  
+  if (snapshot.exists()) {
+    // O snapshot contém os IDs dos buffets
+    const buffetIds = Object.keys(snapshot.val());
+    return buffetIds;
+  } else {
+    // Não foram encontrados buffets
+    return [];
+  }
+};
+
+
 
 const CardComponent = ({ buffetData }) => {
-  const { nome, avaliacao, endereco, imagem } = buffetData;
+  const { nome, endereco, imagem } = buffetData;
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [avaliacao, setAvaliacao] = useState(0); // Estado para armazenar a avaliação
+  const [buffetId, setBuffetId] = useState(null);
   const renderStars = () => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -26,6 +45,30 @@ const CardComponent = ({ buffetData }) => {
   const handleBuffetNavigation = () => {
     navigation.navigate('BuffetPerfil', { buffetData });
   };
+  const handleAvaliacao = (novaAvaliacao, buffetId) => {
+    // Atualize o estado local com a nova avaliação
+    setAvaliacao(novaAvaliacao);
+  
+    // Atualize a avaliação no Firebase Realtime Database usando o ID do buffet
+    const databaseRef = ref(db, `buffets/${buffetId}/avaliacao`);
+    set(databaseRef, novaAvaliacao)
+      .then(() => {
+        console.log('Avaliação atualizada com sucesso');
+      })
+      .catch((error) => {
+        console.error('Erro ao atualizar a avaliação:', error);
+      });
+  };
+  useEffect(() => {
+    // Ao montar o componente, obtenha o ID do buffet e defina-o no estado
+    getBuffetIds().then((buffetIds) => {
+      if (buffetIds.length > 0) {
+        // Suponha que você queira pegar o primeiro ID da lista
+        const firstBuffetId = buffetIds[0];
+        setBuffetId(firstBuffetId);
+      }
+    });
+  }, []);
 
   return (
     <View style={styles.card}>
@@ -39,6 +82,20 @@ const CardComponent = ({ buffetData }) => {
           </TouchableOpacity>
         </View>
         <Text style={styles.locationText}>{endereco}</Text>
+        <View style={styles.starsContainer}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <TouchableOpacity
+            key={star}
+            onPress={() => handleAvaliacao(star)}
+          >
+            <FontAwesome
+              name={star <= avaliacao ? 'star' : 'star-o'}
+              size={20}
+              color={star <= avaliacao ? 'gold' : 'gray'}
+            />
+          </TouchableOpacity>
+        ))}
+      </View>
       </View>
 
       <Modal
