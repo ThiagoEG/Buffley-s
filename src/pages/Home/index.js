@@ -45,7 +45,7 @@ const username = state.username;
 
   const textos = ['5 Estrelas', 'Cardapios', '100 pessoas', '2500 R$', '300 pessoas'];
 
-  const renderStars = () => {
+  /*const renderStars = () => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(
@@ -58,7 +58,7 @@ const username = state.username;
       );
     }
     return stars;
-  };
+  };*/
   
   const handleNotifications = () => {
     navigation.navigate('TelaNotificacoes');

@@ -2,73 +2,161 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { db } from '../../services/firebaseConfigurations/firebaseConfig'; // Importe sua configuração do Firebase Firestore
-import { ref, set, child  } from 'firebase/database'; // Importe as funções apropriadas do Firebase Realtime Database
-
-const getBuffetIds = async () => {
-  const buffetsRef = ref(db, 'buffets');
-  const snapshot = await get(child(buffetsRef));
-  
-  if (snapshot.exists()) {
-    // O snapshot contém os IDs dos buffets
-    const buffetIds = Object.keys(snapshot.val());
-    return buffetIds;
-  } else {
-    // Não foram encontrados buffets
-    return [];
-  }
-};
-
-
+import { ref, set, push, query, orderByChild, equalTo, get, update } from 'firebase/database'; // Importe as funções apropriadas do Firebase Realtime Database
+import { db } from '../../services/firebaseConfigurations/firebaseConfig';
+import { useUser } from '../../services/UserContext/index'; // Importe seu contexto de usuário
 
 const CardComponent = ({ buffetData }) => {
   const { nome, endereco, imagem } = buffetData;
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [avaliacao, setAvaliacao] = useState(0); // Estado para armazenar a avaliação
-  const [buffetId, setBuffetId] = useState(null);
-  const renderStars = () => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <FontAwesome
-          key={i}
-          name={i <= avaliacao ? 'star' : 'star-o'}
-          size={20}
-          color={i <= avaliacao ? 'gold' : 'gray'}
-        />
-      );
+  const { state } = useUser();
+  const userID = state.uid;
+
+  useEffect(() => {
+    // Busque a avaliação do usuário para este buffet e atualize o estado local se existir
+    async function fetchUserAvaliacao() {
+      const buffetId = await getBuffetId(nome);
+      if (buffetId) {
+        const existingAvaliacaoKey = await checkUserAvaliacao(buffetId);
+        if (existingAvaliacaoKey) {
+          const avaliacaoRef = ref(db, `avaliacoes/${existingAvaliacaoKey}`);
+          const avaliacaoSnapshot = await get(avaliacaoRef);
+          if (avaliacaoSnapshot.exists()) {
+            const userAvaliacao = avaliacaoSnapshot.val();
+            setAvaliacao(userAvaliacao.avaliacao);
+          }
+        }
+      }
     }
-    return stars;
-  };
+    fetchUserAvaliacao();
+  }, []); // Busque a avaliação do usuário ao montar o componente
 
   const handleBuffetNavigation = () => {
     navigation.navigate('BuffetPerfil', { buffetData });
   };
-  const handleAvaliacao = (novaAvaliacao, buffetId) => {
+
+  const getBuffetId = async (buffetNome) => {
+    try {
+      const buffetRef = ref(db, 'buffets');
+      const buffetQuery = query(buffetRef, orderByChild('nome'), equalTo(buffetNome));
+      const buffetSnapshot = await get(buffetQuery);
+
+      if (buffetSnapshot.exists()) {
+        // Obtenha o ID do buffet correspondente ao nome
+        const buffetId = Object.keys(buffetSnapshot.val())[0];
+        return buffetId;
+      } else {
+        console.error('Buffet não encontrado no banco de dados.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o buffet:', error);
+      return null;
+    }
+  };
+
+  const checkUserAvaliacao = async (buffetId) => {
+    try {
+      const avaliacaoRef = ref(db, 'avaliacoes');
+      const userAvaliacaoQuery = query(
+        avaliacaoRef,
+        orderByChild('userId'),
+        equalTo(userID)
+      );
+      const userAvaliacoesSnapshot = await get(userAvaliacaoQuery);
+
+      if (userAvaliacoesSnapshot.exists()) {
+        // Verifique se o usuário já avaliou o buffet
+        const userAvaliacoes = userAvaliacoesSnapshot.val();
+        const existingAvaliacaoKey = Object.keys(userAvaliacoes).find(
+          (key) => userAvaliacoes[key].buffetId === buffetId
+        );
+
+        return existingAvaliacaoKey;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Erro ao verificar a avaliação do usuário:', error);
+      return null;
+    }
+  };
+
+  const handleAvaliacao = async (novaAvaliacao) => {
+    if (!userID || !userID) {
+      console.error('ID do usuário não encontrado. Não é possível adicionar a avaliação.');
+      return;
+    }
+
+    const buffetId = await getBuffetId(nome);
+
+    if (!buffetId) {
+      console.error('Não foi possível obter o ID do buffet.');
+      return;
+    }
+
+    // Verifique se o usuário já avaliou o buffet
+    const existingAvaliacaoKey = await checkUserAvaliacao(buffetId);
+
+    if (existingAvaliacaoKey) {
+      // Se o usuário já avaliou o buffet, atualize a avaliação existente
+      const avaliacaoRef = ref(db, `avaliacoes/${existingAvaliacaoKey}`);
+      const avaliacaoData = {
+        userId: userID,
+        buffetId: buffetId,
+        avaliacao: novaAvaliacao,
+      };
+
+      try {
+        await update(avaliacaoRef, avaliacaoData);
+        console.log('Avaliação atualizada com sucesso');
+      } catch (error) {
+        console.error('Erro ao atualizar a avaliação:', error);
+      }
+    } else {
+      // Se o usuário ainda não avaliou o buffet, crie uma nova avaliação
+      const avaliacaoRef = ref(db, 'avaliacoes');
+      const novaAvaliacaoRef = push(avaliacaoRef);
+
+      const avaliacaoData = {
+        userId: userID,
+        buffetId: buffetId,
+        avaliacao: novaAvaliacao,
+      };
+
+      try {
+        await set(novaAvaliacaoRef, avaliacaoData);
+        console.log('Avaliação adicionada com sucesso');
+      } catch (error) {
+        console.error('Erro ao adicionar a avaliação:', error);
+      }
+    }
+
     // Atualize o estado local com a nova avaliação
     setAvaliacao(novaAvaliacao);
-  
-    // Atualize a avaliação no Firebase Realtime Database usando o ID do buffet
-    const databaseRef = ref(db, `buffets/${buffetId}/avaliacao`);
-    set(databaseRef, novaAvaliacao)
-      .then(() => {
-        console.log('Avaliação atualizada com sucesso');
-      })
-      .catch((error) => {
-        console.error('Erro ao atualizar a avaliação:', error);
-      });
   };
-  useEffect(() => {
-    // Ao montar o componente, obtenha o ID do buffet e defina-o no estado
-    getBuffetIds().then((buffetIds) => {
-      if (buffetIds.length > 0) {
-        // Suponha que você queira pegar o primeiro ID da lista
-        const firstBuffetId = buffetIds[0];
-        setBuffetId(firstBuffetId);
-      }
-    });
-  }, []);
+
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <TouchableOpacity
+          key={i}
+          onPress={() => handleAvaliacao(i)}
+          activeOpacity={0.7}
+        >
+          <FontAwesome
+            name={i <= avaliacao ? 'star' : 'star-o'}
+            size={20}
+            color={i <= avaliacao ? 'gold' : 'gray'}
+          />
+        </TouchableOpacity>
+      );
+    }
+    return stars;
+  };
 
   return (
     <View style={styles.card}>
@@ -83,19 +171,8 @@ const CardComponent = ({ buffetData }) => {
         </View>
         <Text style={styles.locationText}>{endereco}</Text>
         <View style={styles.starsContainer}>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <TouchableOpacity
-            key={star}
-            onPress={() => handleAvaliacao(star)}
-          >
-            <FontAwesome
-              name={star <= avaliacao ? 'star' : 'star-o'}
-              size={20}
-              color={star <= avaliacao ? 'gold' : 'gray'}
-            />
-          </TouchableOpacity>
-        ))}
-      </View>
+          {renderStars()}
+        </View>
       </View>
 
       <Modal

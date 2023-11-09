@@ -1,22 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView, Dimensions, TouchableOpacity, Image } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native'; // Importe useRoute
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Navbar from '../Componentes/Navbar';
 import Imagem from '../Componentes/Imagem';
 import Stars from '../Componentes/Stars';
 import CardCardapio from '../componentes2/CardCardapio';
 
+import calcularMediaAvaliacoes from '../../services/Globals/calculoMediaAvaliacoes';
+
 export default function BuffetPerfil() {
   const navigation = useNavigation();
-  const route = useRoute(); // Receba os parâmetros da rota
+  const route = useRoute();
 
-  // Obtenha os dados do buffet a partir dos parâmetros
   const { buffetData } = route.params;
+
+  // Estado para armazenar a média das avaliações
+  const [mediaAvaliacoes, setMediaAvaliacoes] = useState(0);
 
   const handlePress = () => {
     navigation.navigate('Preferencias');
   };
+
+  // Use useEffect para calcular a média das avaliações quando o componente for montado
+  useEffect(() => {
+    const calcularMedia = async () => {
+      // Chame a função para calcular a média
+      const media = await calcularMediaAvaliacoes(buffetData.id);
+      // Atualize o estado com a média calculada
+      setMediaAvaliacoes(media);
+    };
+
+    // Chame a função para calcular a média quando o componente for montado
+    calcularMedia();
+  }, [buffetData.id]);
 
   return (
     <ScrollView style={styles.container}>
@@ -28,6 +45,8 @@ export default function BuffetPerfil() {
       <CardCardapio />
       <CardCardapio />
       <CardCardapio />
+      <Text style={styles.mediaText}>Média de Avaliações: {mediaAvaliacoes.toFixed(2)}</Text>
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handlePress}>
           <Image
@@ -59,6 +78,11 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     margin: 16,
   },
+  mediaText: {
+    fontSize: 18,
+    textAlign: 'left',
+    margin: 16,
+  },
   buttonContainer: {
     alignItems: 'center',
     margin: 16,
@@ -71,4 +95,3 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
 });
-  
