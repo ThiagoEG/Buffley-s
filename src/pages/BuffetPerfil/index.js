@@ -16,7 +16,7 @@ export default function BuffetPerfil() {
   const { buffetData } = route.params;
 
   // Estado para armazenar a média das avaliações
-  const [mediaAvaliacoes, setMediaAvaliacoes] = useState(0);
+  const {mediaAvaliacoes} = route.params;
 
   const handlePress = () => {
     navigation.navigate('Preferencias');
@@ -39,7 +39,6 @@ export default function BuffetPerfil() {
     <ScrollView style={styles.container}>
       <Navbar />
       <Image style={styles.cardImage} source={{ uri: buffetData.imagem }} />
-      <Stars />
       <Text style={styles.title}>{buffetData.nome}</Text>
       <Text style={styles.subtitle}>Cardápios Disponíveis</Text>
       <CardCardapio />
