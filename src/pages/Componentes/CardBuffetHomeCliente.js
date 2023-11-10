@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { ref, set, push, query, orderByChild, equalTo, get, update } from 'firebase/database'; // Importe as funções apropriadas do Firebase Realtime Database
+import { ref, set, push, query, orderByChild, equalTo, get, update, onValue } from 'firebase/database';
 import { db } from '../../services/firebaseConfigurations/firebaseConfig';
 import { useUser } from '../../services/UserContext/index'; // Importe seu contexto de usuário
 
@@ -33,6 +33,15 @@ const CardComponent = ({ buffetData }) => {
     }
     fetchUserAvaliacao();
 
+    const calcularMediaAvaliacoes = (avaliacoes) => {
+      if (avaliacoes.length === 0) return 0;
+    
+      const somaAvaliacoes = avaliacoes.reduce((total, avaliacao) => total + avaliacao.avaliacao, 0);
+      const media = somaAvaliacoes / avaliacoes.length;
+    
+      return media;
+    };
+
     // Busque todas as avaliações do buffet e calcule a média
     async function fetchMediaAvaliacoes() {
       const buffetId = await getBuffetId(nome);
@@ -43,15 +52,16 @@ const CardComponent = ({ buffetData }) => {
           orderByChild('buffetId'),
           equalTo(buffetId)
         );
-        const buffetAvaliacoesSnapshot = await get(buffetAvaliacoesQuery);
-
-        if (buffetAvaliacoesSnapshot.exists()) {
-          const avaliacoes = Object.values(buffetAvaliacoesSnapshot.val());
-          const totalAvaliacoes = avaliacoes.length;
-          const somaAvaliacoes = avaliacoes.reduce((total, avaliacao) => total + avaliacao.avaliacao, 0);
-          const media = somaAvaliacoes / totalAvaliacoes;
-          setMediaAvaliacoes(media);
-        }
+    
+        onValue(buffetAvaliacoesQuery, (snapshot) => {
+          if (snapshot.exists()) {
+            const avaliacoes = Object.values(snapshot.val());
+            const media = calcularMediaAvaliacoes(avaliacoes);
+            setMediaAvaliacoes(media);
+          } else {
+            setMediaAvaliacoes(0);
+          }
+        });
       }
     }
     fetchMediaAvaliacoes();
