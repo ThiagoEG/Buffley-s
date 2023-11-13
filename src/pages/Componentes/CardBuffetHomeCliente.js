@@ -6,12 +6,22 @@ import { ref, set, push, query, orderByChild, equalTo, get, update, onValue } fr
 import { db } from '../../services/firebaseConfigurations/firebaseConfig';
 import { useUser } from '../../services/UserContext/index'; // Importe seu contexto de usuário
 
+
+const calcularMediaAvaliacoes = (avaliacoes) => {
+  if (avaliacoes.length === 0) return 0;
+
+  const somaAvaliacoes = avaliacoes.reduce((total, avaliacao) => total + avaliacao.avaliacao, 0);
+  const media = somaAvaliacoes / avaliacoes.length;
+
+  return media;
+};
 const CardComponent = ({ buffetData }) => {
   const { nome, endereco, imagem } = buffetData;
+  const [mediaAvaliacoes, setMediaAvaliacoes] = useState(0); // Certifique-se de que esta linha está correta
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [avaliacao, setAvaliacao] = useState(0); // Estado para armazenar a avaliação
-  const [mediaAvaliacoes, setMediaAvaliacoes] = useState(0); // Estado para armazenar a média das avaliações
+  const [fetchComplete, setFetchComplete] = useState(false);
   const { state } = useUser();
   const userID = state.uid;
 
@@ -33,14 +43,6 @@ const CardComponent = ({ buffetData }) => {
     }
     fetchUserAvaliacao();
 
-    const calcularMediaAvaliacoes = (avaliacoes) => {
-      if (avaliacoes.length === 0) return 0;
-    
-      const somaAvaliacoes = avaliacoes.reduce((total, avaliacao) => total + avaliacao.avaliacao, 0);
-      const media = somaAvaliacoes / avaliacoes.length;
-    
-      return media;
-    };
 
     // Busque todas as avaliações do buffet e calcule a média
     async function fetchMediaAvaliacoes() {
@@ -68,24 +70,25 @@ const CardComponent = ({ buffetData }) => {
   }, []); // Busque a avaliação do usuário e a média das avaliações ao montar o componente
 
   useEffect(() => {
-    // Busque a avaliação do usuário para este buffet e atualize o estado local se existir
-    async function fetchUserAvaliacao() {
-      const buffetId = await getBuffetId(nome);
-      if (buffetId) {
-        const existingAvaliacaoKey = await checkUserAvaliacao(buffetId);
-        if (existingAvaliacaoKey) {
-          const avaliacaoRef = ref(db, `avaliacoes/${existingAvaliacaoKey}`);
-          const avaliacaoSnapshot = await get(avaliacaoRef);
-          if (avaliacaoSnapshot.exists()) {
-            const userAvaliacao = avaliacaoSnapshot.val();
-            setAvaliacao(userAvaliacao.avaliacao);
-          }
-        }
-      }
-    }
-    fetchUserAvaliacao();
-  }, []); // Busque a avaliação do usuário ao montar o componente
+    async function fetchMediaAvaliacoes() {
+      // ... (código existente omitido para brevidade)
 
+      onValue(buffetAvaliacoesQuery, (snapshot) => {
+        if (snapshot.exists()) {
+          const avaliacoes = Object.values(snapshot.val());
+          const media = calcularMediaAvaliacoes(avaliacoes);
+          setMediaAvaliacoes(media);
+        } else {
+          setMediaAvaliacoes(0);
+        }
+
+        setFetchComplete(true);  // Indica que a busca da média foi concluída
+      });
+    }
+
+    setFetchComplete(false);  // Reseta o estado para indicar que a busca está em andamento
+    fetchMediaAvaliacoes();
+  }, [buffetData.nome]);
   const handleBuffetNavigation = () => {
     navigation.navigate('BuffetPerfil', { buffetData, mediaAvaliacoes });
   };
@@ -142,17 +145,17 @@ const CardComponent = ({ buffetData }) => {
       console.error('ID do usuário não encontrado. Não é possível adicionar a avaliação.');
       return;
     }
-
+  
     const buffetId = await getBuffetId(nome);
-
+  
     if (!buffetId) {
       console.error('Não foi possível obter o ID do buffet.');
       return;
     }
-
+  
     // Verifique se o usuário já avaliou o buffet
     const existingAvaliacaoKey = await checkUserAvaliacao(buffetId);
-
+  
     if (existingAvaliacaoKey) {
       // Se o usuário já avaliou o buffet, atualize a avaliação existente
       const avaliacaoRef = ref(db, `avaliacoes/${existingAvaliacaoKey}`);
@@ -161,10 +164,13 @@ const CardComponent = ({ buffetData }) => {
         buffetId: buffetId,
         avaliacao: novaAvaliacao,
       };
-
+  
       try {
         await update(avaliacaoRef, avaliacaoData);
         console.log('Avaliação atualizada com sucesso');
+  
+        // Atualize a média de avaliações no banco de dados
+        updateMediaAvaliacoes(buffetId);
       } catch (error) {
         console.error('Erro ao atualizar a avaliação:', error);
       }
@@ -172,24 +178,59 @@ const CardComponent = ({ buffetData }) => {
       // Se o usuário ainda não avaliou o buffet, crie uma nova avaliação
       const avaliacaoRef = ref(db, 'avaliacoes');
       const novaAvaliacaoRef = push(avaliacaoRef);
-
+  
       const avaliacaoData = {
         userId: userID,
         buffetId: buffetId,
         avaliacao: novaAvaliacao,
       };
-
+  
       try {
         await set(novaAvaliacaoRef, avaliacaoData);
         console.log('Avaliação adicionada com sucesso');
+  
+        // Atualize a média de avaliações no banco de dados
+        updateMediaAvaliacoes(buffetId);
+
+        
       } catch (error) {
         console.error('Erro ao adicionar a avaliação:', error);
       }
     }
-
+  
     // Atualize o estado local com a nova avaliação
     setAvaliacao(novaAvaliacao);
+    resetAvaliacao();
   };
+  
+  const updateMediaAvaliacoes = async (buffetId) => {
+    try {
+      const avaliacaoRef = ref(db, 'avaliacoes');
+      const buffetAvaliacoesQuery = query(
+        avaliacaoRef,
+        orderByChild('buffetId'),
+        equalTo(buffetId)
+      );
+  
+      const snapshot = await get(buffetAvaliacoesQuery);
+  
+      if (snapshot.exists()) {
+        const avaliacoes = Object.values(snapshot.val());
+        const media = calcularMediaAvaliacoes(avaliacoes);
+  
+        // Atualize a média de avaliações no nó do buffet
+        const buffetRef = ref(db, `buffets/${buffetId}`);
+        await update(buffetRef, { mediaAvaliacoes: media });
+  
+        console.log('Média de avaliações atualizada com sucesso no banco de dados');
+      } else {
+        console.log('Sem avaliações para calcular a média.');
+      }
+    } catch (error) {
+      console.error('Erro ao calcular e atualizar a média de avaliações:', error);
+    }
+  };
+  
 
   const renderStars = () => {
     const stars = [];

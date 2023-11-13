@@ -80,34 +80,6 @@ const username = state.username;
 
       <Text style={styles.title}>Cardápios aguardando aprovação</Text>
 
-  <View style={styles.containerCard}>
-
-      <View style={styles.titleCard}>
-        <Text style={styles.titleText}>Art's Fia Buffet</Text>
-        <MaterialIcons name='star' size={30} color="green" marginTop={8}></MaterialIcons>
-      </View>
-
-      <View style={styles.container2}>
-      {textos.map((texto, index) => (
-        <View key={index} style={styles.retanguloComEspacamento}>
-          <RetanguloComTexto texto={texto} />
-        </View>
-      ))}
-    </View>
-
-    <View style={{ flex: 1 }}>
-      <Card
-        itens={card.itens}
-        maisBarato={card.maisBarato}
-        maisCaro={card.maisCaro}
-      />
-    </View>
-
-    <TouchableOpacity onPress={handlePress} style={styles.bottom}>
-      <Text style={styles.bottomText}>Visualizar</Text>
-    </TouchableOpacity>
-
-  </View>
 
 
   </ScrollView>

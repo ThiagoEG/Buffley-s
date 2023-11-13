@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dropdown from '../Componentes/DropDown'
 import LinearBorder from '../Componentes/LinearBorder';
-import DatePickerComponent from '../Componentes/DataPicker';
+import DatePickerComponent from '../Componentes/DatapickerPreferencias';
 import Navbar from '../Componentes/Navbar';
 import MultiSelectComponent from '../Componentes/DropDonwSelect';
 import { tiposDeCarnes, bebidas, bolos, entradas, saladas, guarnicoes } from '../../Banco/PreferenciasBanco';
@@ -65,7 +65,7 @@ export default function Welcome() {
             onChangeText={text => setQtdPessoas(text)} 
             keyboardType="numeric"
           />
-          <DatePickerComponent onChangeText={text => setQtdPessoas(text)} />
+          <DatePickerComponent onChangeText={text => setQtdPessoas(text)} style={styles.DatePicker}/>
         </View>
 
         
@@ -171,5 +171,8 @@ const styles = StyleSheet.create({
   componets:{
     width: '100%',
     flexDirection: "row"
+  },
+  DatePicker:
+  {
   }
 });

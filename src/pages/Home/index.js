@@ -1,32 +1,41 @@
-
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
-import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, ScrollView, Dimensions } from 'react-native';
+import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import SideMenu from '../Componentes/SideMenu';
-import { useContext } from 'react';
-import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
-import { useNavigation, useRoute  } from '@react-navigation/native';
-import { ref, set, push, get, onValue } from 'firebase/database';
-import { db } from '../../services/firebaseConfigurations/firebaseConfig'; // Importe a instância do banco de dados do seu arquivo de configuração Firebase
+import { useUser } from '../../services/UserContext/index';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { ref, onValue } from 'firebase/database';
+import { db } from '../../services/firebaseConfigurations/firebaseConfig';
 import Navbar from '../componentes2/Navbar2';
 import BuffetPerfil from '../BuffetPerfil';
-import CardBuffet from '../Componentes/CardBuffetHomeCliente'
+import CardBuffet from '../Componentes/CardBuffetHomeCliente';
 
 const { width, height } = Dimensions.get('window');
 
 export default function Home({ rating, navigation }) {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [selectedRating, setSelectedRating] = useState(null);
+  const [refreshKey, setRefreshKey] = useState(0); // Novo estado para forçar a re-renderização
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
   const route = useRoute();
   const { uid } = route.params || {};
-  const { state } = useUser(); // Obtenha o estado do usuário
+  const { state } = useUser();
   const [buffetData, setBuffetData] = useState([]);
+  const [avaliacao, setAvaliacao] = useState(0);
+  const [searchTerm, setSearchTerm] = useState(''); // Estado para armazenar o termo de pesquisa
 
+  const handleSearch = () => {
+    // Atualize o estado de pesquisa e force a re-renderização
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
+
+  const resetAvaliacao = () => {
+    setAvaliacao(0);}
   useEffect(() => {
     const buffetRef = ref(db, 'buffets');
-    
+
     onValue(buffetRef, (snapshot) => {
       const buffetList = [];
       snapshot.forEach((childSnapshot) => {
@@ -39,44 +48,87 @@ export default function Home({ rating, navigation }) {
 
   }, []);
 
+  console.log('UID do usuário:', uid);
+  const username = state.username;
 
-console.log('UID do usuário:', uid);
-const username = state.username;
+  const textos = ['4 e 5 Estrelas', '3 Estrelas', '2 Estrelas', '1 Estrela', 'todos'];
 
-  const textos = ['5 Estrelas', 'Cardapios', '100 pessoas', '2500 R$', '300 pessoas'];
-
-  /*const renderStars = () => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <FontAwesome
-          key={i}
-          name={i <= buffetData.avaliacao ? 'star' : 'star-o'}
-          size={20}
-          color={i <= buffetData.avaliacao ? 'gold' : 'gray'}
-        />
-      );
+  const filterBuffets = (buffetList, selectedRating) => {
+    if (!selectedRating) {
+      return buffetList;
     }
-    return stars;
-  };*/
   
+    const lowerLimit = parseInt(selectedRating); // ParseInt para garantir que seja um número inteiro
+    const upperLimit = lowerLimit + 1;
+  
+    const filteredBuffets = buffetList.filter(buffet => {
+      const mediaAvaliacoes = parseFloat(buffet.mediaAvaliacoes);
+      
+      // Mostrar todos os buffets se o filtro for "Todos os Buffets"
+      if (selectedRating === 'todos') {
+        return true;
+      }
+  
+      // Mostrar buffets não avaliados no filtro de uma estrela
+      if (selectedRating === '1' && (isNaN(mediaAvaliacoes) || mediaAvaliacoes === 0)) {
+        return true;
+      }
+  
+      // Adicionar buffets com avaliação de 5 estrelas à categoria "4 e 5 Estrelas"
+      if (selectedRating === '4' && mediaAvaliacoes === 5) {
+        return true;
+      }
+  
+      // Filtros normais baseados nas estrelas
+      return !isNaN(mediaAvaliacoes) && mediaAvaliacoes >= lowerLimit && mediaAvaliacoes < upperLimit;
+    });
+  
+    return filteredBuffets;
+  };
+
+// ...
+
+const handleFilterClick = (index) => {
+  const selectedRating = textos[index].split(' ')[0];
+  setSelectedRating(selectedRating);
+  // Limpe o termo de pesquisa quando um filtro é aplicado
+  setSearchTerm('');
+  // Incrementa o valor da chave de atualização para forçar a re-renderização
+  setRefreshKey((prevKey) => prevKey + 1);
+};
+
+
+  
+  // ...
+  
+  const filteredBuffetData = filterBuffets(buffetData, selectedRating).filter((buffet) => {
+    // Lógica de pesquisa: inclua buffets cujos nomes contenham o termo de pesquisa
+    return searchTerm === '' || buffet.nome.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
   const handleNotifications = () => {
     navigation.navigate('TelaNotificacoes');
   };
+
   const handleBuffetNavigation = () => {
     navigation.navigate('BuffetPerfil');
   };
 
   return (
-    <View style={styles.container}>
-<Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
-<SideMenu isVisible={menuVisible} onClose={toggleMenu} />
-      
+    <View key={refreshKey} style={styles.container}>
+      <Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
+      <SideMenu isVisible={menuVisible} onClose={toggleMenu} />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.searchContainer}>
           <Feather name="search" size={24} color="black" />
-          <TextInput placeholder="Pesquisar..." style={styles.searchInput} />
+          <TextInput
+            placeholder="Pesquisar..."
+            style={styles.searchInput}
+            value={searchTerm}
+            onChangeText={(text) => setSearchTerm(text)}
+            onEndEditing={handleSearch}
+          />
         </View>
 
         <ScrollView
@@ -86,20 +138,29 @@ const username = state.username;
         >
           <View style={styles.container2}>
             {textos.map((texto, index) => (
-              <View key={index} style={styles.retanguloComEspacamento}>
+              <TouchableOpacity
+                key={index}
+                style={styles.retanguloComEspacamento}
+                onPress={() => handleFilterClick(index)}
+              >
                 <RetanguloComTexto texto={texto} />
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         </ScrollView>
 
-        <Text style={styles.title}>Buffets Proximos a você</Text>
+        <Text style={styles.title}>Buffets Próximos a Você</Text>
 
         <View style={styles.containerCard}>
-  {buffetData.map((buffet, index) => (
-    <CardBuffet key={index} buffetData={buffet} avaliacao={buffet.avaliacao} />
-  ))}
-</View>
+        {filteredBuffetData.map((buffet, index) => (
+            <CardBuffet
+              key={index}
+              buffetData={buffet}
+              avaliacao={buffet.media}
+              resetAvaliacao={resetAvaliacao}
+            />
+          ))}
+        </View>
 
       </ScrollView>
     </View>
@@ -114,6 +175,7 @@ const RetanguloComTexto = ({ texto }) => {
   );
 
 };
+
 
 
 const styles = StyleSheet.create({
