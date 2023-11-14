@@ -26,6 +26,7 @@ import CriarCardapio from '../pages/CriarCardapio'
 import CriarReceita from '../pages/CriarReceita'
 import CriarFuncionario from '../pages/CriarFuncionario'
 import DetalhesCardapio from '../pages/DetalhesCardapio'
+import FavoritosCliente from '../pages/FavoritosCliente'
 
 const iconesDasGuias = {
     Home: 'home', // Substitua 'home' pelo nome real do ícone que você deseja usar
@@ -109,6 +110,7 @@ function StackNavigator() {
       <Stack.Screen name="CriarReceita" component={CriarReceita} options={{ headerShown: false }} />
       <Stack.Screen name="CriarFuncionario" component={CriarFuncionario} options={{ headerShown: false }} />
       <Stack.Screen name="DetalhesCardapio" component={DetalhesCardapio} options={{ headerShown: false }} />
+      <Stack.Screen name="FavoritosCliente" component={FavoritosCliente} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

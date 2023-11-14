@@ -15,7 +15,7 @@ const calcularMediaAvaliacoes = (avaliacoes) => {
 
   return media;
 };
-const CardComponent = ({ buffetData }) => {
+const CardComponent = ({ buffetData  }) => {
   const { nome, endereco, imagem } = buffetData;
   const [mediaAvaliacoes, setMediaAvaliacoes] = useState(0); // Certifique-se de que esta linha está correta
   const navigation = useNavigation();
@@ -23,7 +23,75 @@ const CardComponent = ({ buffetData }) => {
   const [avaliacao, setAvaliacao] = useState(0); // Estado para armazenar a avaliação
   const [fetchComplete, setFetchComplete] = useState(false);
   const { state } = useUser();
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const userID = state.uid;
+
+  const checkIsFavorite = async () => {
+    try {
+      const buffetId = await getBuffetId(buffetData.nome);
+  
+      if (buffetId) {
+        const favoritesRef = ref(db, 'favorites');
+        const favoritesQuery = query(
+          favoritesRef,
+          orderByChild('userIdBuffetId'),
+          equalTo(`${userID}_${buffetId}`)
+        );
+        const favoritesSnapshot = await get(favoritesQuery);
+  
+        setIsFavorite(favoritesSnapshot.exists());
+      } else {
+        console.error('ID do buffet não encontrado.');
+      }
+    } catch (error) {
+      console.error('Erro ao verificar se o buffet está nos favoritos:', error);
+    }
+  };
+  
+
+  const handleToggleFavorite = async () => {
+    try {
+      const buffetId = await getBuffetId(buffetData.nome);
+  
+      if (buffetId) {
+        const favoritesRef = ref(db, 'favorites');
+        const userIdBuffetId = `${userID}_${buffetId}`;
+        const favoriteQuery = query(
+          favoritesRef,
+          orderByChild('userIdBuffetId'),
+          equalTo(userIdBuffetId)
+        );
+        const favoriteSnapshot = await get(favoriteQuery);
+  
+        if (favoriteSnapshot.exists()) {
+          // Se já estiver nos favoritos, remova
+          const favoriteKey = Object.keys(favoriteSnapshot.val())[0];
+          const favoriteRef = ref(db, `favorites/${favoriteKey}`);
+          await set(favoriteRef, null);
+        } else {
+          // Se não estiver nos favoritos, adicione
+          const newFavoriteRef = push(favoritesRef);
+          const newFavoriteData = {
+            userIdBuffetId,
+            userId: userID,
+            buffetId: buffetId,
+          };
+          await set(newFavoriteRef, newFavoriteData);
+        }
+  
+        // Atualize o estado de favoritos
+        setIsFavorite(!isFavorite);
+      } else {
+        console.error('ID do buffet não encontrado.');
+      }
+    } catch (error) {
+      console.error('Erro ao adicionar/remover buffet dos favoritos:', error);
+    }
+  };
+  
+  
+
 
   useEffect(() => {
     // Busque a avaliação do usuário para este buffet e atualize o estado local se existir
@@ -67,6 +135,7 @@ const CardComponent = ({ buffetData }) => {
       }
     }
     fetchMediaAvaliacoes();
+    checkIsFavorite();
   }, []); // Busque a avaliação do usuário e a média das avaliações ao montar o componente
 
   useEffect(() => {
@@ -242,9 +311,9 @@ const CardComponent = ({ buffetData }) => {
           activeOpacity={0.7}
         >
           <FontAwesome
-            name={i <= avaliacao ? 'star' : 'star-o'}
+            name={i <= mediaAvaliacoes ? 'star' : 'star-o'}
             size={20}
-            color={i <= avaliacao ? 'gold' : 'gray'}
+            color={i <= mediaAvaliacoes ? 'gold' : 'gray'}
           />
         </TouchableOpacity>
       );
@@ -255,28 +324,33 @@ const CardComponent = ({ buffetData }) => {
   return (
     <View style={styles.card}>
       <Image style={styles.cardImage} source={{ uri: imagem }} />
-
+  
       <View style={styles.infoContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.buffetName}>{nome}</Text>
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <FontAwesome name="map-marker" size={40} color="black" />
-          </TouchableOpacity>
+          <View style={styles.iconsContainer}>
+            <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.icon}>
+              <FontAwesome name="map-marker" size={24} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleToggleFavorite} style={styles.icon}>
+              <FontAwesome
+                name={isFavorite ? 'heart' : 'heart-o'}
+                size={24}
+                color={isFavorite ? 'red' : 'gray'}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <Text style={styles.locationText}>{endereco}</Text>
         <Text style={styles.mediaText}>Média: {mediaAvaliacoes.toFixed(2)}</Text>
-        <View style={styles.starsContainer}>
-          {renderStars()}
-        </View>
+        <View style={styles.starsContainer}>{renderStars()}</View>
       </View>
-
+  
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(false);
-        }}
+        onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -291,17 +365,17 @@ const CardComponent = ({ buffetData }) => {
           </View>
         </View>
       </Modal>
-
+  
       <TouchableOpacity style={styles.profileButton} onPress={handleBuffetNavigation}>
         <Text style={styles.profileButtonText}>Ver Perfil</Text>
       </TouchableOpacity>
     </View>
   );
-};
-
-const styles = StyleSheet.create({
+  };
+  
+  const styles = StyleSheet.create({
   card: {
-    marginTop: 16,
+    marginVertical: 16,
     padding: 16,
     backgroundColor: 'white',
     borderRadius: 10,
@@ -317,25 +391,41 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 160,
     borderRadius: 10,
+    marginBottom: 10,
   },
   infoContainer: {
     marginTop: 10,
   },
   titleContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  iconsContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
-  starsContainer: {
-    flexDirection: 'row',
+  icon: {
+    marginRight: 10,
   },
   locationText: {
-    marginTop: 5,
     color: 'gray',
   },
   buffetName: {
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  mediaText: {
+    marginBottom: 5,
+    color:'gray'
+  },
+  starsContainer: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  starIcon: {
+    marginRight: 5,
   },
   profileButton: {
     backgroundColor: '#be3455',
@@ -378,6 +468,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-});
-
-export default CardComponent;
+  });
+  
+  export default CardComponent;
+  

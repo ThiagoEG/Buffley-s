@@ -9,7 +9,8 @@ import { db } from '../../services/firebaseConfigurations/firebaseConfig';
 import Navbar from '../componentes2/Navbar2';
 import BuffetPerfil from '../BuffetPerfil';
 import CardBuffet from '../Componentes/CardBuffetHomeCliente';
-
+import {BlurView} from '@react-native-community/blur';
+import { useSideMenu } from '../../services/sideMenuContext';
 const { width, height } = Dimensions.get('window');
 
 export default function Home({ rating, navigation }) {
@@ -25,6 +26,7 @@ export default function Home({ rating, navigation }) {
   const [buffetData, setBuffetData] = useState([]);
   const [avaliacao, setAvaliacao] = useState(0);
   const [searchTerm, setSearchTerm] = useState(''); // Estado para armazenar o termo de pesquisa
+  const { isSideMenuOpen } = useSideMenu();
 
   const handleSearch = () => {
     // Atualize o estado de pesquisa e force a re-renderização
@@ -115,7 +117,7 @@ const handleFilterClick = (index) => {
   };
 
   return (
-    <View key={refreshKey} style={styles.container}>
+    <View key={refreshKey} style={[styles.container, menuVisible  && styles.blurContainer]}>
       <Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
       <SideMenu isVisible={menuVisible} onClose={toggleMenu} />
 
@@ -332,6 +334,10 @@ searchContainer: {
     shadowRadius: 4,
     elevation: 4,
   },
+ /* blurContainer: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Um fundo semi-transparente
+  },*/
   icon: {
     marginRight: 4,
   },

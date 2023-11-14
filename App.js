@@ -8,6 +8,7 @@ import { CardapioProvider } from './src/services/CardapioContext';
 import { BuffetProvider } from './src/services/BuffetContext/index';
 import { AuthProvider } from './src/services/AuthContext';
 import LoadingScreen from './src/pages/SplashScreen/';
+import { SideMenuProvider } from './src/services/sideMenuContext/index';
 
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
 
   // Quando o carregamento estiver concluído, renderizar o conteúdo do aplicativo.
   return (
+    <SideMenuProvider>
     <AuthProvider>
       <BuffetProvider>
         <CardapioProvider>
@@ -36,6 +38,7 @@ export default function App() {
         </CardapioProvider>
       </BuffetProvider>
     </AuthProvider>
+     </SideMenuProvider>
   );
 }
 

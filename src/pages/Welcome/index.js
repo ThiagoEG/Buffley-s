@@ -13,6 +13,7 @@ import ImagePickerExample from '../Componentes/ImagePicker';
 import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../services/firebaseConfigurations/firebaseConfig';
+import { v4 as uuidv4 } from 'uuid'; // Importe a função v4 da biblioteca uuid
 
 export default function Welcome() {
   const [nome, setNome] = useState('');
@@ -135,22 +136,24 @@ export default function Welcome() {
       try {
         if (selectedOption === 'Buffet') {
           if (imageUri) {
-            // Fazer upload da imagem selecionada para o Firebase Storage
-            const storageRef = ref(storage, 'Imagens/Perfil/Buffet/imagem.jpg');
+            // Gerar um nome de arquivo único usando um identificador único (pode ser um UUID, timestamp, etc.)
+            const uniqueFileName = `${uuidv4()}.jpg`; // Certifique-se de importar ou implementar uma função uuidv4()
+            const storageRef = ref(storage, `Imagens/Perfil/Buffet/${uniqueFileName}`);
+  
             const response = await fetch(imageUri);
             const blob = await response.blob();
             await uploadBytes(storageRef, blob);
-        
+  
             // Obter a URL da imagem no Firebase Storage
             const imageUrl = await getDownloadURL(storageRef);
-        
+  
             // Continuar com o registro, passando a URL da imagem e os dados do buffet diretamente
-            handleRegister(email, senha, nome, telefone, selectedOption, imageUrl, endereco, cnpj); // Corrija a ordem dos argumentos aqui
-          }/* else {
+            handleRegister(email, senha, nome, telefone, selectedOption, imageUrl, endereco, cnpj);
+          } else {
             // Se nenhuma imagem foi selecionada, prosseguir com o registro sem imagem
             handleRegister(email, senha, nome, telefone, selectedOption, null, endereco, cnpj);
-          }*/
-        }else {
+          }
+        } else {
           // Se o tipo de usuário não for "Buffet", prosseguir com o registro sem imagem
           handleRegister(email, senha, nome, telefone, selectedOption, null, null, null);
         }
@@ -160,6 +163,7 @@ export default function Welcome() {
       }
     }
   };
+  
 
   return (
     <ScrollView style={styles.scrollContainer}>

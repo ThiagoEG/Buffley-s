@@ -5,11 +5,17 @@ import * as Animatable from 'react-native-animatable';
 import { useUser } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
 import { ref, get } from 'firebase/database'; // Importações específicas para o Realtime Database
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
-
+import { useNavigation, useRoute } from '@react-navigation/native';
 const MenuLateral = ({ isVisible, onClose }) => {
   const { state } = useUser(); // Obtenha o estado do usuário
   const [userPhotoUrl, setUserPhotoUrl] = useState('');
   const username = state.username;
+
+  const handlePress = () => {
+    navigation.navigate('FavoritosCliente');
+  };
+  const navigation = useNavigation();
+  
 
   useEffect(() => {
     if (state.uid) {
@@ -62,7 +68,7 @@ const MenuLateral = ({ isVisible, onClose }) => {
         <TouchableOpacity>
           <Text style={styles.navText}><Feather  style={styles.Icon} name="coffee" size={24} />Premium</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handlePress}>
           <Text style={styles.navText}><Feather  style={styles.Icon} name="star" size={24} />Favoritos</Text>
         </TouchableOpacity>
         <TouchableOpacity>
@@ -92,7 +98,7 @@ const styles = StyleSheet.create({
     right: 0,
     width: '50%', // Ocupa 50% da largura da tela
     height: '100%',
-    backgroundColor: '#318051', // Cor de fundo verde
+    backgroundColor: 'gray', // Cor de fundo verde
     padding: 16,
     zIndex: 1,
     borderBottomLeftRadius: 50

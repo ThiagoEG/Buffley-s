@@ -6,6 +6,7 @@ import Navbar from '../Componentes/Navbar';
 import Imagem from '../Componentes/Imagem';
 import Stars from '../Componentes/Stars';
 import CardCardapio from '../componentes2/CardCardapio';
+import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 import calcularMediaAvaliacoes from '../../services/Globals/calculoMediaAvaliacoes';
 
@@ -20,6 +21,21 @@ export default function BuffetPerfil() {
 
   const handlePress = () => {
     navigation.navigate('Preferencias');
+  };
+
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <FontAwesome
+          key={i}
+          name={i <= rating ? 'star' : 'star-o'}
+          size={20}
+          color={i <= rating ? 'gold' : 'gray'}
+        />
+      );
+    }
+    return stars;
   };
 
   // Use useEffect para calcular a média das avaliações quando o componente for montado
@@ -40,11 +56,12 @@ export default function BuffetPerfil() {
       <Navbar />
       <Image style={styles.cardImage} source={{ uri: buffetData.imagem }} />
       <Text style={styles.title}>{buffetData.nome}</Text>
+      <Text style={styles.mediaText}>Avaliação: {renderStars(mediaAvaliacoes)}</Text>
       <Text style={styles.subtitle}>Cardápios Disponíveis</Text>
       <CardCardapio />
       <CardCardapio />
       <CardCardapio />
-      <Text style={styles.mediaText}>Média de Avaliações: {mediaAvaliacoes.toFixed(2)}</Text>
+      
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handlePress}>
