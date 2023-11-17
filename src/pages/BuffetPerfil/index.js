@@ -19,8 +19,9 @@ export default function BuffetPerfil() {
   // Estado para armazenar a média das avaliações
   const {mediaAvaliacoes} = route.params;
 
+  
   const handlePress = () => {
-    navigation.navigate('Preferencias');
+    navigation.navigate('Preferencias', { BuffetNome: buffetData.nome });
   };
 
   const renderStars = (rating) => {

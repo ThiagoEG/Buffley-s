@@ -78,12 +78,13 @@ export default function SignIn() {
     console.log('User Type:', userType);
     if (userType === 'Buffet') {
       console.log('Redirecting to HomeScreenBuffet');
-      navigation.navigate('HomeScreenBuffet', { username });
+      navigation.navigate('HomeScreenBuffet', { uid: user.uid, });
     } else if (userType === 'Cliente') {
       console.log('Redirecting to HomeScreen');
       navigation.navigate('HomeScreen', { uid: user.uid });
     }
   };
+  
 
   const handlePress = (userType, username) => {
       navigation.navigate('Welcome');

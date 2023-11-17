@@ -14,7 +14,7 @@ import { useUser  } from '../../services/UserContext/index'; // Supondo que voc�
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../services/firebaseConfigurations/firebaseConfig';
 import { v4 as uuidv4 } from 'uuid'; // Importe a função v4 da biblioteca uuid
-
+import {  set, push, query, orderByChild, equalTo, get, update, onValue } from 'firebase/database';
 export default function Welcome() {
   const [nome, setNome] = useState('');
   const [senha, setSenha] = useState('');
@@ -134,28 +134,34 @@ export default function Welcome() {
   
     if (isValid) {
       try {
-        if (selectedOption === 'Buffet') {
-          if (imageUri) {
-            // Gerar um nome de arquivo único usando um identificador único (pode ser um UUID, timestamp, etc.)
-            const uniqueFileName = `${uuidv4()}.jpg`; // Certifique-se de importar ou implementar uma função uuidv4()
-            const storageRef = ref(storage, `Imagens/Perfil/Buffet/${uniqueFileName}`);
+        if (imageUri) {
+          // Se uma imagem foi selecionada
+          const uniqueFileName = `${uuidv4()}.jpg`;
+          const storageRef = ref(storage, `Imagens/Perfil/Usuarios/${uniqueFileName}`);
   
-            const response = await fetch(imageUri);
-            const blob = await response.blob();
-            await uploadBytes(storageRef, blob);
+          const response = await fetch(imageUri);
+          const blob = await response.blob();
+          await uploadBytes(storageRef, blob);
   
-            // Obter a URL da imagem no Firebase Storage
-            const imageUrl = await getDownloadURL(storageRef);
+          const imageUrl = await getDownloadURL(storageRef);
   
-            // Continuar com o registro, passando a URL da imagem e os dados do buffet diretamente
-            handleRegister(email, senha, nome, telefone, selectedOption, imageUrl, endereco, cnpj);
-          } else {
-            // Se nenhuma imagem foi selecionada, prosseguir com o registro sem imagem
-            handleRegister(email, senha, nome, telefone, selectedOption, null, endereco, cnpj);
+          // Continue com o registro, passando a URL da imagem e os dados do usuário diretamente
+          const userCredential = await registerUser(email, senha, nome, telefone, selectedOption, imageUrl, endereco, cnpj);
+  
+          // Obtenha o usuário do userCredential
+          const user = userCredential?.user;
+  
+          // Atualizar o nó do usuário no Realtime Database com o caminho da imagem
+          const userNodePath = selectedOption === 'Buffet' ? 'buffets' : 'clientes';
+          if (user) {
+            await set(ref(db, `${userNodePath}/${user.uid}/imagem`), imageUrl);
           }
+  
+          console.log('Registro bem-sucedido:', user);
+          handlePress2();
         } else {
-          // Se o tipo de usuário não for "Buffet", prosseguir com o registro sem imagem
-          handleRegister(email, senha, nome, telefone, selectedOption, null, null, null);
+          // Se nenhuma imagem foi selecionada, prosseguir com o registro sem imagem
+          handleRegister(email, senha, nome, telefone, selectedOption, null, endereco, cnpj);
         }
       } catch (error) {
         console.error('Erro no upload da imagem:', error);

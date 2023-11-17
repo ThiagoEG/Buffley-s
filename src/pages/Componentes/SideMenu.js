@@ -29,6 +29,7 @@ const MenuLateral = ({ isVisible, onClose }) => {
           if (snapshot.exists()) {
             const photoUrl = snapshot.val();
             setUserPhotoUrl(photoUrl);
+            
           }
         });
     }
@@ -39,7 +40,7 @@ const MenuLateral = ({ isVisible, onClose }) => {
   if (!isVisible) {
     return null;
   }
-
+  console.log('foto', userPhotoUrl);
   return (
     <Animatable.View
     animation="fadeIn"
