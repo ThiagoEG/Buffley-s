@@ -1,6 +1,6 @@
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation, useRoute  } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
@@ -9,105 +9,105 @@ import SideMenu from '../Componentes/SideMenu';
 import Card from '../Componentes/card';
 import Navbar from '../componentes2/Navbar2';
 import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
-
-import CustomModal from '../Componentes/Modal';
-/*
-const textos = ['300 pessoas', '2,500', '22/05/23'];
-  */
-const card = {
-  itens: '15 Itens',
-  maisBarato: 'Salada, 100R$',
-  maisCaro: 'Prato principal, 700R$',
-};
+import PreferenciasCard from '../Componentes/PreferenciasCard';
+import CustomModal from '../componentes2/Modal';
+import { ref, push, set, get } from 'firebase/database';
+import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 
 const { width, height } = Dimensions.get('window');
-/*
-const RetanguloComTexto = ({ texto }) => {
-    return (
-      <View style={styles.retangulo}>
-        <Text style={styles.texto}>{texto}</Text>
-      </View>
-    );
-  };*/
 
 
-
-export default function HomeBuffet({ navigation }) {
+export default function HomeBuffet({ navigation,  }) {
   const route = useRoute();
   const { uid } = route.params || {};
-  const { state } = useUser(); // Obtenha o estado do usuário
-  
-
-console.log('UID do usuário:', uid);
-const username = state.username;
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handlePress = () => {
-    navigation.navigate('CriarCardapio');
-  };
-  const handleOpenModal = () => {
-    setIsModalOpen(true);}
-
-    const handleCloseModal = () => {
-      setIsModalOpen(false);
-    }
-
-  const handleNotifications = () => {
-    navigation.navigate('TelaNotificacoes');
-  };
-  const handleBuffetNavigation = () => {
-    navigation.navigate('BuffetPerfil');
-  };
   const [menuVisible, setMenuVisible] = useState(false);
-  const toggleMenu = () => {
-    setMenuVisible(!menuVisible);
+  const [preferenciasData, setPreferenciasData] = useState([]);
+  const { state } = useUser();
+  const userId = state.uid;
+
+  const handleCardPress = (preferenciaId) => {
+    console.log('Card pressionado:', preferenciaId);
+    // Adicione a lógica para lidar com a pressão do card, se necessário
   };
 
-    return(
+    console.log('UID do usuário:', {userId});
+    const username = state.username;
+      const handlePress = () => {
+        navigation.navigate('CriarCardapio');
+      };
+      const handleNotifications = () => {
+        navigation.navigate('TelaNotificacoes');
+      };
+      const handleBuffetNavigation = () => {
+        navigation.navigate('BuffetPerfil');
+      };
+      const toggleMenu = () => {
+        setMenuVisible(!menuVisible);
+      };
 
-      <View style={styles.container}>
-<Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
-<SideMenu isVisible={menuVisible} onClose={toggleMenu} />
-    
-      <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
+  useEffect(() => {
+    const fetchPreferenciasData = async () => {
+      try {
+        const preferenciasRef = ref(db, 'preferencias');
+        const preferenciasSnapshot = await get(preferenciasRef);
 
-<ScrollView>
+        if (preferenciasSnapshot.exists()) {
+          const preferenciasData = preferenciasSnapshot.val();
 
-<Text style={styles.title}>Cardápio Solicitados</Text>
+          if (preferenciasData) {
+            const preferenciasArray = Object.keys(preferenciasData).map((preferenciaId) => ({
+              id: preferenciaId,
+              ...preferenciasData[preferenciaId],
+            }));
 
-     <View style={styles.retangulo1}>
-        <View style={styles.titleSol}>
-          <Image source={require('../../../assets/imgPessoas.png') }style={styles.imagem}/>
+            setPreferenciasData(preferenciasArray);
+          } else {
+            console.error('Preferencias data is empty.');
+            setPreferenciasData([]);
+          }
+        } else {
+          console.error('No preferencias found in the database.');
+          setPreferenciasData([]);
+        }
+      } catch (error) {
+        console.error('Error fetching preferencias:', error);
+      }
+    };
 
-           <View style={styles.titleSol2}>
-             <Text style={styles.title1}>Joana</Text>
-             <Text style={styles.title2}>150 pessoas</Text>
-           </View>
-
-        </View>
-      <TouchableOpacity onPress={handleOpenModal}>
-        <Image source={require('../../../assets/MenuDots.png')} style={styles.imagemIcon} />
-      </TouchableOpacity>
-      </View>
-
-      {/* Renderiza o modal quando a variável isModalOpen for true */}
-      {isModalOpen && (
-        <CustomModal isVisible={isModalOpen} onClose={handleCloseModal} />
-      )}
-
-      <Text style={styles.title}>Seus cardápios</Text>
-
-
-
-</ScrollView>
-
-    
+    fetchPreferenciasData();
+  }, []);
 
 
+  return (
+    <View style={styles.container}>
+      <Navbar navigation={navigation} onMenuPress={toggleMenu} />
+      <SideMenu isVisible={menuVisible} onClose={toggleMenu} />
+
+      <ScrollView>
+        <Text style={styles.title}>Cardápio Solicitados</Text>
+
+        {preferenciasData.map((preferencia) => {
+        if (preferencia.buffetId === userId) {
+          return (
+            <PreferenciasCard
+              key={preferencia.id}
+              nome={preferencia.nome}
+              qtdsPessoas={preferencia.qtdPessoas}
+              data={preferencia.data}
+              preferenciasId={preferencia.id}
+              preferenciasCliente={preferencia.preferenciasCliente}
+            />
+          );
+        } else {
+          // If buffetId doesn't match, return null or an empty fragment
+          return null;
+        }
+      })}
+
+        <Text style={styles.title}>Seus cardápios</Text>
+      </ScrollView>
     </View>
-
-    
-
-    );
+  );
 }
 
 const styles = StyleSheet.create({

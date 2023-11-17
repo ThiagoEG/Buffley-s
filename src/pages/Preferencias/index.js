@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Dropdown from '../Componentes/DropDown'
-import LinearBorder from '../Componentes/LinearBorder';
-import DatePickerComponent from '../Componentes/DatapickerPreferencias';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { ref, set, push, query, orderByChild, equalTo, get } from 'firebase/database';
+import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 import Navbar from '../Componentes/Navbar';
-import MultiSelectComponent from '../Componentes/DropDonwSelect';
+import LinearBorder from '../Componentes/LinearBorder';
+import { useUser } from '../../services/UserContext/index';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import DatePickerComponent from '../Componentes/DatapickerPreferencias';
 import { tiposDeCarnes, bebidas, bolos, entradas, saladas, guarnicoes } from '../../Banco/PreferenciasBanco';
+import MultiSelectComponent from '../Componentes/DropDonwSelect';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function Welcome() {
   const [nome, setNome] = useState('');
@@ -15,40 +17,138 @@ export default function Welcome() {
   const [data, setData] = useState('');
   const [errors, setErrors] = useState({});
   const navigation = useNavigation();
+  const { state } = useUser();
+  const userId = state.uid;
+  const route = useRoute(); // Corrija o nome da variável aqui
+  const { BuffetNome } = route.params || {};
 
-  const item = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-   
-  ];
+  const [carneItens, setCarneItens] = useState([]);
+  const [guarnicaoItens, setGuarnicaoItens] = useState([]);
+  const [saladaItens, setSaladaItens] = useState([]);
+  const [bolosItens, setBolosItens] = useState([]);
+  const [entradaItens, setEntradaItens] = useState([]);
+  const [bebidaItens, setBebidaItens] = useState([]);
 
-  const handlePress = () => {
-    navigation.navigate('HomeScreen');
+
+
+  const [dataSelecionada, setDataSelecionada] = useState('');
+
+  const mapPreferencias = (tipoPreferencia, itens, setItens, handleRemoveItem) => {
+    return (
+      <View>
+        <Text style={styles.sectionTitle2}>{tipoPreferencia}</Text>
+        {itens.map((item, index) => (
+          <View key={index} style={styles.itemContainer}>
+            <LinearBorder
+              placeholder={`${tipoPreferencia} ${index + 1}`}
+              onChangeText={(text) => {
+                const newItens = [...itens];
+                newItens[index] = text;
+                setItens(newItens);
+              }}
+            />
+            <TouchableOpacity onPress={() => handleRemoveItem(index)}>
+              <MaterialIcons name='delete' size={24} color={'red'} />
+            </TouchableOpacity>
+          </View>
+        ))}
+        <TouchableOpacity onPress={() => setItens([...itens, ''])} style={styles.AddBoton}>
+          <Text style={{ color: '#BB2649', marginLeft: 25 }}>Adicionar {tipoPreferencia}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const handleRemoveItem = (index) => {
+    setCarneItens((prevItens) => {
+      const newItens = [...prevItens];
+      newItens.splice(index, 1);
+      return newItens;
+    });
+  };
+  
+  
+
+  const getBuffetId = async (buffetNome) => {
+    try {
+      const buffetRef = ref(db, 'buffets');
+      const buffetQuery = query(buffetRef, orderByChild('nome'), equalTo(buffetNome));
+      const buffetSnapshot = await get(buffetQuery);
+
+      if (buffetSnapshot.exists()) {
+        return Object.keys(buffetSnapshot.val())[0];
+      } else {
+        console.error('Buffet não encontrado no banco de dados.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o buffet:', error);
+      return null;
+    }
   };
 
 
-
-  const [selectedOption, setSelectedOption] = useState('Buffet');
-
-  const validateForm = () => {
-    let errors = {};
-
-    if (nome.trim() === '') {
-      errors.nome = 'Campo obrigatório';
+  const handleSubmitPreferencias = async () => {
+    // Validando os campos obrigatórios
+    if (!nome || !qtdPessoas) {
+      setErrors({
+        nome: !nome ? 'Campo obrigatório' : '',
+        qtdPessoas: !qtdPessoas ? 'Campo obrigatório' : '',
+      });
+      return;
     }
-
-    if (qtdPessoas.trim() === '') {
-      errors.qtdPessoas = 'Campo obrigatório';
+  
+    const dadosPreferencias = {
+      nome,
+      qtdPessoas,
+      data: dataSelecionada,
+      userId,
+      buffetId: await getBuffetId(BuffetNome),
+      preferenciasCliente: {
+        carnes: carneItens,
+        guarnicao: guarnicaoItens,
+        salada: saladaItens,
+        bolos: bolosItens,
+        entrada: entradaItens,
+        bebida: bebidaItens,
+      },
+    };
+  
+    try {
+      const preferenciasRef = ref(db, 'preferencias');
+      const novaReferenciaPreferencias = push(preferenciasRef);
+      const novoIdPreferencias = novaReferenciaPreferencias.key;
+  
+      dadosPreferencias.id = novoIdPreferencias;
+  
+      // Salvando os dados usando 'set' em vez de 'update'
+      set(novaReferenciaPreferencias, dadosPreferencias).then(() => {
+        console.log('Preferências adicionadas com sucesso ao Firebase Realtime Database.');
+        console.log('ID das novas preferências:', novoIdPreferencias);
+  
+        // Resetando os campos e exibindo mensagem de sucesso
+        setNome('');
+        setQtdPessoas('');
+        setDataSelecionada('');
+        setCarneItens([]);
+        setGuarnicaoItens([]);
+        setSaladaItens([]);
+        setBolosItens([]);
+        setEntradaItens([]);
+        setBebidaItens([]);
+        setErrors({});
+        
+        navigation.navigate('HomeScreen');
+  
+        Alert.alert('Sucesso', 'Preferências salvas com sucesso!');
+      });
+    } catch (error) {
+      console.error('Erro ao adicionar preferências:', error);
+      Alert.alert('Erro', 'Ocorreu um erro ao salvar as preferências. Por favor, tente novamente.');
     }
-
-    if (data.trim() === '') {
-      errors.data = 'Campo obrigatório';
-    }
-
-    setErrors(errors);
-
-    return Object.keys(errors).length === 0;
   };
+  
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -65,22 +165,28 @@ export default function Welcome() {
             onChangeText={text => setQtdPessoas(text)} 
             keyboardType="numeric"
           />
-          <DatePickerComponent onChangeText={text => setQtdPessoas(text)} style={styles.DatePicker}/>
+
+          <DatePickerComponent
+          onSelectDate={(data) => setDataSelecionada(data)} // Corrija esta linha
+          style={styles.DatePicker}
+        />
         </View>
 
         
         <Text style={[styles.sectionTitle1]}>Preferências</Text>
 
-        <MultiSelectComponent placeholder="Carnes" data={tiposDeCarnes}/>
-        <MultiSelectComponent placeholder="Bebidas" data={bebidas}/>
-        <MultiSelectComponent placeholder="Bolos" data={bolos}/>
-        <MultiSelectComponent placeholder="Entradas" data={entradas}/>
-        <MultiSelectComponent placeholder="Guarnições" data={guarnicoes}/>
-        <MultiSelectComponent placeholder="Saladas" data={saladas}/>
+        
+        {mapPreferencias('Carnes', carneItens, setCarneItens, handleRemoveItem)}
+        {mapPreferencias('Guarnição', guarnicaoItens, setGuarnicaoItens, handleRemoveItem)}
+        {mapPreferencias('Salada', saladaItens, setSaladaItens, handleRemoveItem)}
+        {mapPreferencias('Bolos', bolosItens, setBolosItens, handleRemoveItem)}
+        {mapPreferencias('Entrada', entradaItens, setEntradaItens, handleRemoveItem)}
+        {mapPreferencias('Bebida', bebidaItens, setBebidaItens, handleRemoveItem)}
+
       </View>
       
       <View style={styles.bottomContainer}>
-        <TouchableOpacity style={styles.button} onPress={handlePress}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmitPreferencias}>
           <Text style={styles.buttonText}>Concluir</Text>
         </TouchableOpacity>
       </View>
@@ -174,5 +280,30 @@ const styles = StyleSheet.create({
   },
   DatePicker:
   {
+  },
+
+  AddBoton:{
+    height: 40,
+    backgroundColor: '#fff',
+    elevation: 2,
+    marginHorizontal: 16,
+    width: '90%',
+    justifyContent: 'center',
+    borderRadius: 5,
+    shadowColor: '#be3455',
+    marginTop: 16,
+  },
+  sectionTitle2:{
+    fontSize: 22,
+    marginLeft: 18,
+    marginTop: 10,
+  },
+
+  itemContainer:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection:'row',
+    marginTop: 12,
+    height: 50,
   }
 });
