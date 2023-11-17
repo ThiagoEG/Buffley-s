@@ -1,6 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation, useRoute  } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
@@ -13,10 +14,15 @@ import PreferenciasCard from '../Componentes/PreferenciasCard';
 import CustomModal from '../componentes2/Modal';
 import { ref, push, set, get } from 'firebase/database';
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
+import PreferenciasCard from '../Componentes/PreferenciasCard';
+import CustomModal from '../componentes2/Modal';
+import { ref, push, set, get } from 'firebase/database';
+import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 
 const { width, height } = Dimensions.get('window');
 
 
+export default function HomeBuffet({ navigation,  }) {
 export default function HomeBuffet({ navigation,  }) {
   const route = useRoute();
   const { uid } = route.params || {};
@@ -83,7 +89,46 @@ export default function HomeBuffet({ navigation,  }) {
     <View style={styles.container}>
       <Navbar navigation={navigation} onMenuPress={toggleMenu} />
       <SideMenu isVisible={menuVisible} onClose={toggleMenu} />
+  useEffect(() => {
+    const fetchPreferenciasData = async () => {
+      try {
+        const preferenciasRef = ref(db, 'preferencias');
+        const preferenciasSnapshot = await get(preferenciasRef);
 
+        if (preferenciasSnapshot.exists()) {
+          const preferenciasData = preferenciasSnapshot.val();
+
+          if (preferenciasData) {
+            const preferenciasArray = Object.keys(preferenciasData).map((preferenciaId) => ({
+              id: preferenciaId,
+              ...preferenciasData[preferenciaId],
+            }));
+
+            setPreferenciasData(preferenciasArray);
+          } else {
+            console.error('Preferencias data is empty.');
+            setPreferenciasData([]);
+          }
+        } else {
+          console.error('No preferencias found in the database.');
+          setPreferenciasData([]);
+        }
+      } catch (error) {
+        console.error('Error fetching preferencias:', error);
+      }
+    };
+
+    fetchPreferenciasData();
+  }, []);
+
+
+  return (
+    <View style={styles.container}>
+      <Navbar navigation={navigation} onMenuPress={toggleMenu} />
+      <SideMenu isVisible={menuVisible} onClose={toggleMenu} />
+
+      <ScrollView>
+        <Text style={styles.title}>Cardápio Solicitados</Text>
       <ScrollView>
         <Text style={styles.title}>Cardápio Solicitados</Text>
 
@@ -111,6 +156,7 @@ export default function HomeBuffet({ navigation,  }) {
         
       </ScrollView>
     </View>
+  );
   );
 }
 
