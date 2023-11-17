@@ -170,6 +170,8 @@ export default function Welcome() {
     }
   };
   
+  
+  
 
   return (
     <ScrollView style={styles.scrollContainer}>

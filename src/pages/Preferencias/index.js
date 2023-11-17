@@ -97,41 +97,35 @@ export default function Welcome() {
       });
       return;
     }
-
+  
+    const dadosPreferencias = {
+      nome,
+      qtdPessoas,
+      data: dataSelecionada,
+      userId,
+      buffetId: await getBuffetId(BuffetNome),
+      preferenciasCliente: {
+        carnes: carneItens,
+        guarnicao: guarnicaoItens,
+        salada: saladaItens,
+        bolos: bolosItens,
+        entrada: entradaItens,
+        bebida: bebidaItens,
+      },
+    };
+  
     try {
-      // Obtenha a URL da imagem do cliente
-      const clienteImagemRef = ref(db, `clientes/${userId}/imagem`);
-      const clienteImagemSnapshot = await get(clienteImagemRef);
-      const clienteImagemUrl = clienteImagemSnapshot.exists() ? clienteImagemSnapshot.val() : null;
-
-      const dadosPreferencias = {
-        nome,
-        qtdPessoas,
-        data: dataSelecionada,
-        userId: userId,
-        buffetId: await getBuffetId(BuffetNome),
-        preferenciasCliente: {
-          carnes: carneItens,
-          guarnicao: guarnicaoItens,
-          salada: saladaItens,
-          bolos: bolosItens,
-          entrada: entradaItens,
-          bebida: bebidaItens,
-        },
-        clienteImagemUrl: clienteImagemUrl, // Inclua a URL da imagem no objeto
-      };
-
       const preferenciasRef = ref(db, 'preferencias');
       const novaReferenciaPreferencias = push(preferenciasRef);
       const novoIdPreferencias = novaReferenciaPreferencias.key;
-
+  
       dadosPreferencias.id = novoIdPreferencias;
-
+  
       // Salvando os dados usando 'set' em vez de 'update'
       set(novaReferenciaPreferencias, dadosPreferencias).then(() => {
         console.log('Preferências adicionadas com sucesso ao Firebase Realtime Database.');
         console.log('ID das novas preferências:', novoIdPreferencias);
-
+  
         // Resetando os campos e exibindo mensagem de sucesso
         setNome('');
         setQtdPessoas('');
@@ -143,9 +137,9 @@ export default function Welcome() {
         setEntradaItens([]);
         setBebidaItens([]);
         setErrors({});
-
+        
         navigation.navigate('HomeScreen');
-
+  
         Alert.alert('Sucesso', 'Preferências salvas com sucesso!');
       });
     } catch (error) {
@@ -286,5 +280,30 @@ const styles = StyleSheet.create({
   },
   DatePicker:
   {
+  },
+
+  AddBoton:{
+    height: 40,
+    backgroundColor: '#fff',
+    elevation: 2,
+    marginHorizontal: 16,
+    width: '90%',
+    justifyContent: 'center',
+    borderRadius: 5,
+    shadowColor: '#be3455',
+    marginTop: 16,
+  },
+  sectionTitle2:{
+    fontSize: 22,
+    marginLeft: 18,
+    marginTop: 10,
+  },
+
+  itemContainer:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection:'row',
+    marginTop: 12,
+    height: 50,
   }
 });
