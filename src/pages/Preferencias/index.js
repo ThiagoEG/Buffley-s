@@ -19,7 +19,7 @@ export default function Welcome() {
   const navigation = useNavigation();
   const { state } = useUser();
   const userId = state.uid;
-  const route = useRoute(); // Corrija o nome da variável aqui
+  const route = useRoute(); 
   const { BuffetNome } = route.params || {};
 
   const [carneItens, setCarneItens] = useState([]);
@@ -98,21 +98,26 @@ export default function Welcome() {
       return;
     }
   
-    const dadosPreferencias = {
-      nome,
-      qtdPessoas,
-      data: dataSelecionada,
-      userId,
-      buffetId: await getBuffetId(BuffetNome),
-      preferenciasCliente: {
-        carnes: carneItens,
-        guarnicao: guarnicaoItens,
-        salada: saladaItens,
-        bolos: bolosItens,
-        entrada: entradaItens,
-        bebida: bebidaItens,
-      },
-    };
+      const clienteImagemRef = ref(db, `clientes/${userId}/imagem`);
+      const clienteImagemSnapshot = await get(clienteImagemRef);
+      const clienteImagemUrl = clienteImagemSnapshot.exists() ? clienteImagemSnapshot.val() : null;
+
+      const dadosPreferencias = {
+        nome,
+        qtdPessoas,
+        data: dataSelecionada,
+        userId: userId,
+        buffetId: await getBuffetId(BuffetNome),
+        preferenciasCliente: {
+          carnes: carneItens,
+          guarnicao: guarnicaoItens,
+          salada: saladaItens,
+          bolos: bolosItens,
+          entrada: entradaItens,
+          bebida: bebidaItens,
+        },
+        clienteImagemUrl: clienteImagemUrl, // Inclua a URL da imagem no objeto
+      };
   
     try {
       const preferenciasRef = ref(db, 'preferencias');

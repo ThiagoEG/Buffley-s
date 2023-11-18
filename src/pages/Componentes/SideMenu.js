@@ -10,6 +10,7 @@ const MenuLateral = ({ isVisible, onClose }) => {
   const { state } = useUser(); // Obtenha o estado do usuário
   const [userPhotoUrl, setUserPhotoUrl] = useState('');
   const username = state.username;
+  const [reloadData, setReloadData] = useState(true); 
 
   const handlePress = () => {
     navigation.navigate('FavoritosCliente');
@@ -19,21 +20,26 @@ const MenuLateral = ({ isVisible, onClose }) => {
 
   useEffect(() => {
     if (state.uid) {
-      // Recupere a URL da foto do usuário no Firebase Realtime Database usando o UID do usuário
       const userUid = state.uid;
-      const databaseRef = ref(db, `users/${userUid}/imagem`); // Assuma que 'imagem' é o nome do nó com a URL da imagem
+      const databaseRef = ref(db, `users/${userUid}/imagem`);
 
-      // Obtenha o valor da URL da imagem
-      get(databaseRef) 
+      get(databaseRef)
         .then((snapshot) => {
           if (snapshot.exists()) {
             const photoUrl = snapshot.val();
             setUserPhotoUrl(photoUrl);
           }
+        })
+        .finally(() => {
+          setReloadData(false); // Define reloadData como false após o carregamento
         });
     }
-  }, [state.uid]);
+  }, [state.uid, reloadData]);
 
+
+  const handleConfiguraçao = () =>{
+    navigation.navigate("ConfiguracaoTela", {userPhotoUrl, username});
+  }
 
 
   if (!isVisible) {
@@ -47,21 +53,21 @@ const MenuLateral = ({ isVisible, onClose }) => {
     style={styles.menuContainer}
   >
 
-<View style={styles.ButtonContainer}>
-<TouchableOpacity onPress={onClose}><Feather name="menu" size={24} left={'80%'} marginTop={'5%'} color="black" />
-      </TouchableOpacity>
-</View>
-<View style={styles.HeaderContainer}>
-<View style={styles.header}>
-        <Image source={require('../../../assets/FrameLogo.png')} style={styles.logo} />
-        <Image source={{uri: userPhotoUrl}} style={styles.profileImage} />
-        <Text style={styles.username}>{username}</Text>
-        <Text style={styles.usernamearroba}>@{username}</Text>
-      </View>
-</View>
-<View style={styles.NavigationContainer}>
-<View style={styles.navigation}>
-        {/* Adicione opções de navegação aqui */}
+    <View style={styles.ButtonContainer}>
+    <TouchableOpacity onPress={onClose}><Feather name="menu" size={24} left={'80%'} marginTop={'5%'} color="black" />
+          </TouchableOpacity>
+    </View>
+    <View style={styles.HeaderContainer}>
+    <View style={styles.header}>
+            <Image source={require('../../../assets/FrameLogo.png')} style={styles.logo} />
+            <Image source={{uri: userPhotoUrl}} style={styles.profileImage} />
+            <Text style={styles.username}>{username}</Text>
+            <Text style={styles.usernamearroba}>@{username}</Text>
+          </View>
+    </View>
+    <View style={styles.NavigationContainer}>
+    <View style={styles.navigation}>
+        
         <TouchableOpacity>
           <Text style={styles.navText}><Feather  style={styles.Icon} name="home" size={24} />home</Text>
         </TouchableOpacity>
@@ -74,7 +80,7 @@ const MenuLateral = ({ isVisible, onClose }) => {
         <TouchableOpacity>
           <Text style={styles.navText}><Feather  style={styles.Icon} name="edit" size={24} />Curriculo</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleConfiguraçao}>
           <Text style={styles.navText}><Feather  style={styles.Icon} name="settings" size={24} />Configurações</Text>
         </TouchableOpacity>
 
