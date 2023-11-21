@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
+import { View, Text, Button, SectionList, StyleSheet, StatusBar } from 'react-native';
 import LinearButton from '../Componentes/LinearButton';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { TextInput } from 'react-native';
 import { useCardapio } from '../../services/CardapioContext'; // Importe o contexto
+import Navbar from '../Componentes/Navbar';
+
 export default function DetalhesCardapio({ route, navigation }) {
     const { novoCardapio, selectedRecipes } = route.params;
+
     const VoltarHome = () => {
-      navigation.navigate('CardapiosBuffet', {
-        novoCardapio,
-        selectedRecipes
-      });
+      navigation.goBack();
       
     };
       
@@ -32,6 +32,8 @@ export default function DetalhesCardapio({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <StatusBar hidden={false}/>
+      <Navbar/>
       <View style={{ padding: 16 }}>
 
         <View style={{ flexDirection: "row" }}>
@@ -46,6 +48,10 @@ export default function DetalhesCardapio({ route, navigation }) {
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.nome}>Valor do Cardápio:</Text>
           <Text style={styles.cardapioNome}>R$ {novoCardapio.totalCost}</Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.nome}>Data:</Text>
+          <Text style={styles.cardapioNome}>{novoCardapio.data}</Text>
         </View>
       </View>
   
@@ -65,9 +71,9 @@ export default function DetalhesCardapio({ route, navigation }) {
             <View style={{ marginLeft: 20 }}>
               <Text style={styles.ingredientesTitulo}>Ingredientes:</Text>
               {item.ingredientes.map((ingrediente, index) => (
-                <Text key={index} style={styles.ingredienteItem}>
-                  {ingrediente.nome} - {ingrediente.quantidade} - R$ {ingrediente.valor}
-                </Text>
+               <Text key={index} style={styles.ingredienteItem}>
+               {`${ingrediente.nome} - ${ingrediente.quantidade} - R$ ${ingrediente.valor}`}
+             </Text>
               ))}
             </View>
           </View>

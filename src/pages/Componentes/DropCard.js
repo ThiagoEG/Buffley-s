@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, ScrollView,
 import Collapsible from 'react-native-collapsible';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../../services/UserContext/index';
 
 // Importe as bibliotecas necessárias
 
@@ -13,7 +14,9 @@ function DropCard({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCos
   const [modalVisible, setModalVisible] = useState(false);
   const [items, setItems] = useState([]);
   const navigation = useNavigation();
-
+  const { state } = useUser();
+  const userId = state.uid;
+  
   const removeAccents = (str) => {
     if (str) { // Verifique se o texto não é undefined ou nulo
       return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -63,11 +66,49 @@ function DropCard({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCos
   
 
   const handleAddRecipe = (recipe) => {
-    const id = items.length + 1;
-    setItems([...items, { id, recipe }]);
-    setModalVisible(false);
-    onSelectRecipe(recipe, recipe.valor); 
+    if (recipe && recipe.ingredientes) {
+      const recipeId = recipe.id;
+  
+      // Check if the recipe with the same ID already exists in items
+      const recipeExists = items.some((item) => item.recipe.id === recipeId);
+  
+      if (recipeExists) {
+        // Recipe with the same ID already exists, handle accordingly
+        Alert.alert("Receita já foi adicionada");
+        setModalVisible(false)
+        // You may want to show an error message or take appropriate action
+      } else {
+        // Convert quantity values to numbers
+        recipe.ingredientes.forEach((ingrediente) => {
+          ingrediente.valor = parseFloat(ingrediente.valor);
+        });
+  
+
+
+        // Calculate the total cost of the recipe
+        const recipeCost = calcularCustoTotal(recipe);
+  
+        // Add the recipe to the selected recipes list
+        onSelectRecipe(recipe, recipeCost);
+  
+        // Add the recipe to the items list
+        const id = items.length + 1;
+        setItems([...items, { id, recipe }]);
+  
+        // Add the recipe cost to the total cost
+        setTotalCost((prevTotalCost) => prevTotalCost + recipeCost);
+  
+        // Close the modal
+        setModalVisible(false);
+      }
+    } else {
+      // Handle the case where recipe or recipe.ingredientes is undefined
+      console.error('Recipe or recipe.ingredientes is undefined');
+      // You may want to show an error message or take appropriate action
+    }
   };
+  
+  
 
   const calcularCustoTotal = (recipe) => {
     if (recipe && recipe.ingredientes) {
@@ -147,9 +188,15 @@ function DropCard({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCos
                   {searchedRecipes.map((recipe) => (
                     <View key={recipe.id} style={styles.modalRecipe}>
                       <Text style={{ flex: 1 }}>{recipe.nome}</Text>
-                      <TouchableOpacity onPress={() => handleAddRecipe(recipe)}>
-                        <Text style={{ fontSize: 18, color: 'green' }}>Adicionar</Text>
-                      </TouchableOpacity>
+                      {recipe.userId === userId ? (
+                        <TouchableOpacity onPress={() => handleAddRecipe(recipe)}>
+                          <Text style={{ fontSize: 18, color: 'blue' }}>Sua Receita</Text>
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity onPress={() => handleAddRecipe(recipe)}>
+                          <Text style={{ fontSize: 18, color: 'green' }}>Adicionar</Text>
+                        </TouchableOpacity>
+                      )}
                     </View>
                   ))}
                 </ScrollView>
@@ -235,7 +282,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 5,
     width: 350,
+    maxHeight: '85%', // Adicione esta linha para limitar a altura do modal
   },
+  
   modalRecipe: {
     flexDirection: 'row',
     alignItems: 'center',

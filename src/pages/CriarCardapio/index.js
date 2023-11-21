@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StatusBar, StyleSheet, Text, TextInput, View, } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, Text, TextInput, View, RefreshControl } from 'react-native';
 import Dropdown from '../Componentes/DropDown';
 import DatePickerComponent from '../Componentes/DataPicker'; // Certifique-se de que o componente de DatePicker esteja importado corretamente
 import DropCard from '../Componentes/DropCard';
@@ -13,15 +13,20 @@ import { db } from '../../services/firebaseConfigurations/firebaseConfig'; // Im
 import { globalData, setCurrentCardapioId } from '../../services/Globals/globalId';
 import { useUser } from '../../services/UserContext/index';
 
+
 const calcularCustoTotal = (receita) => {
   let custoTotal = 0;
 
-  receita.ingredientes.forEach((ingrediente) => {
-    custoTotal += ingrediente.valor;
-  });
+  if (receita && receita.ingredientes && Array.isArray(receita.ingredientes)) {
+    receita.ingredientes.forEach((ingrediente) => {
+      custoTotal += ingrediente.valor;
+    });
+  }
 
   return custoTotal;
 };
+
+
 
 const calcularCategoriaMaisBarata = (selectedRecipes) => {
   let categorias = {};
@@ -90,7 +95,11 @@ export default function Cardapio() {
   const { state } = useUser();
   const [uidDoBuffetConectado, setUidDoBuffetConectado] = useState(null);
   const cardapio = route.params?.cardapio;
+  const { setRefreshing } = route.params || {};
+  const [refreshing, setRefreshingState] = React.useState(false);
   const [recipesByCategory, setRecipesByCategory] = useState({});
+  const [data, setData] = useState('');
+  const [dataSelecionada, setDataSelecionada] = useState('');
   const categoriasDesejadas = [
     "Entradas",
     "Acompanhamentos",
@@ -108,6 +117,18 @@ export default function Cardapio() {
     categoriaMaisCara: '',
   });
   
+  const onRefresh = () => {
+    setRefreshingState(true);
+
+   fetchRecipesByCategory();
+
+    setRefreshingState(false);
+  };
+  
+  useEffect(() => {
+    // Automaticamente chama onRefresh quando a tela é inicializada
+    onRefresh();
+  }, []);
 
   const userID = state.uid;
 
@@ -127,6 +148,7 @@ export default function Cardapio() {
       categoriaMaisBarata: selectedRecipes.length > 0 ? calcularCategoriaMaisBarata(selectedRecipes).categoria : '',
       categoriaMaisCara: selectedRecipes.length > 0 ? calcularCategoriaMaisCara(selectedRecipes).categoria : '',
       userID: userID, 
+      data: dataSelecionada,
     };
   
     try {
@@ -152,12 +174,29 @@ export default function Cardapio() {
   };
   
   
+  const [selectedRecipeIds, setSelectedRecipeIds] = useState([]);
 
   const handleSelectRecipe = (recipe) => {
-    setSelectedRecipes([...selectedRecipes, recipe]);
-    const custoReceita = calcularCustoTotal(recipe);
-    setTotalCost(totalCost + custoReceita);
+    // Verificar se o ID da receita já está na lista de receitas selecionadas
+    const isRecipeSelected = selectedRecipeIds.includes(recipe.id);
+  
+    if (!isRecipeSelected) {
+      // Adicionar o ID da receita ao conjunto de IDs selecionados
+      setSelectedRecipeIds([...selectedRecipeIds, recipe.id]);
+
+      // Adicionar a receita à lista de receitas selecionadas
+      setSelectedRecipes([...selectedRecipes, recipe]);
+  
+      // Calcular o custo e adicioná-lo ao totalCost
+      const custoReceita = calcularCustoTotal(recipe);
+      //setTotalCost((prevTotalCost) => prevTotalCost + custoReceita);
+    }
   };
+  
+
+  
+  
+  
 
   useEffect(() => {
     const maisBarato = calcularCategoriaMaisBarata(selectedRecipes);
@@ -204,7 +243,11 @@ export default function Cardapio() {
   return (
     <View style={styles.container}>
       <StatusBar hidden={true} />
-      <ScrollView>
+      <ScrollView 
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Navbar />
 
         <View style={styles.containerCardapio}>
@@ -247,7 +290,10 @@ export default function Cardapio() {
             </View>
             <View style={styles.inputDrop}>
               <Text style={{ fontSize: 24, fontWeight: 'bold', }}>Data</Text>
-              <DatePickerComponent />
+              <DatePickerComponent
+                onSelectDate={(data) => setDataSelecionada(data)} // Corrija esta linha
+                style={styles.DatePicker}
+              />
             </View>
           </View>
 
@@ -257,7 +303,7 @@ export default function Cardapio() {
               recipes={recipesByCategory[categoria] || []}
               selectedRecipes={selectedRecipes}
               onSelectRecipe={handleSelectRecipe}
-              setSelectedRecipes={setSelectedRecipes} // Passe a função para remover receitas
+              setSelectedRecipes={setSelectedRecipes}
               cardInfoTitle={categoria}
               setTotalCost={setTotalCost}
             />

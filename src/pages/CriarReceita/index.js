@@ -9,6 +9,7 @@ import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useUser } from '../../services/UserContext/index';
 
 export default function CriarReceita() {
     const [nome, setNome] = useState('');
@@ -19,28 +20,39 @@ export default function CriarReceita() {
     const [errorMessage, setErrorMessage] = useState('');
     const [novoIngrediente, setNovoIngrediente] = useState('');
     const [novaQuantidade, setNovaQuantidade] = useState('');
+    const [novaQuantidadeUni, setNovaQuantidadeUni] = useState('');
     const [novoValor, setNovoValor] = useState('');
+    const [novaUnidade, setNovaUnidade] = useState('');
     const navigation = useNavigation();
+    const { state } = useUser();
+    const [refreshing, setRefreshing] = useState(false);
+    const userId = state.uid;
     
 
     const adicionarIngrediente = () => {
-        if (novoIngrediente && novaQuantidade && novoValor) {
-          setIngredientes([
-            ...ingredientes,
-            {
-              nome: novoIngrediente,
+      if (novoIngrediente && novaQuantidade && novoValor && novaQuantidadeUni) {
+        setIngredientes([
+          ...ingredientes,
+          {
+            nome: novoIngrediente,
+            quantidade: {
               quantidade: novaQuantidade,
-              valor: novoValor,
+              unidadeDeMedida: novaQuantidadeUni,
             },
-          ]);
+            valor: novoValor,
+          },
+        ]);
     
-          setNovoIngrediente('');
-          setNovaQuantidade('');
-          setNovoValor('');
-        } else {
-          Alert.alert('Campos em branco', 'Preencha todos os campos do ingrediente antes de adicioná-lo.');
-        }
-      };
+        setNovoIngrediente('');
+        setNovaQuantidade('');
+        setNovoValor('');
+        setNovaQuantidadeUni('');
+      } else {
+        Alert.alert('Campos em branco', 'Preencha todos os campos do ingrediente antes de adicioná-lo.');
+      }
+    };
+    
+    
     
       const removerIngrediente = (index) => {
         const novosIngredientes = [...ingredientes];
@@ -54,6 +66,10 @@ export default function CriarReceita() {
         setNome(text);
     };
 
+    const handleNovaUnidadeChange = (value) => {
+      setNovaUnidade(value);
+  };
+
     const handleIngredientesChange = (text) => {
         setIngredientes(text);
     };
@@ -63,28 +79,37 @@ export default function CriarReceita() {
     };
 
     const handleNumeroDePorcoesChange = (text) => {
-        setPorcao(text);
+      setPorcao(text);
     };
+    
 
     const handleCategoriaChange = (value) => {
         setCategoria(value);
     };
 
+    const handleCategoriaUniChange = (value) => {
+      setNovaQuantidadeUni(value);
+  };
 
     const handleSubmit = () => {
         console.log('Tentando salvar a receita...');
-        if (!nome || !ingredientes || !tempoDePreparo || porcao) {
+        if (!nome || ingredientes.length === 0 || !tempoDePreparo || !porcao) {
           console.log('Campos obrigatórios não preenchidos.');
           setErrorMessage('Preencha todos os campos obrigatórios.');
           return;
         }
+        
       
         const receitaData = {
           nome,
           ingredientes,
           tempoDePreparo,
-          porcao,
+          porcao:{
+            quantidade:porcao,
+            unidade:novaUnidade,
+          },
           categoria,
+          userId,
         };
       
         const receitasRef = ref(db, 'receitas');
@@ -111,9 +136,10 @@ export default function CriarReceita() {
         setCategoria('');
         setIngredientes([]);
         
-        navigation.navigate('Cardapio');
+        navigation.navigate('CriarCardapio', { receitaData, setRefreshing: () => setRefreshing(true) });
         
         Alert.alert("Sucesso", "Receita adicionada com sucesso!");
+        console.log("receita nova", receitaData);
       };
   
 
@@ -130,13 +156,7 @@ export default function CriarReceita() {
             value={nome}
             onChangeText={handleNomeReceitaChange}
           />
-          <LinearBorder
-            icon="kitchen"
-            placeholder="Número de Porções"
-            keyboardType="numeric"
-            value={porcao}
-            onChangeText={handleNumeroDePorcoesChange}
-          />
+          
           <LinearBorder
             icon="timer"
             placeholder="Tempo de Preparo (minutos)"
@@ -144,6 +164,25 @@ export default function CriarReceita() {
             value={tempoDePreparo}
             onChangeText={handleTempoDePreparoChange}
           />
+
+          <Text style={styles.subTitle}>Porção</Text>
+
+          <LinearBorder
+            icon="kitchen"
+            placeholder="Número de Porções"
+            keyboardType="numeric"
+            value={porcao}
+            onChangeText={handleNumeroDePorcoesChange}
+          />
+          <View style={styles.containerPicker}>
+                        <Picker
+                            style={styles.PickerInput}
+                            selectedValue={novaUnidade}
+                            onValueChange={handleNovaUnidadeChange}>
+                            <Picker.Item label="porção" value="porção" />
+                        </Picker>
+                    </View>
+          
 
           <Text style={styles.subTitle}>Categoria</Text>
           <View style={styles.containerPicker}>
@@ -166,7 +205,7 @@ export default function CriarReceita() {
             renderItem={({ item, index }) => (
               <View style={styles.ingredientRow}>
                 <Text style={styles.ingredientText}>
-                  {item.nome}: {item.quantidade} ({item.valor})
+                  {item.nome}: R${item.valor} ({item.quantidade.quantidade}  {item.quantidade.unidadeDeMedida})
                 </Text>
                 <TouchableOpacity onPress={() => removerIngrediente(index)}>
                   <MaterialIcons name="delete" size={20} color="red" />
@@ -182,16 +221,31 @@ export default function CriarReceita() {
             onChangeText={setNovoIngrediente}
           />
           <LinearBorder
-            placeholder="Quantidade"
-            value={novaQuantidade}
-            onChangeText={setNovaQuantidade}
-          />
-          <LinearBorder
             placeholder="Valor do Ingrediente"
             keyboardType="numeric"
             value={novoValor}
             onChangeText={setNovoValor}
           />
+          <Text style={styles.subTitle} >Quantidade</Text>
+          <LinearBorder
+            placeholder="Quantidade"
+            value={novaQuantidade}
+            onChangeText={setNovaQuantidade}
+            keyboardType="numeric"
+          />
+          <View style={styles.containerPicker}>
+                        <Picker
+                            style={styles.PickerInput}
+                            selectedValue={novaQuantidadeUni}
+                            onValueChange={handleCategoriaUniChange}>
+                            <Picker.Item label="Selecionar Medida" value="" />
+                            <Picker.Item label="Gramas" value="g" />
+                            <Picker.Item label="Kilo" value="kg" />
+                            <Picker.Item label="Unidade" value="u" />
+                            <Picker.Item label="Colher de cha" value="Colher de cha" />
+                        </Picker>
+                    </View>
+          
           <TouchableOpacity
             style={styles.buttonContainer}
             onPress={adicionarIngrediente}
@@ -288,14 +342,14 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
       },
       containerPicker: {
-        width: '80%',
+        width: '85%',
         marginTop: 10,
         borderRadius: 5,
         height: 45,
         backgroundColor: 'white',
         borderWidth: 3,
         borderColor: 'rgba(255, 203, 210, 0.8)',
-        marginHorizontal: 35,
+        alignSelf: "center",
       },
 
       tamanho:{

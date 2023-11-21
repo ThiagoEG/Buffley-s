@@ -15,6 +15,7 @@ const calcularMediaAvaliacoes = (avaliacoes) => {
 
   return media;
 };
+
 const CardComponent = ({ buffetData  }) => {
   const { nome, endereco, imagem } = buffetData;
   const [mediaAvaliacoes, setMediaAvaliacoes] = useState(0); // Certifique-se de que esta linha está correta
@@ -384,7 +385,7 @@ const CardComponent = ({ buffetData  }) => {
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
-    width: '80%',
+    width: '85%',
     alignSelf: 'center',
   },
   cardImage: {

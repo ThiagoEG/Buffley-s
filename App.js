@@ -28,7 +28,6 @@ export default function App() {
 
   // Quando o carregamento estiver concluído, renderizar o conteúdo do aplicativo.
   return (
-
     <SideMenuProvider>
     <AuthProvider>
       <BuffetProvider>

@@ -5,6 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { ref, get } from 'firebase/database';
 import { db } from '../../services/firebaseConfigurations/firebaseConfig';
 import { useCardapio } from '../../services/CardapioContext'; // Importe o contexto
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 // Importe a variável global e a função para defini-la do arquivo global.js
 import { globalData, setCurrentCardapioId } from '../../services/Globals/globalId';
@@ -16,6 +17,14 @@ const CardInfo = ({ cardapioId }) => {
   // Acesse o cardapioId da variável global em vez de usar route.params
 
   const [novoCardapio, setNovoCardapio] = useState(null);
+
+  const [phoneIconColor, setPhoneIconColor] = useState('grey');
+  const [phoneIcon, setPhoneIcon] = useState('star-o');
+
+  const handlePhoneIconPress = () =>{
+    setPhoneIconColor((prevColor) => (prevColor === 'grey' ? 'green': 'grey'));
+    setPhoneIcon((prevIcon) => (prevIcon === 'star-o'? 'star': 'star-o'))
+  }
 
   const loadCardapio = async () => {
     const cardapioRef = ref(db, `cardapios/${cardapioId}`);
@@ -48,8 +57,9 @@ const CardInfo = ({ cardapioId }) => {
     <View style={styles.cardInfoContainer}>
       {novoCardapio ? (
         <>
-          <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center', paddingRight: 8, }}>
             <Text style={styles.cardName}>{novoCardapio.nomeCardapio}</Text>
+            <Icon name={phoneIcon} size={35} color={phoneIconColor} onPress={handlePhoneIconPress}/>
           </View>
           <View style={{ flexDirection: 'row', width: 'auto', height: 'auto' }}>
             <View style={styles.retangulo}>
@@ -57,6 +67,9 @@ const CardInfo = ({ cardapioId }) => {
             </View>
             <View style={styles.retangulo}>
               <Text style={styles.textRec}>R$ {novoCardapio.totalCost}</Text>
+            </View>
+            <View style={styles.retangulo}>
+              <Text style={styles.textRec}>{novoCardapio.data}</Text>
             </View>
           </View>
           <View style={styles.containerInfo}>

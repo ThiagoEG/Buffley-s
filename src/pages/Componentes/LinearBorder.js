@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   linearComp: {
     borderWidth: 3,
     height: 45,
-    width: 340,
+    width: '85%',
     borderColor: 'rgba(255, 203, 210, 0.8)',
     borderRadius: 5,
     marginTop: 16,

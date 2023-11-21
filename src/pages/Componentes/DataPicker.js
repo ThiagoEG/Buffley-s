@@ -3,38 +3,37 @@ import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; // Importe o MaterialIcons
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const DatePickerComponent = () => {
+const DatePickerComponent = ({ onSelectDate, style }) => {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedDateText, setSelectedDateText] = useState('');
+
+  const formatDate = (selectedDate) => {
+    const day = selectedDate.getDate();
+    const month = selectedDate.getMonth() + 1;
+    const year = selectedDate.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShowDatePicker(Platform.OS === 'ios'); // Para iOS, sempre mostre o seletor de data
+    setShowDatePicker(Platform.OS === 'ios');
     setDate(currentDate);
-    setSelectedDateText(formatDate(currentDate));
+
+    // Pass the formatted selected date back to the parent component
+    onSelectDate(formatDate(currentDate));
   };
 
   const showDatepicker = () => {
     setShowDatePicker(true);
   };
 
-  const formatDate = (date) => {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
-
   return (
-    <View style={{alignSelf: 'center'}}>
-      <TouchableOpacity onPress={showDatepicker} >
-        <View style={styles.datePickerButton}>
-          <MaterialIcons name="date-range" size={24} color="gray" />
-          <Text style={styles.datePickerButtonText}>
-            Data: {selectedDateText || 'Selecionar Data'}
-          </Text>
-        </View>
+    <View style={[styles.datePickerContainer, style]}>
+      <TouchableOpacity onPress={showDatepicker} style={styles.datePickerButton}>
+        <MaterialIcons name="date-range" size={24} color="gray" />
+        <Text style={styles.datePickerButtonText}>
+          Data: {formatDate(date) || 'Selecionar Data'}
+        </Text>
       </TouchableOpacity>
       {showDatePicker && (
         <DateTimePicker
