@@ -28,6 +28,7 @@ import CriarFuncionario from '../pages/CriarFuncionario'
 import DetalhesCardapio from '../pages/DetalhesCardapio'
 import FavoritosCliente from '../pages/FavoritosCliente'
 import PreferenciasDetalhes from '../pages/PreferenciasDetalhes';
+import ConfiguracaoTela from '../pages/Configuracao';
 
 const iconesDasGuias = {
     Home: 'home', // Substitua 'home' pelo nome real do ícone que você deseja usar
@@ -113,6 +114,7 @@ function StackNavigator() {
       <Stack.Screen name="DetalhesCardapio" component={DetalhesCardapio} options={{ headerShown: false }} />
       <Stack.Screen name="FavoritosCliente" component={FavoritosCliente} options={{ headerShown: false }} />
       <Stack.Screen name="PreferenciasDetalhes" component={PreferenciasDetalhes} options={{ headerShown: false }} />
+      <Stack.Screen name="ConfiguracaoTela" component={ConfiguracaoTela} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

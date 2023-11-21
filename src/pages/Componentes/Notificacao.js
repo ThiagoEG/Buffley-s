@@ -1,11 +1,19 @@
+// Componente Notificacao
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
-const Notification = ({ userImage, text }) => {
+const Notification = ({ userImage, text, children }) => {
   return (
     <View style={styles.container}>
-      <Image source={{ uri: userImage }} style={styles.userImage} />
-      <Text style={styles.notificationText}>{text}</Text>
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: userImage }} style={styles.userImage} />
+      </View>
+      <View style={styles.textContainer}>
+        <Text>{text}</Text>
+      </View>
+      <View style={styles.childrenContainer}>
+        {children}
+      </View>
     </View>
   );
 };
@@ -14,19 +22,23 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
+//    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
     padding: 10,
-    backgroundColor: 'white',
-    margin: 5,
+  },
+  imageContainer: {
+    marginRight: 10,
   },
   userImage: {
     width: 50,
     height: 50,
-    borderRadius: 25, // Define uma borda circular
-    marginRight: 10,
+    borderRadius: 25,
   },
-  notificationText: {
-    flex: 1, // Permite que o texto ocupe todo o espaço restante na linha
-    color: 'black',
+  textContainer: {
+    flex: 1,
+  },
+  childrenContainer: {
+    marginLeft: 10,
   },
 });
 

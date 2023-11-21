@@ -96,6 +96,7 @@ export default function HomeBuffet({ navigation,  }) {
               data={preferencia.data}
               preferenciasId={preferencia.id}
               preferenciasCliente={preferencia.preferenciasCliente}
+              clienteImagemUrl={preferencia.clienteImagemUrl}
             />
           );
         } else {

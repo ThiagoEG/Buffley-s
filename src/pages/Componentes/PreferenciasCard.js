@@ -5,54 +5,63 @@ import { ref, get } from 'firebase/database';
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
 
-export default function PreferenciasCard({ nome, qtdsPessoas, data, preferenciasId, preferenciasCliente  }) {
+export default function PreferenciasCard({ nome, qtdsPessoas, data, preferenciasId, preferenciasCliente, clienteImagemUrl }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [preferenciasData, setPreferenciasData] = useState(null);
   const navigation = useNavigation();
 
+  const handleDetalhes = async () => {
+    try {
+      const preferenciasRef = ref(db, `preferencias/${preferenciasId}`);
+      const preferenciasSnapshot = await get(preferenciasRef);
 
-const handleDetalhes = async () => {
-  try {
-    const preferenciasRef = ref(db, `preferencias/${preferenciasId}`);
-    const preferenciasSnapshot = await get(preferenciasRef);
-
-    if (preferenciasSnapshot.exists()) {
-      const preferenciasData = preferenciasSnapshot.val();
-      // Navegue para a tela de detalhes passando os dados da preferência como parâmetro
-      navigation.navigate('PreferenciasDetalhes', { preferenciasData });
-    } else {
-      console.error('Preferencias data not found.');
+      if (preferenciasSnapshot.exists()) {
+        const preferenciasData = preferenciasSnapshot.val();
+        // Navegue para a tela de detalhes passando os dados da preferência como parâmetro
+        navigation.navigate('PreferenciasDetalhes', { preferenciasData });
+      } else {
+        console.error('Preferencias data not found.');
+      }
+    } catch (error) {
+      console.error('Error fetching preferencias details:', error);
     }
-  } catch (error) {
-    console.error('Error fetching preferencias details:', error);
-  }
-};
+  };
 
+  useEffect(() => {
+    console.log('Cliente Imagem URL:', clienteImagemUrl);
 
-  
+    // Adicione um log para verificar se a URL está correta
+    Image.getSize(clienteImagemUrl, (width, height) => {
+      console.log('Imagem carregada com sucesso. Tamanho:', width, height);
+    }, (error) => {
+      console.error('Erro ao carregar a imagem:', error);
+    });
+  }, [clienteImagemUrl]);
+
   return (
     <View style={styles.container}>
       <View style={styles.retangulo1}>
         <View style={styles.titleSol}>
-          <Image source={require('../../../assets/imgPessoas.png')} style={styles.imagem} />
+          <Image source={{ uri: clienteImagemUrl }} style={styles.imagem} />
           <View style={styles.titleSol2}>
             <Text style={styles.title1}>{nome}</Text>
-            <Text style={styles.title2}>{qtdsPessoas}</Text>
-            <Text style={styles.title2}>{data}</Text>
+            <Text style={styles.title2}>Quantidade de pessoas: {qtdsPessoas}</Text>
+            <Text style={styles.title2}>Data: {data}</Text>
           </View>
         </View>
         <TouchableOpacity onPress={handleDetalhes}>
           <Image source={require('../../../assets/MenuDots.png')} style={styles.imagemIcon} />
         </TouchableOpacity>
       </View>
-
     </View>
   );
 }
+
+
 const styles = StyleSheet.create({
   retangulo1: {
     width: '85%',
-    height: 75,
+    height: 100,
     backgroundColor: 'white',
     marginTop: 15,
     marginHorizontal: 36,
@@ -79,7 +88,7 @@ const styles = StyleSheet.create({
   },
 
   title1: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     marginTop: '10%',
   },
@@ -96,6 +105,8 @@ const styles = StyleSheet.create({
   },
 
   imagem: {
+    width: 70,
+    height: 70,
     margin: '5%',
   },
 });
