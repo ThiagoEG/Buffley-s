@@ -1,69 +1,104 @@
-import { StatusBar } from 'expo-status-bar';
+// BuffetPerfil.js
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Navbar from '../Componentes/Navbar';
-import Imagem from '../Componentes/Imagem';
-import Stars from '../Componentes/Stars';
-import CardCardapio from '../componentes2/CardCardapio';
-import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { ref, get as getData, query, orderByChild, equalTo } from 'firebase/database';
+import { useUser } from '../../services/UserContext/index';
+import { db } from '../../services/firebaseConfigurations/firebaseConfig';
+import CardCardapio from '../componentes2/CardCardapio'; // Importe o componente CardCardapio
 
-import calcularMediaAvaliacoes from '../../services/Globals/calculoMediaAvaliacoes';
-
-export default function BuffetPerfil() {
+const BuffetPerfil = () => {
   const navigation = useNavigation();
   const route = useRoute();
-
   const { buffetData } = route.params;
+  const { userId } = useUser();
+  const buffetName = buffetData.BuffetNome
+  const [cardapiosFavoritos, setCardapiosFavoritos] = useState([]);
 
-  // Estado para armazenar a média das avaliações
-  const {mediaAvaliacoes} = route.params;
-
+  const getBuffetIdByName = async (buffetNome) => {
+    try {
+      const buffetRef = ref(db, 'buffets');
+      const buffetQuery = query(buffetRef, orderByChild('nome'), equalTo(buffetNome));
+      const buffetSnapshot = await getData(buffetQuery);
   
+      if (buffetSnapshot.exists()) {
+        // Obtenha o ID do buffet correspondente ao nome
+        const buffetId = Object.keys(buffetSnapshot.val())[0];
+        return buffetId;
+      } else {
+        console.error('Buffet não encontrado no banco de dados.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o buffet:', error);
+      return null;
+    }
+  };
+
+  const loadCardapiosFavoritos = async (buffetId) => {
+    try {
+      const favoritosRef = ref(db, 'Favoritos');
+      const favoritosSnapshot = await getData(query(favoritosRef, orderByChild('BuffetID'), equalTo(buffetId)));
+  
+      if (favoritosSnapshot.exists()) {
+        const favoritosData = favoritosSnapshot.val();
+        const cardapiosFavoritosBuffet = Object.values(favoritosData);
+  
+        console.log('Cardápios Favoritos do Buffet:', cardapiosFavoritosBuffet);
+  
+        setCardapiosFavoritos(cardapiosFavoritosBuffet); 
+      } else {
+        console.error('Nenhum cardápio favorito encontrado para este buffet.');
+        setCardapiosFavoritos([]); 
+      }
+    } catch (error) {
+      console.error('Erro ao carregar cardápios favoritos:', error);
+    }
+  };
+  
+  
+
+  const loadFavoritos = async () => {
+    if (buffetData.nome) {
+      console.log('Nome do buffet:', buffetData.nome);
+  
+      const buffetId = await getBuffetIdByName(buffetData.nome);
+  
+      if (buffetId) {
+        console.log('ID do buffet encontrado:', buffetId);
+        await loadCardapiosFavoritos(buffetId);
+      } else {
+        console.error('ID do buffet não encontrado.');
+      }
+    } else {
+      console.error('Nome do buffet não definido.');
+    }
+  };
+  
+  
+  
+ 
   const handlePress = () => {
     navigation.navigate('Preferencias', { BuffetNome: buffetData.nome });
   };
 
-  const renderStars = (rating) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <FontAwesome
-          key={i}
-          name={i <= rating ? 'star' : 'star-o'}
-          size={20}
-          color={i <= rating ? 'gold' : 'gray'}
-        />
-      );
-    }
-    return stars;
-  };
-
-  // Use useEffect para calcular a média das avaliações quando o componente for montado
   useEffect(() => {
-    const calcularMedia = async () => {
-      // Chame a função para calcular a média
-      const media = await calcularMediaAvaliacoes(buffetData.id);
-      // Atualize o estado com a média calculada
-      setMediaAvaliacoes(media);
-    };
-
-    // Chame a função para calcular a média quando o componente for montado
-    calcularMedia();
-  }, [buffetData.id]);
+    loadFavoritos();
+  }, [buffetData.nome]);
+  
 
   return (
     <ScrollView style={styles.container}>
       <Navbar />
       <Image style={styles.cardImage} source={{ uri: buffetData.imagem }} />
       <Text style={styles.title}>{buffetData.nome}</Text>
-      <Text style={styles.mediaText}>Avaliação: {renderStars(mediaAvaliacoes)}</Text>
       <Text style={styles.subtitle}>Cardápios Disponíveis</Text>
-      <CardCardapio />
-      <CardCardapio />
-      <CardCardapio />
-      
-
+      <View>
+        {cardapiosFavoritos.map((cardapio) => (
+          <CardCardapio key={cardapio.CardapioID} cardapioData={cardapio} buffetData={buffetData} />
+        ))}
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handlePress}>
           <Image
@@ -74,7 +109,7 @@ export default function BuffetPerfil() {
       </View>
     </ScrollView>
   );
-}
+};
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -95,11 +130,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     margin: 16,
   },
-  mediaText: {
-    fontSize: 18,
-    textAlign: 'left',
-    margin: 16,
-  },
   buttonContainer: {
     alignItems: 'center',
     margin: 16,
@@ -112,3 +142,5 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
 });
+
+export default BuffetPerfil;

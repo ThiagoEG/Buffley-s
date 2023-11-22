@@ -19,8 +19,8 @@ export default function Welcome() {
   const navigation = useNavigation();
   const { state } = useUser();
   const userId = state.uid;
-  const route = useRoute(); 
-  const { BuffetNome } = route.params || {};
+  const route = useRoute();
+  const { BuffetNome, cardapioData } = route.params || {};
 
   const [carneItens, setCarneItens] = useState([]);
   const [guarnicaoItens, setGuarnicaoItens] = useState([]);
@@ -28,8 +28,16 @@ export default function Welcome() {
   const [bolosItens, setBolosItens] = useState([]);
   const [entradaItens, setEntradaItens] = useState([]);
   const [bebidaItens, setBebidaItens] = useState([]);
+  console.log("teste", BuffetNome, cardapioData)
 
-
+useEffect(() => {
+    // Se cardapioData for fornecido, preencha automaticamente os campos
+    if (cardapioData) {
+      setNome(cardapioData.Nome || ''); // Substitua 'Nome' pelo campo correto do objeto cardapioData
+      setQtdPessoas(cardapioData.QuantidadePessoas || ''); // Substitua 'QuantidadePessoas' pelo campo correto
+      // ... Preencha outros campos conforme necessário
+    }
+  }, [cardapioData]);
 
   const [dataSelecionada, setDataSelecionada] = useState('');
 
@@ -98,26 +106,26 @@ export default function Welcome() {
       return;
     }
   
-      const clienteImagemRef = ref(db, `clientes/${userId}/imagem`);
-      const clienteImagemSnapshot = await get(clienteImagemRef);
-      const clienteImagemUrl = clienteImagemSnapshot.exists() ? clienteImagemSnapshot.val() : null;
-
-      const dadosPreferencias = {
-        nome,
-        qtdPessoas,
-        data: dataSelecionada,
-        userId: userId,
-        buffetId: await getBuffetId(BuffetNome),
-        preferenciasCliente: {
-          carnes: carneItens,
-          guarnicao: guarnicaoItens,
-          salada: saladaItens,
-          bolos: bolosItens,
-          entrada: entradaItens,
-          bebida: bebidaItens,
-        },
-        clienteImagemUrl: clienteImagemUrl, // Inclua a URL da imagem no objeto
-      };
+    const clienteImagemRef = ref(db, `clientes/${userId}/imagem`);
+    const clienteImagemSnapshot = await get(clienteImagemRef);
+    const clienteImagemUrl = clienteImagemSnapshot.exists() ? clienteImagemSnapshot.val() : null;
+  
+    const dadosPreferencias = {
+      nome,
+      qtdPessoas,
+      data: dataSelecionada,
+      userId: userId,
+      buffetId: await getBuffetId(BuffetNome),
+      preferenciasCliente: {
+        carnes: carneItens,
+        guarnicao: guarnicaoItens,
+        salada: saladaItens,
+        bolos: bolosItens,
+        entrada: entradaItens,
+        bebida: bebidaItens,
+      },
+      clienteImagemUrl: clienteImagemUrl,
+    };
   
     try {
       const preferenciasRef = ref(db, 'preferencias');
@@ -142,7 +150,7 @@ export default function Welcome() {
         setEntradaItens([]);
         setBebidaItens([]);
         setErrors({});
-        
+  
         navigation.navigate('HomeScreen');
   
         Alert.alert('Sucesso', 'Preferências salvas com sucesso!');
@@ -161,20 +169,24 @@ export default function Welcome() {
       <View style={styles.containerForm}>
         <Text style={styles.sectionTitle}>Dados</Text>
 
-        <LinearBorder icon="person" placeholder="Nome do Cardápio" 
-          onChangeText={text => setNome(text)}
+        <LinearBorder
+          icon="person"
+          placeholder="Nome do Cardápio"
+          value={nome} // Atualizado para exibir o valor do estado
+          onChangeText={(text) => setNome(text)}
         />
 
         <View style={{flexDirection: "row"}[styles.componets]}>
-          <LinearBorder icon="groups" placeholder="Quantidade de pessoas" 
-            onChangeText={text => setQtdPessoas(text)} 
-            keyboardType="numeric"
-          />
+        <LinearBorder
+  icon="groups"
+  placeholder="Quantidade de pessoas"
+  value={qtdPessoas.toString()} // Convertendo para string
+  onChangeText={(text) => setQtdPessoas(text)}
+  keyboardType="numeric"
+/>
 
-          <DatePickerComponent
-          onSelectDate={(data) => setDataSelecionada(data)} // Corrija esta linha
-          style={styles.DatePicker}
-        />
+
+<DatePickerComponent onSelectDate={(data) => setDataSelecionada(data)} style={styles.DatePicker} />
         </View>
 
         
