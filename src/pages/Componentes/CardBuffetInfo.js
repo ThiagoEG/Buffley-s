@@ -81,6 +81,15 @@ const CardInfo = ({ cardapioId }) => {
       if (snapshot.exists()) {
         const cardapioData = snapshot.val();
         setNovoCardapio(cardapioData);
+
+        // Verificar se o cardápio está favoritado
+        const favoritoRef = ref(db, `Favoritos/${userId}_${cardapioId}`);
+        const favoritoSnapshot = await get(favoritoRef);
+        if (favoritoSnapshot.exists()) {
+          setFavoritado(true);
+          setPhoneIconColor('green');
+          setPhoneIcon('star');
+        }
       } else {
         console.error('Cardápio não encontrado no banco de dados.');
       }
