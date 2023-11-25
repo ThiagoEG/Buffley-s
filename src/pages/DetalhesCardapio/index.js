@@ -9,12 +9,43 @@ import Navbar from '../Componentes/Navbar';
 export default function DetalhesCardapio({ route, navigation }) {
     const { novoCardapio, selectedRecipes } = route.params;
 
+
     const VoltarHome = () => {
-      navigation.goBack();
+      navigation.navigate('Cardapios');
       
     };
       
-      
+
+    useEffect(() => {
+      if (selectedRecipes) {
+        const totalCost = selectedRecipes.reduce((acc, recipe) => {
+          return (
+            acc +
+            recipe.ingredientes.reduce((acc, ingrediente) => {
+              const quantidade = ingrediente.quantidade.valor;
+              const valor = ingrediente.valor;
+              return acc + quantidade * valor * novoCardapio.numeroConvidados;
+            }, 0)
+          );
+        }, 0);
+  
+        // Update the total cost in novoCardapio
+        novoCardapio.totalCost = totalCost;
+      }
+    }, [novoCardapio, selectedRecipes]);
+  
+    
+    useEffect(() => {
+      if (novoCardapio && novoCardapio.selectedRecipes) {
+        const totalCost = novoCardapio.selectedRecipes.reduce((acc, recipe) => {
+          // ... rest of your code
+        });
+  
+        // Update the total cost in novoCardapio
+        setNovoCardapio((prev) => ({ ...prev, totalCost }));
+      }
+    }, [novoCardapio]);
+  
   // Agrupe as receitas selecionadas por categoria manualmente
   const groupedRecipes = {};
 
@@ -47,7 +78,7 @@ export default function DetalhesCardapio({ route, navigation }) {
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.nome}>Valor do Cardápio:</Text>
-          <Text style={styles.cardapioNome}>R$ {novoCardapio.totalCost}</Text>
+          <Text style={styles.cardapioNome}>R$ {novoCardapio.totalCost.toFixed(2)}</Text>
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.nome}>Data:</Text>
@@ -66,15 +97,14 @@ export default function DetalhesCardapio({ route, navigation }) {
           <View style={styles.receitaContainer}>
             <View style={{flexDirection: 'row'}}>
               <Text style={styles.receitaNome}>{item.nome}</Text>
-              <Text style={styles.receitaNome}>R$ {item.valor}</Text>
             </View>
             <View style={{ marginLeft: 20 }}>
               <Text style={styles.ingredientesTitulo}>Ingredientes:</Text>
-              {item.ingredientes.map((ingrediente, index) => (
-               <Text key={index} style={styles.ingredienteItem}>
-               {`${ingrediente.nome} - ${ingrediente.quantidade} - R$ ${ingrediente.valor}`}
-             </Text>
-              ))}
+            {item.ingredientes.map((ingrediente, index) => (
+              <Text key={index} style={styles.ingredienteItem}>
+                {`${ingrediente.nome} - ${ingrediente.quantidade && ingrediente.quantidade.valor * novoCardapio.numeroConvidados} ${ingrediente.quantidade && ingrediente.quantidade.unidade} - R$ ${ingrediente.valor.toFixed(2) * novoCardapio.numeroConvidados}`}
+              </Text>
+            ))}
             </View>
           </View>
         )}

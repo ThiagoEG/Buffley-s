@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigation, useRoute  } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions, Alert, StatusBar } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SideMenu from '../Componentes/SideMenu';
@@ -13,6 +13,7 @@ import PreferenciasCard from '../Componentes/PreferenciasCard';
 import CustomModal from '../componentes2/Modal';
 import { ref, push, set, get } from 'firebase/database';
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -80,6 +81,7 @@ export default function HomeBuffet({ navigation,  }) {
 
   return (
     <View style={styles.container}>
+      <StatusBar hidden={true}/>
       <Navbar navigation={navigation} onMenuPress={toggleMenu} />
       <SideMenu isVisible={menuVisible} onClose={toggleMenu} />
 
@@ -100,12 +102,11 @@ export default function HomeBuffet({ navigation,  }) {
             />
           );
         } else {
-          // If buffetId doesn't match, return null or an empty fragment
-          return null;
+          <Text> você não possui solicitações de cardapio </Text>
         }
       })}
 
-        <Text style={styles.title}>Seus cardápios</Text>
+        <Text style={styles.title}>Seus cardápios Salvos</Text>
       </ScrollView>
     </View>
   );

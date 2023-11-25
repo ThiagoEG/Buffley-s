@@ -6,7 +6,13 @@ import { MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { ref, push, set, get } from 'firebase/database';
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
-import { useUser  } from '../../services/UserContext/index';
+import { useUser } from '../../services/UserContext/index';
+import { getStorage, ref as storageRef, getDownloadURL, uploadBytes } from 'firebase/storage';
+import LinearButton from '../Componentes/LinearButton';
+
+
+
+
 
 
 const ConfiguracaoTela = () => {
@@ -18,6 +24,7 @@ const ConfiguracaoTela = () => {
   const { state } = useUser();
   const userId = state.uid;
   const navigation = useNavigation();
+  const storage = getStorage();
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -38,8 +45,8 @@ const ConfiguracaoTela = () => {
 
 
   const handleSavePress = async () => {
-    
-  
+
+
     try {
       // Verificar se o ID existe em users
       const userSnapshot = await get(ref(db, `users/${userId}`));
@@ -47,55 +54,68 @@ const ConfiguracaoTela = () => {
         // Atualizar o nome de usuário para users
         await set(ref(db, `users/${userId}/nome`), username);
       }
-  
+
       // Verificar se o ID existe em buffets
       const buffetSnapshot = await get(ref(db, `buffets/${userId}`));
       if (buffetSnapshot.exists()) {
         // Atualizar o nome de usuário para buffets
         await set(ref(db, `buffets/${userId}/nome`), username);
       }
-  
+
       // Verificar se o ID existe em clientes
       const clienteSnapshot = await get(ref(db, `clientes/${userId}`));
       if (clienteSnapshot.exists()) {
         // Atualizar o nome de usuário para clientes
         await set(ref(db, `clientes/${userId}/nome`), username);
       }
-  
-      // Verificar se há uma nova imagem para ser atualizada
+
       if (imageUri) {
-        // Enviar a nova imagem para o storage (substitua 'images' pelo seu caminho correto)
-        const imageRef = ref(db, `images/${userId}`);
-        await set(imageRef, imageUri);
+        // Enviar a nova imagem para o Firebase Storage
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
+  
+        // Determine the storage path based on the user type
+        let storagePath;
+        if (userSnapshot.exists()) {
+          storagePath = `Imagens/Perfil/Usuarios`;
+        } else if (buffetSnapshot.exists()) {
+          storagePath = `Imagens/Perfil/Buffet`;
+        } else if (clienteSnapshot.exists()) {
+          storagePath = `Imagens/Perfil/Cliente`;
+        }
+  
+        const storageRef = storageRef(db.storage(), storagePath);
+        await uploadBytes(storageRef, blob);
+  
+        // Obter a URL da imagem no Firebase Storage
+        const imageUrl = await getDownloadURL(storageRef);
   
         // Atualizar a URL da imagem para users
         if (userSnapshot.exists()) {
-          const imageUrl = await get(imageRef);
-          await set(ref(db, `users/${userId}/imagem`), imageUrl.val());
+          await set(ref(db, `users/${userId}/imagem`), imageUrl);
         }
   
         // Atualizar a URL da imagem para buffets
         if (buffetSnapshot.exists()) {
-          const imageUrl = await get(imageRef);
-          await set(ref(db, `buffets/${userId}/imagem`), imageUrl.val());
+          await set(ref(db, `buffets/${userId}/imagem`), imageUrl);
         }
   
         // Atualizar a URL da imagem para clientes
         if (clienteSnapshot.exists()) {
-          const imageUrl = await get(imageRef);
-          await set(ref(db, `clientes/${userId}/imagem`), imageUrl.val());
+          await set(ref(db, `clientes/${userId}/imagem`), imageUrl);
         }
-
-        navigation.goBack()
-      }
   
+        navigation.goBack();
+      }
+
+
       console.log('Alterações salvas com sucesso!');
     } catch (error) {
       console.error('Erro ao salvar as alterações:', error.message);
     }
   };
-  
-  const handleEditNome = ()=>{
+
+  const handleEditNome = () => {
     setIsEditing(false);
   }
 
@@ -114,7 +134,7 @@ const ConfiguracaoTela = () => {
           </View>
         </TouchableOpacity>
 
-        <View style={{ alignItems: 'center', flexDirection: 'row', gap: 12 }}>
+        <View style={{ alignItems: 'center', flexDirection: 'row', gap: 12, marginBottom:20, }}>
           {isEditing ? (
             <TextInput
               style={styles.nomeUsuario}
@@ -138,9 +158,8 @@ const ConfiguracaoTela = () => {
         </View>
       </View>
 
-      <TouchableOpacity onPress={handleSavePress}>
-        <Text>Salavar alterações</Text>
-      </TouchableOpacity>
+
+      <LinearButton title="Salavar alterações" onPress={handleSavePress}/>
     </View>
   );
 };

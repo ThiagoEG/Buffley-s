@@ -5,10 +5,9 @@ import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '../../services/UserContext/index';
 
-// Importe as bibliotecas necessárias
 
-function DropCard({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCost, setSelectedRecipes  }) {
-  const [inputText, setInputText] = useState('');
+
+const DropCard = ({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCost, setSelectedRecipes, numeroConvidados, onRemoveRecipe }) => {  const [inputText, setInputText] = useState('');
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [searchedRecipes, setSearchedRecipes] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -18,10 +17,10 @@ function DropCard({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCos
   const userId = state.uid;
   
   const removeAccents = (str) => {
-    if (str) { // Verifique se o texto não é undefined ou nulo
+    if (str) { 
       return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     } else {
-      return ''; // Ou retorne um valor padrão, dependendo do seu caso
+      return ''; 
     }
   };
 
@@ -34,8 +33,8 @@ function DropCard({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCos
   
     if (searchText) {
       const foundRecipes = recipes.filter((recipe) => {
-        const recipeName = recipe && recipe.nome && removeAccents(recipe.nome.toLowerCase()); // Verifique se recipe e recipe.nome não são nulos
-        return recipeName && recipeName.includes(searchText); // Verifique novamente se recipeName não é nulo
+        const recipeName = recipe && recipe.nome && removeAccents(recipe.nome.toLowerCase()); 
+        return recipeName && recipeName.includes(searchText); 
       });
   
       if (foundRecipes.length === 0) {
@@ -63,48 +62,43 @@ function DropCard({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCos
     }
   };
   
-  
+  const [selectedRecipeIds, setSelectedRecipeIds] = useState([]);
 
   const handleAddRecipe = (recipe) => {
     if (recipe && recipe.ingredientes) {
       const recipeId = recipe.id;
   
-      // Check if the recipe with the same ID already exists in items
-      const recipeExists = items.some((item) => item.recipe.id === recipeId);
+      const recipeExists = selectedRecipeIds.includes(recipeId);
   
       if (recipeExists) {
-        // Recipe with the same ID already exists, handle accordingly
         Alert.alert("Receita já foi adicionada");
-        setModalVisible(false)
-        // You may want to show an error message or take appropriate action
+        setModalVisible(false);
       } else {
-        // Convert quantity values to numbers
+        
+        setSelectedRecipeIds([...selectedRecipeIds, recipeId]);
         recipe.ingredientes.forEach((ingrediente) => {
           ingrediente.valor = parseFloat(ingrediente.valor);
         });
   
-
-
-        // Calculate the total cost of the recipe
-        const recipeCost = calcularCustoTotal(recipe);
+        
+        const custoReceitaPorConvidado = calcularCustoTotal(recipe);
   
-        // Add the recipe to the selected recipes list
-        onSelectRecipe(recipe, recipeCost);
+        
+        onSelectRecipe(recipe, custoReceitaPorConvidado);
   
-        // Add the recipe to the items list
         const id = items.length + 1;
         setItems([...items, { id, recipe }]);
   
-        // Add the recipe cost to the total cost
-        setTotalCost((prevTotalCost) => prevTotalCost + recipeCost);
+        
+        setTotalCost((prevTotalCost) => prevTotalCost + custoReceitaPorConvidado);
   
-        // Close the modal
+        
         setModalVisible(false);
       }
     } else {
-      // Handle the case where recipe or recipe.ingredientes is undefined
+      
       console.error('Recipe or recipe.ingredientes is undefined');
-      // You may want to show an error message or take appropriate action
+      
     }
   };
   
@@ -118,23 +112,26 @@ function DropCard({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCos
       });
       return custoTotal;
     } else {
-      return 0; // Ou um valor padrão adequado se a estrutura não for válida
+      return 0; 
     }
   };
 
 
   const handleRemoveRecipe = (id, recipe) => {
-    // Calcule o custo da receita a ser removida
     const custoReceita = calcularCustoTotal(recipe);
-    // Atualize o custo total subtraindo o custo da receita removida
+
     setTotalCost((prevTotalCost) => prevTotalCost - custoReceita);
-    // Atualize a lista de receitas selecionadas removendo a receita
-    setSelectedRecipes((prevSelectedRecipes) =>
-      prevSelectedRecipes.filter((item) => item !== recipe)
+
+    setSelectedRecipeIds((prevSelectedRecipeIds) =>
+      prevSelectedRecipeIds.filter((recipeId) => recipeId !== recipe.id)
     );
-    // Atualize a lista de items, removendo o item pelo id
+
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+
+    // Remova a receita do estado pai
+    onRemoveRecipe(recipe);
   };
+  
   
   
 
@@ -282,7 +279,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 5,
     width: 350,
-    maxHeight: '85%', // Adicione esta linha para limitar a altura do modal
+    maxHeight: '85%', 
   },
   
   modalRecipe: {

@@ -3,12 +3,13 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ref, set, push, query, orderByChild, equalTo, get, update, onValue } from 'firebase/database';
 import { db } from '../../services/firebaseConfigurations/firebaseConfig';
 import CardComponent from '../Componentes/CardBuffetHomeCliente'; // Substitua pelo caminho real do seu componente CardComponent
-import Navbar from '../componentes2/Navbar2';
 import SideMenu from '../Componentes/SideMenu';
 import { useUser } from '../../services/UserContext/index';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSideMenu } from '../../services/sideMenuContext';
 import { ScrollView } from 'react-native-gesture-handler';
+import Navbar from '../Componentes/Navbar';
+
 const FavoritosScreen = ({navigation}) => {
   const { state } = useUser();
   const [menuVisible, setMenuVisible] = useState(false);

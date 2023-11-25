@@ -115,6 +115,7 @@ function StackNavigator() {
       <Stack.Screen name="FavoritosCliente" component={FavoritosCliente} options={{ headerShown: false }} />
       <Stack.Screen name="PreferenciasDetalhes" component={PreferenciasDetalhes} options={{ headerShown: false }} />
       <Stack.Screen name="ConfiguracaoTela" component={ConfiguracaoTela} options={{ headerShown: false }} />
+      <Stack.Screen name="CardapiosBuffet" component={CardapiosBuffet} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

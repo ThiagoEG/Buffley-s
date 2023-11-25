@@ -123,7 +123,7 @@ const CardInfo = ({ cardapioId }) => {
               <Text style={styles.textRec}>{novoCardapio.numeroConvidados} pessoas</Text>
             </View>
             <View style={styles.retangulo}>
-              <Text style={styles.textRec}>R$ {novoCardapio.totalCost}</Text>
+              <Text style={styles.textRec}>R$ {novoCardapio.totalCost.toFixed(2)}</Text>
             </View>
             <View style={styles.retangulo}>
               <Text style={styles.textRec}>{novoCardapio.data}</Text>

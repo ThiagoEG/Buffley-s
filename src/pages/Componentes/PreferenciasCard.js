@@ -18,7 +18,7 @@ export default function PreferenciasCard({ nome, qtdsPessoas, data, preferencias
       if (preferenciasSnapshot.exists()) {
         const preferenciasData = preferenciasSnapshot.val();
         // Navegue para a tela de detalhes passando os dados da preferência como parâmetro
-        navigation.navigate('PreferenciasDetalhes', { preferenciasData });
+        navigation.navigate('PreferenciasDetalhes', { preferenciasData, preferenciasId });
       } else {
         console.error('Preferencias data not found.');
       }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions  } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions, RefreshControl  } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Card from '../Componentes/card';
 import SideMenu from '../Componentes/SideMenu'
@@ -15,6 +15,7 @@ import { db } from '../../services/firebaseConfigurations/firebaseConfig'; // Im
 import globalData from '../../services/Globals/globalId';
 
 const { width, height } = Dimensions.get('window');
+
 
 
 const Categoria = ({ text}) => (
@@ -46,11 +47,20 @@ export default function Home({ rating, navigation }) {
   const [cardapios] = useCardapio();
   const [cardapio, setCardapio] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const route = useRoute();
   const { uid } = route.params || {};
   const { state } = useUser(); // Obtenha o estado do usuário
   
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    
+    setRefreshing(false);
+  };
+
   const handleCreateNewCardapio = () => {
     navigation.navigate('CriarCardapio');
   };
@@ -134,14 +144,21 @@ const username = state.username;
         setMenuVisible(!menuVisible);}
 
         if (!cardapios || cardapios.length === 0) {
-          return (
-            <View style={styles.container}>
+return (
+
+      <View style={styles.container}
+      >
       <Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
       <SideMenu isVisible={menuVisible} onClose={toggleMenu} />
         
           <SideMenu  isVisible={menuVisible} onClose={toggleMenu}></SideMenu>
       
-          <ScrollView contentContainerStyle={styles.scrollContent}>
+          <ScrollView contentContainerStyle={styles.scrollContent}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+
+          }
+          >
       
           <ScrollView horizontal 
             showsHorizontalScrollIndicator={false}
@@ -159,7 +176,7 @@ const username = state.username;
       </View>
           </ScrollView>     
       
-          <Text style={styles.title}>Cardápios aprovados</Text>
+          <Text style={styles.title}>Cardápios </Text>
           {cardapio.length > 0 ? (
   cardapio.map((cardapioItem, index, ) => (
     <CardInfo key={index} cardapioId={cardapioItem.id} />

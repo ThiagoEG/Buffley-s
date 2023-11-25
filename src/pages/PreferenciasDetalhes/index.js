@@ -5,20 +5,26 @@ import { db } from '../../services/firebaseConfigurations/firebaseConfig';
 import Navbar from '../Componentes/Navbar';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native-paper';
 
 const PreferenciasDetalhes = ({ route }) => {
-  const { preferenciasData } = route.params;
+  const { preferenciasData, preferenciasId } = route.params;
   const [preferenciasClienteData, setPreferenciasClienteData] = useState(null);
+  const navigation = useNavigation();
 
+  const handleCriarCardapio = () => {
+    navigation.navigate('CriarCardapio', { preferenciasData, preferenciasId })
+  }
   useEffect(() => {
     // Se a estrutura de preferenciasCliente for diferente, ajuste aqui
     setPreferenciasClienteData(preferenciasData.preferenciasCliente);
   }, [preferenciasData]);
 
   return (
-    <View style={{flex: 1,}}>
+    <View style={{ flex: 1, }}>
 
-      <Navbar/>
+      <Navbar />
       <Text style={styles.titulo}>Dados do Cardápio</Text>
 
       <View style={styles.ContainerDados}>
@@ -28,71 +34,70 @@ const PreferenciasDetalhes = ({ route }) => {
       </View>
 
       <Text style={styles.titulo} >Preferências do Cliente:</Text>
-        {preferenciasClienteData && (
-          <View style={styles.ContainerDados} >
-            
+      {preferenciasClienteData && (
+        <View style={styles.ContainerDados} >
 
-            {preferenciasClienteData.carnes && preferenciasClienteData.carnes.length > 0 && (
-              <View style={styles.ContainerDados2}>
-                <Text style={styles.dados}>Carnes: </Text>
-                <Text    style={styles.dados2} >{preferenciasClienteData.carnes.join(', ')}</Text>
-              </View>
-            )}
 
-            {preferenciasClienteData.guarnicao && preferenciasClienteData.guarnicao.length > 0 && (
-              <View style={styles.ContainerDados2}>
-                <Text style={styles.dados}>Guarnição: </Text>
-                <Text    style={styles.dados2}>{preferenciasClienteData.guarnicao.join(', ')}</Text>
-              </View>
-            )}
+          {preferenciasClienteData.carnes && preferenciasClienteData.carnes.length > 0 && (
+            <View style={styles.ContainerDados2}>
+              <Text style={styles.dados}>Carnes: </Text>
+              <Text style={styles.dados2} >{preferenciasClienteData.carnes.join(', ')}</Text>
+            </View>
+          )}
 
-            {preferenciasClienteData.salada && preferenciasClienteData.salada.length > 0 && (
-              <View style={styles.ContainerDados2}>
-                <Text style={styles.dados}>Salada: </Text>
-                <Text   style={styles.dados2}>{preferenciasClienteData.salada.join(', ')}</Text>
-              </View>
-            )}
+          {preferenciasClienteData.guarnicao && preferenciasClienteData.guarnicao.length > 0 && (
+            <View style={styles.ContainerDados2}>
+              <Text style={styles.dados}>Guarnição: </Text>
+              <Text style={styles.dados2}>{preferenciasClienteData.guarnicao.join(', ')}</Text>
+            </View>
+          )}
 
-            {preferenciasClienteData.bolos && preferenciasClienteData.bolos.length > 0 && (
-              <View style={styles.ContainerDados2}>
-                <Text style={styles.dados}>Bolos: </Text>
-                <Text   style={styles.dados2}>{preferenciasClienteData.bolos.join(', ')}</Text>
-              </View>
-            )}
+          {preferenciasClienteData.salada && preferenciasClienteData.salada.length > 0 && (
+            <View style={styles.ContainerDados2}>
+              <Text style={styles.dados}>Salada: </Text>
+              <Text style={styles.dados2}>{preferenciasClienteData.salada.join(', ')}</Text>
+            </View>
+          )}
 
-            {preferenciasClienteData.entrada && preferenciasClienteData.entrada.length > 0 && (
-              <View style={styles.ContainerDados2}>
-                <Text style={styles.dados}>Entrada: </Text>
-                <Text  style={styles.dados2}>{preferenciasClienteData.entrada.join(', ')}</Text>
-              </View>
-            )}
+          {preferenciasClienteData.bolos && preferenciasClienteData.bolos.length > 0 && (
+            <View style={styles.ContainerDados2}>
+              <Text style={styles.dados}>Bolos: </Text>
+              <Text style={styles.dados2}>{preferenciasClienteData.bolos.join(', ')}</Text>
+            </View>
+          )}
 
-            {preferenciasClienteData.bebida && preferenciasClienteData.bebida.length > 0 && (
-              <View style={styles.ContainerDados2}>
-                <Text style={styles.dados}>Bebida: </Text>
-                <Text style={styles.dados2}>{preferenciasClienteData.bebida.join(', ')}</Text>
-              </View>
-            )}
-          </View>
-        )}
+          {preferenciasClienteData.entrada && preferenciasClienteData.entrada.length > 0 && (
+            <View style={styles.ContainerDados2}>
+              <Text style={styles.dados}>Entrada: </Text>
+              <Text style={styles.dados2}>{preferenciasClienteData.entrada.join(', ')}</Text>
+            </View>
+          )}
 
-        <View style={styles.containerBotoes}>
-          
-          <TouchableOpacity style={[styles.botao, { backgroundColor: '#ff6961' }]}>
-            <MaterialIcons name="close" size={20} color="white" />
-            <Text style={styles.textoBotao}>Recusar</Text>
-          </TouchableOpacity>
-          
-          {/* Botão Aceitar */}
-          <TouchableOpacity style={[styles.botao, { backgroundColor: '#098409e7' }]}>
-            <MaterialIcons name="check" size={20} color="white" />
-            <Text style={styles.textoBotao}>Aceitar</Text>
-          </TouchableOpacity>
-
-          {/* Botão Recusar */}
-          
+          {preferenciasClienteData.bebida && preferenciasClienteData.bebida.length > 0 && (
+            <View style={styles.ContainerDados2}>
+              <Text style={styles.dados}>Bebida: </Text>
+              <Text style={styles.dados2}>{preferenciasClienteData.bebida.join(', ')}</Text>
+            </View>
+          )}
         </View>
+      )}
 
+      <View style={styles.containerBotoes}>
+
+        <TouchableOpacity style={[styles.botao, { backgroundColor: '#ff6961' }]}>
+          <MaterialIcons name="close" size={20} color="white" />
+          <Text style={styles.textoBotao}>Recusar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.botao2} onPress={handleCriarCardapio}>
+          <MaterialIcons name="check" size={20} color="white" />
+          <Text style={styles.textoBotao}>Aceitar</Text>
+        </TouchableOpacity>
+
+
+      </View>
+
+      <Button onPress={handleCriarCardapio}>teste</Button>
 
     </View>
   );
@@ -102,26 +107,26 @@ export default PreferenciasDetalhes;
 
 const styles = StyleSheet.create({
 
-  titulo:{
-    fontSize:32,
+  titulo: {
+    fontSize: 32,
     fontWeight: 'bold',
     marginLeft: 16,
     marginTop: 12,
   },
 
-  ContainerDados:{
+  ContainerDados: {
     marginLeft: 26,
     fontSize: 22,
   },
 
-  dados:{
+  dados: {
     fontSize: 22,
     gap: 5,
     fontWeight: 'normal',
-    marginTop:5,
+    marginTop: 5,
     color: '#1b1a1a',
   },
-  dados2:{
+  dados2: {
     fontSize: 18,
     color: '#484545',
   },
@@ -140,6 +145,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     borderRadius: 5,
+    
+  },
+  botao2: {
+    height: 45,
+    width: 150,
+    marginHorizontal: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    borderRadius: 5,
+    backgroundColor: '#098409e7'
   },
   textoBotao: {
     color: 'white',

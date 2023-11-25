@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StatusBar, StyleSheet, Text, TextInput, View, RefreshControl } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, Text, TextInput, View, RefreshControl, Alert } from 'react-native';
 import Dropdown from '../Componentes/DropDown';
 import DatePickerComponent from '../Componentes/DataPicker'; // Certifique-se de que o componente de DatePicker esteja importado corretamente
 import DropCard from '../Componentes/DropCard';
@@ -8,10 +8,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ref, set, push, get } from 'firebase/database';
+import { ref, set, push, get, remove } from 'firebase/database';
 import { db } from '../../services/firebaseConfigurations/firebaseConfig'; // Importe a instância do banco de dados do seu arquivo de configuração Firebase
 import { globalData, setCurrentCardapioId } from '../../services/Globals/globalId';
 import { useUser } from '../../services/UserContext/index';
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 const calcularCustoTotal = (receita) => {
@@ -99,7 +100,9 @@ export default function Cardapio() {
   const [refreshing, setRefreshingState] = React.useState(false);
   const [recipesByCategory, setRecipesByCategory] = useState({});
   const [data, setData] = useState('');
+  const { preferenciasData, preferenciasId } = route.params || {}
   const [dataSelecionada, setDataSelecionada] = useState('');
+  const [selectedRecipesByCategory, setSelectedRecipesByCategory] = useState({});
   const categoriasDesejadas = [
     "Entradas",
     "Acompanhamentos",
@@ -107,7 +110,7 @@ export default function Cardapio() {
     'Sobremesas',
     'Bebidas',
     'Saladas',
-  ];  
+  ];
   const [novoCardapio, setNovoCardapio] = useState({
     nomeCardapio: '',
     quantidadeItens: 0,
@@ -116,48 +119,91 @@ export default function Cardapio() {
     categoriaMaisBarata: '',
     categoriaMaisCara: '',
   });
-  
+
   const onRefresh = () => {
     setRefreshingState(true);
 
-   fetchRecipesByCategory();
+
 
     setRefreshingState(false);
   };
-  
-  useEffect(() => {
-    // Automaticamente chama onRefresh quando a tela é inicializada
-    onRefresh();
-  }, []);
+
+
 
   const userID = state.uid;
 
-  
   const handleSubmit = async () => {
-    if (!nomeCardapio || !numeroConvidados || totalCost <= 0) {
-      setErrorMessage('Preencha todos os campos obrigatórios.');
 
+    let errorMessage = '';
+
+    if (!nomeCardapio) {
+      errorMessage += 'Nome do Cardápio é obrigatório.\n';
+    }
+    if (!numeroConvidados) {
+      errorMessage += 'Número de Convidados é obrigatório.\n';
+    }
+    if (!dataSelecionada) {
+      errorMessage += 'Selecione uma data.\n';
+    } else {
+      const dataAtual = new Date();
+      const dataSelecionadaObj = new Date(dataSelecionada);
+
+      // Verifique se a data selecionada é a mesma que o dia atual
+      if (
+        dataSelecionadaObj.getDate() === dataAtual.getDate() &&
+        dataSelecionadaObj.getMonth() === dataAtual.getMonth() &&
+        dataSelecionadaObj.getFullYear() === dataAtual.getFullYear()
+      ) {
+        errorMessage += 'A data selecionada não pode ser o mesmo dia atual.\n';
+      }
+    }
+
+    if (totalCost <= 0 || selectedRecipes.length === 0) {
+      errorMessage += 'Selecione pelo menos uma receita.\n';
+    }
+
+    if (errorMessage !== '') {
+      setErrorMessage(errorMessage.trim());
+      Alert.alert('Preencha todos os campos obrigatórios', errorMessage);
       return;
     }
-  
+
+    // Move the calculation of maisBarato and maisCaro inside the handleSubmit function
+    const maisBarato = calcularCategoriaMaisBarata(selectedRecipes);
+    const maisCaro = calcularCategoriaMaisCara(selectedRecipes);
+
     const novoCardapioData = {
       nomeCardapio,
       quantidadeItens: selectedRecipes.length,
       totalCost,
       numeroConvidados,
-      categoriaMaisBarata: selectedRecipes.length > 0 ? calcularCategoriaMaisBarata(selectedRecipes).categoria : '',
-      categoriaMaisCara: selectedRecipes.length > 0 ? calcularCategoriaMaisCara(selectedRecipes).categoria : '',
-      userID: userID, 
+      categoriaMaisBarata: maisBarato.categoria,
+      categoriaMaisCara: maisCaro.categoria,
+      userID: userID,
       data: dataSelecionada,
+      receitas: selectedRecipes,  // Inclua a lista de receitas com detalhes
     };
-  
+
+    if (preferenciasData && preferenciasData.userId) {
+      novoCardapioData.userCardapioId = preferenciasData.userId;
+    }
+
+    if (preferenciasId) {
+      novoCardapioData.preferenciasCardId = preferenciasId;
+      const preferencesRef = ref(db, `preferencias/${preferenciasId}`);
+      await remove(preferencesRef);
+      console.log('Preferência excluída com sucesso!');
+    }
+
+
+
     try {
       const cardapioRef = push(ref(db, 'cardapios'), novoCardapioData);
       const cardapioId = cardapioRef.key;
-  
+
       // Aguarde o sucesso da operação push
       await cardapioRef;
-  
+
       console.log('Cardápio adicionado com sucesso!');
       setErrorMessage('');
       setCurrentCardapioId(cardapioId);
@@ -172,31 +218,61 @@ export default function Cardapio() {
       setErrorMessage('Erro ao adicionar o cardápio');
     }
   };
-  
-  
+
+
+
   const [selectedRecipeIds, setSelectedRecipeIds] = useState([]);
 
-  const handleSelectRecipe = (recipe) => {
-    // Verificar se o ID da receita já está na lista de receitas selecionadas
-    const isRecipeSelected = selectedRecipeIds.includes(recipe.id);
-  
-    if (!isRecipeSelected) {
-      // Adicionar o ID da receita ao conjunto de IDs selecionados
-      setSelectedRecipeIds([...selectedRecipeIds, recipe.id]);
 
-      // Adicionar a receita à lista de receitas selecionadas
-      setSelectedRecipes([...selectedRecipes, recipe]);
-  
-      // Calcular o custo e adicioná-lo ao totalCost
+  const handleSelectRecipe = (recipe) => {
+    // Verifica se o número de convidados foi escolhido
+    if (numeroConvidados === 0) {
+      Alert.alert('Selecione o número de convidados antes de escolher uma receita.');
+      return;
+
+    }
+
+    const isRecipeSelected = selectedRecipeIds.includes(recipe.id);
+
+    if (isRecipeSelected) {
+      // Deselecione a receita
+      setSelectedRecipeIds((prevIds) => prevIds.filter((id) => id !== recipe.id));
+
+      // Atualize o custo total subtraindo o custo da receita desselecionada
       const custoReceita = calcularCustoTotal(recipe);
-      //setTotalCost((prevTotalCost) => prevTotalCost + custoReceita);
+      setTotalCost((prevTotalCost) => prevTotalCost - custoReceita * numeroConvidados);
+
+      // Remova a receita do DropCard
+      const updatedSelectedRecipes = selectedRecipes.filter((selectedRecipe) => selectedRecipe.id !== recipe.id);
+      setSelectedRecipes(updatedSelectedRecipes);
+    } else {
+      // Se o número de convidados estiver definido, selecione a receita
+      const fullRecipe = {
+        id: recipe.id,
+        nome: recipe.nome,
+        ingredientes: recipe.ingredientes,
+        categoria: recipe.categoria,
+        // ... Adicione outros campos da receita, se necessário
+      };
+
+      // Atualize o custo total adicionando o custo da receita selecionada
+      const custoReceita = calcularCustoTotal(recipe);
+      setTotalCost((prevTotalCost) => prevTotalCost + custoReceita * numeroConvidados - custoReceita);
+
+      // Se o número de convidados estiver definido, adicione a receita ao DropCard
+      setSelectedRecipeIds([...selectedRecipeIds, recipe.id]);
+      setSelectedRecipes([...selectedRecipes, fullRecipe]);
+
+      const categoria = recipe.categoria;
+      setSelectedRecipesByCategory((prevSelectedRecipesByCategory) => ({
+        ...prevSelectedRecipesByCategory,
+        [categoria]: [...(prevSelectedRecipesByCategory[categoria] || []), fullRecipe],
+      }));
     }
   };
-  
 
-  
-  
-  
+
+
 
   useEffect(() => {
     const maisBarato = calcularCategoriaMaisBarata(selectedRecipes);
@@ -206,24 +282,31 @@ export default function Cardapio() {
   }, [totalCost, nomeCardapio, selectedRecipes]);
 
 
+
   const fetchRecipesByCategory = async (categoria) => {
-    const recipesRef = ref(db, 'receitas');
-    const snapshot = await get(recipesRef);
-    const recipes = [];
-  
-    if (snapshot.exists()) {
-      const recipesData = snapshot.val();
-      for (const id in recipesData) {
-        const recipe = recipesData[id];
-        if (recipe.categoria === categoria) {
-          recipes.push({ id, ...recipe });
+    try {
+      const recipesRef = ref(db, 'receitas');
+      const snapshot = await get(recipesRef);
+      const recipes = [];
+
+      if (snapshot.exists()) {
+        const recipesData = snapshot.val();
+        for (const id in recipesData) {
+          const recipe = recipesData[id];
+          if (recipe.categoria === categoria) {
+            recipes.push({ id, ...recipe });
+          }
         }
       }
+
+      console.log(`Recipes for ${categoria}:`, recipes);
+      return recipes;
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+      return [];
     }
-  
-    return recipes;
   };
-  
+
 
   useEffect(() => {
     const fetchDataForCategories = async () => {
@@ -240,10 +323,19 @@ export default function Cardapio() {
     fetchDataForCategories();
   }, []);
 
+  const handleRemoveRecipeFromSelected = (recipe) => {
+    // Remova a receita de selectedRecipes
+    const updatedSelectedRecipes = selectedRecipes.filter((selectedRecipe) => selectedRecipe.id !== recipe.id);
+    setSelectedRecipes(updatedSelectedRecipes);
+
+    const custoReceita = calcularCustoTotal(recipe);
+    setTotalCost((prevTotalCost) => prevTotalCost - custoReceita * numeroConvidados);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar hidden={true} />
-      <ScrollView 
+      <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -252,7 +344,7 @@ export default function Cardapio() {
 
         <View style={styles.containerCardapio}>
           <View style={styles.totalCostContainer}>
-            <Text style={{ fontSize: 20, fontWeight: '400', color: '#318051' }}>
+            <Text style={{ fontSize: 26, fontWeight: '400', color: '#318051' }}>
               Custo Total: R$ {totalCost.toFixed(2)}
             </Text>
           </View>
@@ -282,8 +374,8 @@ export default function Cardapio() {
                 onValueChange={(itemValue) => setNumeroConvidados(itemValue)}
               >
                 <Picker.Item label="Selecione o número de convidados" value={0} />
-                <Picker.Item label="50" value={200} />
-                <Picker.Item label="100" value={200} />
+                <Picker.Item label="50" value={50} />
+                <Picker.Item label="100" value={100} />
                 <Picker.Item label="150" value={150} />
                 <Picker.Item label="200" value={200} />
               </Picker>
@@ -298,17 +390,20 @@ export default function Cardapio() {
           </View>
 
           {categoriasDesejadas.map((categoria) => (
-              <DropCard
+            <DropCard
+              key={categoria}
               title={categoria}
               recipes={recipesByCategory[categoria] || []}
-              selectedRecipes={selectedRecipes}
+              selectedRecipes={selectedRecipesByCategory[categoria] || []}
               onSelectRecipe={handleSelectRecipe}
               setSelectedRecipes={setSelectedRecipes}
               cardInfoTitle={categoria}
               setTotalCost={setTotalCost}
+              numeroConvidados={numeroConvidados}
+              onRemoveRecipe={handleRemoveRecipeFromSelected}  // Passe a função onRemoveRecipe
             />
-            
           ))}
+
 
           {/* ... Outros DropCard ... */}
           <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit}>
@@ -361,8 +456,9 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   totalCostContainer: {
-    marginBottom: 16,
     marginLeft: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   containerCardapio: {
     alignSelf: 'center',
