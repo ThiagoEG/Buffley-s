@@ -159,7 +159,7 @@ const ConfiguracaoTela = () => {
       </View>
 
 
-      <LinearButton title="Salavar alterações" onPress={handleSavePress}/>
+      <LinearButton title="Salavar alteração" onPress={handleSavePress}/>
     </View>
   );
 };

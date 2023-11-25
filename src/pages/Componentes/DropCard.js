@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     width: 340,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 18,
+    marginTop: 20,
     marginHorizontal: 10,
     paddingVertical: 10,
     paddingHorizontal: 10,

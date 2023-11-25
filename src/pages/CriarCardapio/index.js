@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 10,
+    marginTop: 12,
     marginBottom: 24,
     paddingHorizontal: 16,
   },

@@ -476,7 +476,7 @@ searchContainer: {
   },
   
   cardAdd:{
-    marginTop:12,
+    marginTop:16,
     marginHorizontal: 16,
     height: 150,
     backgroundColor: 'white',

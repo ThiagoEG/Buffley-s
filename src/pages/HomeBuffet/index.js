@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 10, height: 0 },
       shadowOpacity: 5,
       shadowRadius: 2,
-      elevation: 8,
+      elevation: 5,
   },
     
     leftContainer: {
