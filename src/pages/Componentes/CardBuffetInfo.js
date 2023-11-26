@@ -103,11 +103,7 @@ const CardInfo = ({ cardapioId }) => {
   }, [cardapioId]);
 
   const handleVerCardapio = () => {
-    if (novoCardapio) {
-      navigation.navigate('DetalhesCardapio', {
-        novoCardapio,
-      });
-    }
+      navigation.navigate('DetalhesCardapio')
   };
 
   return (

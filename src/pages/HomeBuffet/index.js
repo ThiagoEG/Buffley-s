@@ -1,50 +1,27 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { useNavigation, useRoute  } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions, Alert, StatusBar } from 'react-native';
-import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
-import Icon from 'react-native-vector-icons/FontAwesome';
-import SideMenu from '../Componentes/SideMenu';
-import Card from '../Componentes/card';
-import Navbar from '../componentes2/Navbar2';
-import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
-import PreferenciasCard from '../Componentes/PreferenciasCard';
-import CustomModal from '../componentes2/Modal';
-import { ref, push, set, get } from 'firebase/database';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, StatusBar } from 'react-native';
+import { ref, get } from 'firebase/database';
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
-
+import PreferenciasCard from '../Componentes/PreferenciasCard';
+import { Feather } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 
-
-export default function HomeBuffet({ navigation,  }) {
+export default function HomeBuffet({ navigation }) {
   const route = useRoute();
   const { uid } = route.params || {};
   const [menuVisible, setMenuVisible] = useState(false);
   const [preferenciasData, setPreferenciasData] = useState([]);
+  const [hasPreferencias, setHasPreferencias] = useState(true); // Adicione um estado para verificar se há preferências ou não
   const { state } = useUser();
   const userId = state.uid;
 
-  const handleCardPress = (preferenciaId) => {
-    console.log('Card pressionado:', preferenciaId);
-    // Adicione a lógica para lidar com a pressão do card, se necessário
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
   };
-
-    console.log('UID do usuário:', {userId});
-    const username = state.username;
-      const handlePress = () => {
-        navigation.navigate('CriarCardapio');
-      };
-      const handleNotifications = () => {
-        navigation.navigate('TelaNotificacoes');
-      };
-      const handleBuffetNavigation = () => {
-        navigation.navigate('BuffetPerfil');
-      };
-      const toggleMenu = () => {
-        setMenuVisible(!menuVisible);
-      };
 
   useEffect(() => {
     const fetchPreferenciasData = async () => {
@@ -62,13 +39,16 @@ export default function HomeBuffet({ navigation,  }) {
             }));
 
             setPreferenciasData(preferenciasArray);
+            setHasPreferencias(true); // Defina como true se houver preferências
           } else {
             console.error('Preferencias data is empty.');
             setPreferenciasData([]);
+            setHasPreferencias(false); // Defina como false se não houver preferências
           }
         } else {
           console.error('No preferencias found in the database.');
           setPreferenciasData([]);
+          setHasPreferencias(false); // Defina como false se não houver preferências
         }
       } catch (error) {
         console.error('Error fetching preferencias:', error);
@@ -78,39 +58,43 @@ export default function HomeBuffet({ navigation,  }) {
     fetchPreferenciasData();
   }, []);
 
-
   return (
     <View style={styles.container}>
-      <StatusBar hidden={true}/>
-      <Navbar navigation={navigation} onMenuPress={toggleMenu} />
-      <SideMenu isVisible={menuVisible} onClose={toggleMenu} />
+      <StatusBar hidden={true} />
+      {/* Restante do código ... */}
 
       <ScrollView>
         <Text style={styles.title}>Cardápio Solicitados</Text>
 
-        {preferenciasData.map((preferencia) => {
-        if (preferencia.buffetId === userId) {
-          return (
-            <PreferenciasCard
-              key={preferencia.id}
-              nome={preferencia.nome}
-              qtdsPessoas={preferencia.qtdPessoas}
-              data={preferencia.data}
-              preferenciasId={preferencia.id}
-              preferenciasCliente={preferencia.preferenciasCliente}
-              clienteImagemUrl={preferencia.clienteImagemUrl}
-            />
-          );
-        } else {
-          <Text> você não possui solicitações de cardapio </Text>
-        }
-      })}
+        {hasPreferencias ? (
+          preferenciasData.map((preferencia) => {
+            if (preferencia.buffetId === userId) {
+              return (
+                <PreferenciasCard
+                  key={preferencia.id}
+                  nome={preferencia.nome}
+                  qtdsPessoas={preferencia.qtdPessoas}
+                  data={preferencia.data}
+                  preferenciasId={preferencia.id}
+                  preferenciasCliente={preferencia.preferenciasCliente}
+                  clienteImagemUrl={preferencia.clienteImagemUrl}
+                />
+              );
+            }
+          })
+        ) : (
+          <View style={styles.noPreferenciasContainer}>
+            <Feather name="alert-triangle" size={50} color="red" />
+            <Text style={styles.noPreferenciasText}>Você não possui solicitações de cardápio.</Text>
+          </View>
+        )}
 
         <Text style={styles.title}>Seus cardápios Salvos</Text>
       </ScrollView>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -344,5 +328,18 @@ const styles = StyleSheet.create({
   imagem:
   {
     margin:'5%'
-  }
+  },
+
+  noPreferenciasContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 32,
+  },
+  noPreferenciasText: {
+    fontSize: 22,
+    textAlign: 'center',
+    marginTop: 16,
+    color: 'gray',
+  },
 });

@@ -120,14 +120,44 @@ export default function Cardapio() {
     categoriaMaisCara: '',
   });
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshingState(true);
 
+    try {
+      // Adicione aqui a lógica para recarregar as receitas
+      const receitasRef = ref(db, 'receitas');
+      const receitasSnapshot = await get(receitasRef);
 
+      if (receitasSnapshot.exists()) {
+        const receitasData = receitasSnapshot.val();
+        const receitasArray = Object.keys(receitasData).map((receitaId) => ({
+          id: receitaId,
+          ...receitasData[receitaId],
+        }));
+
+        setRecipesByCategory(receitasArray.reduce((acc, receita) => {
+          const categoria = receita.categoria;
+          acc[categoria] = acc[categoria] || [];
+          acc[categoria].push(receita);
+          return acc;
+        }, {}));
+      } else {
+        console.error('No receitas found in the database.');
+        // Lide com o caso em que não há receitas no banco de dados
+      }
+    } catch (error) {
+      console.error('Error refreshing receitas:', error);
+    }
 
     setRefreshingState(false);
   };
 
+  useEffect(() => {
+    const intervalId = setInterval(onRefresh, 30000);
+    onRefresh();
+    // Limpe o intervalo quando o componente for desmontado para evitar vazamentos de memória
+    return () => clearInterval(intervalId);
+  }, []);
 
 
   const userID = state.uid;
