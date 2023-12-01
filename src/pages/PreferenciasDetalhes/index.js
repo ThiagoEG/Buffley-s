@@ -7,6 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
+import LinearButton from '../Componentes/LinearButton';
 
 const PreferenciasDetalhes = ({ route }) => {
   const { preferenciasData, preferenciasId } = route.params;
@@ -84,20 +85,14 @@ const PreferenciasDetalhes = ({ route }) => {
 
       <View style={styles.containerBotoes}>
 
+        <LinearButton title="Aceitar" onPress={handleCriarCardapio}/>
+
         <TouchableOpacity style={[styles.botao, { backgroundColor: '#ff6961' }]}>
-          <MaterialIcons name="close" size={20} color="white" />
           <Text style={styles.textoBotao}>Recusar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.botao2} onPress={handleCriarCardapio}>
-          <MaterialIcons name="check" size={20} color="white" />
-          <Text style={styles.textoBotao}>Aceitar</Text>
-        </TouchableOpacity>
-
-
       </View>
 
-      <Button onPress={handleCriarCardapio}>teste</Button>
 
     </View>
   );

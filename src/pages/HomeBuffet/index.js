@@ -1,12 +1,16 @@
 
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect  } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { View, Text, StyleSheet, ScrollView, Dimensions, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, StatusBar, RefreshControl } from 'react-native';
 import { ref, get } from 'firebase/database';
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 import PreferenciasCard from '../Componentes/PreferenciasCard';
 import { Feather } from '@expo/vector-icons';
+import { useUser } from '../../services/UserContext/index';
+import SideMenu from '../Componentes/SideMenu';
+import Navbar from '../componentes2/Navbar2';
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -18,52 +22,105 @@ export default function HomeBuffet({ navigation }) {
   const [hasPreferencias, setHasPreferencias] = useState(true); // Adicione um estado para verificar se há preferências ou não
   const { state } = useUser();
   const userId = state.uid;
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [isScreenInitialized, setIsScreenInitialized] = useState(false);
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
 
-  useEffect(() => {
-    const fetchPreferenciasData = async () => {
-      try {
-        const preferenciasRef = ref(db, 'preferencias');
-        const preferenciasSnapshot = await get(preferenciasRef);
+  const onRefresh = async () => {
+    setRefreshing(true);
+  
+    try {
+      const preferenciasRef = ref(db, 'preferencias');
+      const preferenciasSnapshot = await get(preferenciasRef);
 
-        if (preferenciasSnapshot.exists()) {
-          const preferenciasData = preferenciasSnapshot.val();
+      if (preferenciasSnapshot.exists()) {
+        const preferenciasData = preferenciasSnapshot.val();
 
-          if (preferenciasData) {
-            const preferenciasArray = Object.keys(preferenciasData).map((preferenciaId) => ({
-              id: preferenciaId,
-              ...preferenciasData[preferenciaId],
-            }));
+        if (preferenciasData) {
+          const preferenciasArray = Object.keys(preferenciasData).map((preferenciaId) => ({
+            id: preferenciaId,
+            ...preferenciasData[preferenciaId],
+          }));
 
-            setPreferenciasData(preferenciasArray);
-            setHasPreferencias(true); // Defina como true se houver preferências
-          } else {
-            console.error('Preferencias data is empty.');
-            setPreferenciasData([]);
-            setHasPreferencias(false); // Defina como false se não houver preferências
-          }
+          setPreferenciasData(preferenciasArray);
+          setHasPreferencias(true); // Defina como true se houver preferências
         } else {
-          console.error('No preferencias found in the database.');
+          console.error('Preferencias data is empty.');
           setPreferenciasData([]);
           setHasPreferencias(false); // Defina como false se não houver preferências
         }
-      } catch (error) {
-        console.error('Error fetching preferencias:', error);
+      } else {
+        console.error('No preferencias found in the database.');
+        setPreferenciasData([]);
+        setHasPreferencias(false); // Defina como false se não houver preferências
       }
-    };
+    } catch (error) {
+      console.error('Error fetching preferencias:', error);
+    }
+  
+    setRefreshing(false);
+  };
+  
 
-    fetchPreferenciasData();
-  }, []);
+  const fetchData = async () => {
+    try {
+      const preferenciasRef = ref(db, 'preferencias');
+      const preferenciasSnapshot = await get(preferenciasRef);
+
+      if (preferenciasSnapshot.exists()) {
+        const preferenciasData = preferenciasSnapshot.val();
+
+        if (preferenciasData) {
+          const preferenciasArray = Object.keys(preferenciasData).map((preferenciaId) => ({
+            id: preferenciaId,
+            ...preferenciasData[preferenciaId],
+          }));
+
+          setPreferenciasData(preferenciasArray);
+          setHasPreferencias(true);
+        } else {
+          console.error('Preferencias data is empty.');
+          setPreferenciasData([]);
+          setHasPreferencias(false);
+        }
+      } else {
+        console.error('No preferencias found in the database.');
+        setPreferenciasData([]);
+        setHasPreferencias(false);
+      }
+    } catch (error) {
+      console.error('Error fetching preferencias:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (!isScreenInitialized) {
+      fetchData();
+      setIsScreenInitialized(true);
+    }
+  }, [isScreenInitialized]);
+
+  useLayoutEffect(() => {
+    if (!isScreenInitialized) {
+      fetchData();
+      setIsScreenInitialized(true);
+    }
+  }, [isScreenInitialized]);
 
   return (
     <View style={styles.container}>
       <StatusBar hidden={true} />
-      {/* Restante do código ... */}
+      <Navbar navigation={navigation} onMenuPress={toggleMenu}></Navbar>
+      <SideMenu isVisible={menuVisible} onClose={toggleMenu} />
 
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Text style={styles.title}>Cardápio Solicitados</Text>
 
         {hasPreferencias ? (
@@ -83,7 +140,7 @@ export default function HomeBuffet({ navigation }) {
             }
           })
         ) : (
-          <View style={styles.noPreferenciasContainer}>
+          <View style={styles.cardAdd}>
             <Feather name="alert-triangle" size={50} color="red" />
             <Text style={styles.noPreferenciasText}>Você não possui solicitações de cardápio.</Text>
           </View>
@@ -112,29 +169,29 @@ const styles = StyleSheet.create({
     height: height * 0.09,  // Defina uma porcentagem adequada
     backgroundColor: 'white',
     paddingHorizontal: 20,
-    borderBottomLeftRadius: 15, 
+    borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
     shadowOffset: { width: 10, height: 0 },
-      shadowOpacity: 5,
-      shadowRadius: 2,
-      elevation: 5,
+    shadowOpacity: 5,
+    shadowRadius: 2,
+    elevation: 5,
   },
-    
-    leftContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    username: {
-      marginRight: 10,
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-    rightContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
 
-    title:{
+  leftContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  username: {
+    marginRight: 10,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  rightContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  title: {
     fontSize: 24,
     marginTop: 32,
     marginLeft: 32,
@@ -153,7 +210,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
     marginTop: 32,
-    marginVertical:32,
+    marginVertical: 32,
     alignSelf: 'center'
   },
   image: {
@@ -163,19 +220,19 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 
-  titleCard:{
+  titleCard: {
     flexDirection: 'row',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
     marginTop: 10,
   },
 
-  titleText:{
+  titleText: {
     fontSize: 32,
     fontWeight: 'bold'
   },
 
-  categorias:{
+  categorias: {
     flexDirection: 'row',
     margin: 10,
   },
@@ -220,17 +277,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 
-  bottom:{
+  bottom: {
     width: 330,
     height: 42,
     backgroundColor: '#be3455',
     borderRadius: 5,
     alignItems: 'center',
-    justifyContent:'center',
-    marginTop: 16, 
+    justifyContent: 'center',
+    marginTop: 16,
   },
 
-  bottomText:{
+  bottomText: {
     color: 'white',
     fontWeight: 'bold',
   },
@@ -256,7 +313,7 @@ const styles = StyleSheet.create({
   },
 
   retanguloComEspacamento: {
-    marginLeft:'-5%'
+    marginLeft: '-5%'
   },
 
   retangulo: {
@@ -275,7 +332,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  scrollContent2:{
+  scrollContent2: {
     paddingBottom: 5, // Altura da navbar
   },
 
@@ -297,29 +354,29 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
 
-  titleSol:{
+  titleSol: {
     alignContent: 'center',
     flexDirection: 'row',
   },
 
-  titleSol2:{
+  titleSol2: {
     alignContent: 'center',
     marginLeft: 10,
   },
 
-  title1:{
+  title1: {
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: '10%'
   },
 
-  title2:{
+  title2: {
     fontSize: 16,
     fontWeight: '400',
     color: '#F27288',
   },
 
-  imagemIcon:{
+  imagemIcon: {
     resizeMode: "contain",
     marginRight: 16,
 
@@ -327,7 +384,7 @@ const styles = StyleSheet.create({
 
   imagem:
   {
-    margin:'5%'
+    margin: '5%'
   },
 
   noPreferenciasContainer: {
@@ -341,5 +398,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 16,
     color: 'gray',
+  },
+  cardAdd: {
+    marginTop: 16,
+    marginHorizontal: 16,
+    height: 150,
+    backgroundColor: 'white',
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    elevation: 8,
   },
 });

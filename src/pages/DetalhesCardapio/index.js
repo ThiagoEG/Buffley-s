@@ -6,11 +6,15 @@ import { TextInput } from 'react-native';
 import { useCardapio } from '../../services/CardapioContext'; // Importe o contexto
 import Navbar from '../Componentes/NavBarD';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ref, set } from 'firebase/database';
+import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 
 export default function DetalhesCardapio({ route, navigation }) {
   const { novoCardapio, selectedRecipes } = route.params;
   const [mostrarReceitas, setMostrarReceitas] = useState(true);
   const [ingredientes, setIngredientes] = useState([]);
+
+  
 
   const toggleMostrarReceitas = () => {
     setMostrarReceitas(true);
@@ -19,6 +23,9 @@ export default function DetalhesCardapio({ route, navigation }) {
   const toggleMostrarIngredientes = () => {
     setMostrarReceitas(false);
   };
+
+  
+  
 
   const VoltarHome = () => {
     navigation.navigate('Cardapios');
@@ -131,14 +138,13 @@ export default function DetalhesCardapio({ route, navigation }) {
         </View>
       </View>
 
+      <View style={{width: '100%', borderWidth: 2, borderColor: 'rgba(0, 0, 0, 0.5)'}}/>
+
       <View style={styles.contBtn}>
         <Button  title='Mostrar Receitas' onPress={toggleMostrarReceitas}/>
         <Button  title='Mostrar Ingredientes' onPress={toggleMostrarIngredientes}/>
       </View>
 
-
-
-      {/* Renderizar com base na escolha de mostrar receitas ou ingredientes */}
       {mostrarReceitas ? (
         <SectionList
           sections={Object.keys(groupedRecipes).map((categoria) => ({
@@ -187,7 +193,9 @@ export default function DetalhesCardapio({ route, navigation }) {
         />
       )}
 
-      <LinearButton onPress={VoltarHome} title="Ok" />
+      <View style={{padding:16,}}>
+        <LinearButton onPress={VoltarHome} title="Ok" />
+      </View>
     </View>
   );
 }

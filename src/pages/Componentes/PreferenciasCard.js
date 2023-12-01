@@ -49,7 +49,7 @@ export default function PreferenciasCard({ nome, qtdsPessoas, data, preferencias
             <Text style={styles.title2}>Data: {data}</Text>
           </View>
         </View>
-        <TouchableOpacity onPress={handleDetalhes}>
+        <TouchableOpacity onPress={handleDetalhes} style={{marginRight: 8,}}>
           <Image source={require('../../../assets/MenuDots.png')} style={styles.imagemIcon} />
         </TouchableOpacity>
       </View>
@@ -60,7 +60,7 @@ export default function PreferenciasCard({ nome, qtdsPessoas, data, preferencias
 
 const styles = StyleSheet.create({
   retangulo1: {
-    width: '85%',
+    width: '90%',
     height: 100,
     backgroundColor: 'white',
     marginTop: 14,
@@ -69,8 +69,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'space-between',
-    borderRadius: 5,
-
+    borderRadius: 10,
     shadowOffset: { width: 15, height: 10 },
     shadowOpacity: 5,
     shadowRadius: 5,

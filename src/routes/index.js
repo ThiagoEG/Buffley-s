@@ -117,7 +117,6 @@ function StackNavigator() {
       <Stack.Screen name="PreferenciasDetalhes" component={PreferenciasDetalhes} options={{ headerShown: false }} />
       <Stack.Screen name="ConfiguracaoTela" component={ConfiguracaoTela} options={{ headerShown: false }} />
       <Stack.Screen name="CardapiosBuffet" component={CardapiosBuffet} options={{ headerShown: false }} />
-      <Stack.Screen name="VerDetalhes" component={VerDetalhes} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

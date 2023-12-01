@@ -198,6 +198,34 @@ export default function Cardapio() {
       return;
     }
 
+    const cardapiosRef = ref(db, 'cardapios');
+    const cardapiosSnapshot = await get(cardapiosRef);
+    const cardapiosData = cardapiosSnapshot.val();
+
+    const existingCardapioWithSameName = Object.values(cardapiosData || {}).find(
+      (cardapio) =>
+        cardapio.userID === userID &&
+        cardapio.nomeCardapio.toLowerCase() === nomeCardapio.toLowerCase()
+    );
+    
+    const existingCardapioWithSameDate = Object.values(cardapiosData || {}).find(
+      (cardapio) =>
+        cardapio.userID === userID &&
+        cardapio.data.toLowerCase() === dataSelecionada.toLowerCase()
+    );
+    
+    if (existingCardapioWithSameName && existingCardapioWithSameDate) {
+      // Caso exista um cardápio com mesmo nome e mesma data
+      Alert.alert('Cardápio já existente', 'Já existe um cardápio com o mesmo nome e data.');
+    } else if (existingCardapioWithSameName) {
+      // Caso exista um cardápio com mesmo nome, mas data diferente
+      Alert.alert('Nome de Cardápio já utilizado', 'Escolha um nome diferente para o cardápio.');
+    } else if (existingCardapioWithSameDate) {
+      // Caso exista um cardápio com mesma data, mas nome diferente
+      Alert.alert('Data de Cardápio já utilizada', 'Escolha uma data diferente para o cardápio.');
+    } else {
+    
+
     // Move the calculation of maisBarato and maisCaro inside the handleSubmit function
     const maisBarato = calcularCategoriaMaisBarata(selectedRecipes);
     const maisCaro = calcularCategoriaMaisCara(selectedRecipes);
@@ -247,6 +275,7 @@ export default function Cardapio() {
       console.error('Erro ao adicionar o cardápio:', error);
       setErrorMessage('Erro ao adicionar o cardápio');
     }
+  }
   };
 
 
