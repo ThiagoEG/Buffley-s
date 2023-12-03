@@ -42,34 +42,41 @@ export default function DetalhesCardapio({ route, navigation }) {
     if (!recipes) {
       return [];
     }
-
+  
     if (shouldMerge) {
       const merged = {};
-
+  
       recipes.forEach((recipe) => {
         recipe.ingredientes.forEach((ingrediente) => {
           const nome = ingrediente.nome;
-
+  
           if (!merged[nome]) {
-            // Se não existe, adiciona o ingrediente à lista
-            merged[nome] = { ...ingrediente };
+            // If it doesn't exist, add the ingredient to the list
+            merged[nome] = { ...ingrediente, quantidade: { ...ingrediente.quantidade } };
           } else {
-            // Se já existe, soma a quantidade ao ingrediente existente
-            merged[nome].quantidade.valor += ingrediente.quantidade.valor;
-            // Não esqueça de somar o valor também, se necessário
+            // If it already exists, create a deep copy and sum the quantity
+            merged[nome] = {
+              ...merged[nome],
+              quantidade: {
+                ...merged[nome].quantidade,
+                valor: merged[nome].quantidade.valor + ingrediente.quantidade.valor,
+              },
+            };
+            // Don't forget to sum the value as well, if necessary
             merged[nome].valor += ingrediente.valor;
           }
         });
       });
-
-      // Convertendo o objeto novamente para uma lista
+  
+      // Converting the object back to a list
       const mergedList = Object.values(merged);
       return mergedList;
     } else {
       // If shouldMerge is false, return the unmerged list
-      return recipes.reduce((acc, recipe) => acc.concat(recipe.ingredientes), []);
+      return recipes.reduce((acc, recipe) => acc.concat(recipe.ingredientes.map((ingrediente) => ({ ...ingrediente }))), []);
     }
   };
+  
 
   const multiplyIngredients = (ingredient, numeroConvidados) => {
     // Ensure that ingredient and ingredient.quantidade are defined
