@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     bottom: 18,
     right: 130,
     backgroundColor: 'black',
-    padding: 8,
+    padding: 10,
     borderRadius: 30,
   },
   imagemPerfil: {

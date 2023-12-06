@@ -8,6 +8,8 @@ import { useCardapio } from '../../services/CardapioContext'; // Importe o conte
 import { useUser } from '../../services/UserContext';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+
+
 const CardInfo = ({ cardapioId }) => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -18,61 +20,6 @@ const CardInfo = ({ cardapioId }) => {
   const userId = state.uid;
 
   const [novoCardapio, setNovoCardapio] = useState(null);
-
-  const [phoneIconColor, setPhoneIconColor] = useState('grey');
-  const [phoneIcon, setPhoneIcon] = useState('star-o');
-
-  const handleFavoritar = async (nome, quantidadePessoas) => {
-    try {
-      if (userId && cardapioId) {
-        const favoritoRef = ref(db, `Favoritos/${userId}_${cardapioId}`);
-
-        if (novoCardapio) {
-          await set(favoritoRef, {
-            BuffetID: userId,
-            CardapioID: cardapioId,
-            Nome: nome || novoCardapio.nomeCardapio,
-            QuantidadePessoas: quantidadePessoas || novoCardapio.numeroConvidados,
-          });
-
-          setFavoritado(true);
-          setPhoneIconColor('green');
-          setPhoneIcon('star');
-        } else {
-          console.error('novoCardapio é indefinido.');
-        }
-      } else {
-        console.error('userId ou cardapioId é indefinido.');
-      }
-    } catch (error) {
-      console.error('Erro ao favoritar o cardápio:', error);
-    }
-  };
-
-  const handleDesfavoritar = async () => {
-    try {
-      if (userId && cardapioId) {
-        const favoritoRef = ref(db, `Favoritos/${userId}_${cardapioId}`);
-        await set(favoritoRef, null);
-
-        setFavoritado(false);
-        setPhoneIconColor('grey');
-        setPhoneIcon('star-o');
-      } else {
-        console.error('userId ou cardapioId é indefinido.');
-      }
-    } catch (error) {
-      console.error('Erro ao desfavoritar o cardápio:', error);
-    }
-  };
-
-  const handlePhoneIconPress = async () => {
-    if (favoritado) {
-      await handleDesfavoritar();
-    } else {
-      handleFavoritar(novoCardapio.nomeCardapio, novoCardapio.numeroConvidados);
-    }
-  };
 
   const loadCardapio = async () => {
     const cardapioRef = ref(db, `cardapios/${cardapioId}`);
@@ -103,7 +50,8 @@ const CardInfo = ({ cardapioId }) => {
   }, [cardapioId]);
 
   const handleVerCardapio = () => {
-    navigation.navigate('DetalhesCardapioDB', {cardapioId})
+      navigation.navigate('DetalhesCardapioDB', {cardapioId})
+      console.log("cardapio id", {cardapioId})
   };
 
   return (
@@ -112,7 +60,6 @@ const CardInfo = ({ cardapioId }) => {
         <>
           <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center', paddingRight: 8, }}>
             <Text style={styles.cardName}>{novoCardapio.nomeCardapio}</Text>
-            <Icon name={phoneIcon} size={35} color={phoneIconColor} onPress={handlePhoneIconPress} />
           </View>
           <View style={{ flexDirection: 'row', width: '100%', height: 'auto' }}>
             <View style={styles.retangulo}>

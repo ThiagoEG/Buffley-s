@@ -29,6 +29,8 @@ import DetalhesCardapio from '../pages/DetalhesCardapio'
 import FavoritosCliente from '../pages/FavoritosCliente'
 import PreferenciasDetalhes from '../pages/PreferenciasDetalhes';
 import ConfiguracaoTela from '../pages/Configuracao';
+import VerDetalhes from '../pages/VerDetalhes'
+import DetalhesCardapioDB from '../pages/DetalhesCardapioDB';
 
 const iconesDasGuias = {
     Home: 'home', // Substitua 'home' pelo nome real do ícone que você deseja usar
@@ -116,6 +118,7 @@ function StackNavigator() {
       <Stack.Screen name="PreferenciasDetalhes" component={PreferenciasDetalhes} options={{ headerShown: false }} />
       <Stack.Screen name="ConfiguracaoTela" component={ConfiguracaoTela} options={{ headerShown: false }} />
       <Stack.Screen name="CardapiosBuffet" component={CardapiosBuffet} options={{ headerShown: false }} />
+      <Stack.Screen name="DetalhesCardapioDB" component={DetalhesCardapioDB} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

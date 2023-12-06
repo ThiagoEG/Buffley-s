@@ -30,12 +30,13 @@ const styles = StyleSheet.create({
 
   },
   button: {
-    width: '90%',
+    width: '100%',
     height: 45,
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
     borderRadius: 5,
+    marginBottom: 10,
   },
   buttonText: {
     color: 'white',
