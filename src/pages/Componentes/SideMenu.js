@@ -15,12 +15,17 @@ const MenuLateral = ({ isVisible, onClose }) => {
   const username = state.username;
   const [reloadData, setReloadData] = useState(true);
 
+  const emailNull = useState("");
+  const senha = useState("");
+
   const handlePress = () => {
     navigation.navigate('FavoritosCliente');
   };
   const navigation = useNavigation();
 
-
+  const handleLogOut = () =>{
+    navigation.navigate("SignIn", emailNull, senha)
+  }
 
   useEffect(() => {
     if (state.uid) {
@@ -85,6 +90,10 @@ const MenuLateral = ({ isVisible, onClose }) => {
             <Feather style={styles.Icon} name="settings" size={24} />
             <Text style={styles.navText}>Configurações</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.sla} onPress={handleLogOut}>
+            <Feather style={styles.Icon} name="log-out" size={24} />
+            <Text style={styles.navText}>Sair</Text>
+          </TouchableOpacity>
 
         </View>
       </View>
@@ -131,7 +140,8 @@ const styles = StyleSheet.create({
   {
     flex: 0.7,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 26,
   },
   header: {
     alignItems: 'center',
@@ -165,7 +175,6 @@ const styles = StyleSheet.create({
   },
   navText:
   {
-    marginVertical: '10%',
     fontSize: 18,
   },
   Icon:
@@ -174,6 +183,8 @@ const styles = StyleSheet.create({
   },
   navigation: {
     flex: 1,
+    marginTop: 18,
+    gap: 16,
   },
   closeButton: {
     alignItems: 'center',

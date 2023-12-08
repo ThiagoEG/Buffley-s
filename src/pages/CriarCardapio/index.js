@@ -287,7 +287,7 @@ export default function Cardapio() {
     // Verifica se o número de convidados foi escolhido
     if (numeroConvidados === 0) {
       Alert.alert('Selecione o número de convidados antes de escolher uma receita.');
-      return;
+      handleRemoveRecipeFromSelected();
 
     }
 

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, S
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Card from '../Componentes/card';
 import SideMenu from '../Componentes/SideMenu'
-import Navbar from '../componentes2/NavBarCardapio';
+import Navbar from '../componentes2/Navbar2';
 import CardInfo from "../Componentes/CardClienteInfo";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useUser } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário

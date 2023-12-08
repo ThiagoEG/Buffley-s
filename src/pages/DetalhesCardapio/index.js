@@ -124,7 +124,7 @@ export default function DetalhesCardapio({ route, navigation }) {
       <StatusBar hidden={false} />
       <Navbar title="Detalhes Cardápio" />
 
-      <View style={{ padding: 16, marginTop: -20 }}>
+      <View style={styles.containerDetalhes}>
 
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.nome}>Nome do Cardapio:</Text>
@@ -211,7 +211,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+   
   },
+  containerDetalhes:{ 
+    padding: 16,
+    marginTop: -20,  
+    width:'100%',
+    
+  }, 
   nome: {
     fontSize: 22,
     marginTop: 12,

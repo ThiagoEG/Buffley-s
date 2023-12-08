@@ -31,6 +31,7 @@ import PreferenciasDetalhes from '../pages/PreferenciasDetalhes';
 import ConfiguracaoTela from '../pages/Configuracao';
 import VerDetalhes from '../pages/VerDetalhes'
 import DetalhesCardapioDB from '../pages/DetalhesCardapioDB';
+import DetalhesCardapioDBC from '../pages/DetalhesCardapioDBC';
 
 const iconesDasGuias = {
     Home: 'home', // Substitua 'home' pelo nome real do ícone que você deseja usar
@@ -69,7 +70,6 @@ function HomeScreen() {
         })}
       >
         <Tab.Screen name="Home" component={Home} options={{headerShown: false}}/>
-        <Tab.Screen name="BuffetsParceiros" component={BuffetsParceiros} options={{headerShown: false}}/>
         <Tab.Screen name="Cardapio" component={Cardapio} options={{headerShown: false}}/>
       </Tab.Navigator>
       
@@ -119,6 +119,7 @@ function StackNavigator() {
       <Stack.Screen name="ConfiguracaoTela" component={ConfiguracaoTela} options={{ headerShown: false }} />
       <Stack.Screen name="CardapiosBuffet" component={CardapiosBuffet} options={{ headerShown: false }} />
       <Stack.Screen name="DetalhesCardapioDB" component={DetalhesCardapioDB} options={{ headerShown: false }} />
+      <Stack.Screen name="DetalhesCardapioDBC" component={DetalhesCardapioDBC} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

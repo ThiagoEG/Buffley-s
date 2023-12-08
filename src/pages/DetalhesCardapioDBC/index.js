@@ -184,97 +184,94 @@ const DetalhesCardapioDB = () => {
         <View style={styles.container}>
             <Navbar />
             <ScrollView>
-            {cardapioData ? (
-                <>
-                    <View style={{ flex: 1, marginBottom:12, }}>
-                        <View style={styles.containerInfo}>
-                            <View style={{ flexDirection: "row" }}>
-                                <Text style={styles.nome}>Valor Total:</Text>
-                                <Text style={styles.cardapioValor}>{cardapioData.totalCost.toFixed(2)}</Text>
+                {cardapioData ? (
+                    <>
+                        <View style={{ flex: 1, marginBottom: 12, }}>
+                            <View style={styles.containerInfo}>
+                                <View style={{ flexDirection: "row" }}>
+                                    <Text style={styles.nome}>Valor Total:</Text>
+                                    <Text style={styles.cardapioValor}>{cardapioData.totalCost.toFixed(2)}</Text>
+                                </View>
+                                <View style={{ flexDirection: "row" }}>
+                                    <Text style={styles.nome}>Nome do Cardapio:</Text>
+                                    <Text style={styles.cardapioNome}>{cardapioData.nomeCardapio}</Text>
+                                </View>
+                                <View style={{ flexDirection: "row" }}>
+                                    <Text style={styles.nome}>Data:</Text>
+                                    <Text style={styles.cardapioNome}>{cardapioData.data}</Text>
+                                </View>
+                                <View style={{ flexDirection: "row" }}>
+                                    <Text style={styles.nome}>Numero de convidados:</Text>
+                                    <Text style={styles.cardapioNome}>{cardapioData.numeroConvidados}</Text>
+                                </View>
                             </View>
-                            <View style={{ flexDirection: "row" }}>
-                                <Text style={styles.nome}>Nome do Cardapio:</Text>
-                                <Text style={styles.cardapioNome}>{cardapioData.nomeCardapio}</Text>
+                            <View style={styles.containers}>
+                                <TouchableOpacity style={styles.buttons} onPress={toggleMostrarReceitas}>
+                                    <Text style={styles.buttonText}> Receitas</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.button} onPress={toggleMostrarIngredientes}>
+                                    <Text style={styles.buttonText}>Ingredientes</Text>
+                                </TouchableOpacity>
                             </View>
-                            <View style={{ flexDirection: "row" }}>
-                                <Text style={styles.nome}>Data:</Text>
-                                <Text style={styles.cardapioNome}>{cardapioData.data}</Text>
-                            </View>
-                            <View style={{ flexDirection: "row" }}>
-                                <Text style={styles.nome}>Numero de convidados:</Text>
-                                <Text style={styles.cardapioNome}>{cardapioData.numeroConvidados}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.containers}>
-                            <TouchableOpacity style={styles.buttons} onPress={toggleMostrarReceitas}>
-                                <Text style={styles.buttonText}> Receitas</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.button} onPress={toggleMostrarIngredientes}>
-                                <Text style={styles.buttonText}>Ingredientes</Text>
-                            </TouchableOpacity>
-                        </View>
-                        {mostrarReceitas ? (
-                            <ScrollView>
+                            {mostrarReceitas ? (
+                                <ScrollView>
+                                     <Text style={styles.nome}>Receita:</Text>
+                                    <View style={styles.containerInfoR}>
+                                        <FlatList
+                                            data={cardapioData.receitas}
+                                            keyExtractor={(item, index) => index.toString()}
+                                            renderItem={({ item }) => (
+                                                <View>
 
-                                <View style={styles.containerInfoR}>
-                                <Text style={styles.nome}>Receita:</Text>
-                                <FlatList
-                                    data={cardapioData.receitas}
-                                    keyExtractor={(item, index) => index.toString()}
-                                    renderItem={({ item }) => (
-                                        <View>
-                                            <View>
-                                                <Text style={styles.receitaNome}>{item.nome}</Text>
-                                                <View style={{ marginLeft: 20 }}>
-                                                    <Text style={styles.ingredientesTitulo}>Ingredientes:</Text>
-                                                    {item.ingredientes.map((ingrediente, index) => (
-                                                        <Text key={index} style={styles.ingredienteItem}>
-                                                            {ingrediente.nome +
-                                                                " - " +
-                                                                (ingrediente.quantidade ? ingrediente.quantidade.valor : "") +
-                                                                " " +
-                                                                (ingrediente.quantidade ? ingrediente.quantidade.unidade : "") +
-                                                                " - R$ " +
-                                                                ingrediente.valor.toFixed(2)}
-                                                        </Text>
-                                                    ))}
+                                                   
+                                                    <View>
+                                                        <Text style={styles.receitaNome}>{item.nome}</Text>
+                                                        <View style={{ marginLeft: 20 }}>
+                                                            <Text style={styles.ingredientesTitulo}>Ingredientes:</Text>
+                                                            {item.ingredientes.map((ingrediente, index) => (
+                                                                <Text key={index} style={styles.ingredienteItem}>
+                                                                    {ingrediente.nome +
+                                                                        " - " +
+                                                                        (ingrediente.quantidade ? ingrediente.quantidade.valor : "") +
+                                                                        " " +
+                                                                        (ingrediente.quantidade ? ingrediente.quantidade.unidade : "")}
+                                                                </Text>
+                                                            ))}
+                                                        </View>
+                                                    </View>
                                                 </View>
-                                            </View>
+                                            )}
+                                        />
+                                    </View>
+                                </ScrollView>
+                            ) : (
+                                <ScrollView>
+                                    <View style={styles.containerInfoI}>
+                                        <View style={styles.ingredienteContainer}>
+                                            <Text style={styles.nome}>Ingredientes:</Text>
+                                            <FlatList
+                                                style={styles.flatcont}
+                                                data={mergedIngredients}
+                                                keyExtractor={(item, index) => index.toString()}
+                                                renderItem={({ item }) => (
+                                                    <View style={styles.ingredienteContainer}>
+                                                        <Text style={styles.ingredienteItem}>
+                                                            {`${item.nome} - ${item.quantidade.valor} ${item.quantidade.unidade}`}
+                                                        </Text>
+                                                    </View>
+                                                )}
+                                            />
                                         </View>
-                                    )}
-                                />
-                                </View>
-                            </ScrollView>
-                        ) : (
-                            <ScrollView>
-                                <View style={styles.containerInfoI}>
-                                <View style={styles.ingredienteContainer}>
-                                    <Text style={styles.nome}>Ingredientes:</Text>
-                                    <FlatList
-                                        style={styles.flatcont}
-                                        data={mergedIngredients}
-                                        keyExtractor={(item, index) => index.toString()}
-                                        renderItem={({ item }) => (
-                                            <View style={styles.ingredienteContainer}>
-                                                <Text style={styles.ingredienteItem}>
-                                                    {`${item.nome} - ${item.quantidade.valor} ${item.quantidade.unidade} - R$ ${item.valor.toFixed(2)}`}
-                                                </Text>
-                                            </View>
-                                        )}
-                                    />
-                                </View>
-                                </View>
-                            </ScrollView>
-                        )}
-                    </View>
-                </>
-            ) : (
-                <Text>Carregando dados...</Text>
-            )}
-</ScrollView>
-            <View style={{ padding: 10 }}>
-                <LinearButton title="Ok" />
-            </View>
+                                    </View>
+                                </ScrollView>
+                            )}
+                        </View>
+                    </>
+                ) : (
+                    <Text>Carregando dados...</Text>
+                )}
+            </ScrollView>
+            
         </View>
 
     );
@@ -391,7 +388,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 12,
         width: '45%',
-        borderColor:'#f25022'
+        borderColor: '#f25022'
     },
     buttonText: {
         textAlign: 'center',

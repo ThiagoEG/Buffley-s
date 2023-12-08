@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { ref, get } from 'firebase/database';
+import { ref, get , remove} from 'firebase/database';
 import { db } from '../../services/firebaseConfigurations/firebaseConfig';
 import Navbar from '../Componentes/Navbar';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -17,6 +17,23 @@ const PreferenciasDetalhes = ({ route }) => {
   const handleCriarCardapio = () => {
     navigation.navigate('CriarCardapio', { preferenciasData, preferenciasId })
   }
+
+  const handleRecusar = async () => {
+    try {
+      // Reference to the preference in the database
+      const preferenceRef = ref(db, `preferencias/${preferenciasId}`);
+
+      // Remove the preference from the database
+      await remove(preferenceRef);
+      navigation.goBack();
+      // Navigate to a different screen or perform any other actions as needed
+    } catch (error) {
+      console.error('Error deleting preference:', error.message);
+      // Handle the error as needed
+    }
+    
+  };
+
   useEffect(() => {
     // Se a estrutura de preferenciasCliente for diferente, ajuste aqui
     setPreferenciasClienteData(preferenciasData.preferenciasCliente);
@@ -84,17 +101,24 @@ const PreferenciasDetalhes = ({ route }) => {
       )}
 
       <View style={styles.containerBotoes}>
-
-        <LinearButton title="Aceitar" onPress={handleCriarCardapio}/>
-
-        <TouchableOpacity style={[styles.botao, { backgroundColor: '#ff6961' }]}>
-          <Text style={styles.textoBotao}>Recusar</Text>
+        <TouchableOpacity
+          style={[styles.botao, { borderColor: 'red', borderWidth: 1 }]}
+        >
+          <Text style={{ color: 'red' }} onPress={handleRecusar}>Recusar</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          style={[styles.botao, { borderColor: 'green', borderWidth: 1 }]}
+          onPress={handleCriarCardapio}
+        >
+          <Text style={{ color: 'green' }} onPress={handleCriarCardapio}>Aceitar</Text>
+        </TouchableOpacity>
       </View>
 
+      
 
     </View>
+
   );
 };
 
@@ -140,7 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     borderRadius: 5,
-    
+
   },
   botao2: {
     height: 45,
@@ -152,7 +176,27 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#098409e7'
   },
-  textoBotao: {
-    color: 'white',
+
+
+  containers: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 12,
+    width: '100%'
+  },
+  button: {
+    borderWidth: 1,
+    padding: 15,
+    width: '45%',
+  },
+
+  buttons: {
+    borderWidth: 1,
+    padding: 15,
+    width: '45%',
+    color: 'green'
+  },
+  buttonText: {
+    textAlign: 'center',
   },
 })

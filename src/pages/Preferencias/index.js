@@ -55,7 +55,7 @@ useEffect(() => {
                 setItens(newItens);
               }}
             />
-            <TouchableOpacity onPress={() => handleRemoveItem(index)}>
+            <TouchableOpacity onPress={() => handleRemoveItem(index, tipoPreferencia)}>
               <MaterialIcons name='delete' size={24} color={'red'} />
             </TouchableOpacity>
           </View>
@@ -67,12 +67,54 @@ useEffect(() => {
     );
   };
 
-  const handleRemoveItem = (index) => {
-    setCarneItens((prevItens) => {
-      const newItens = [...prevItens];
-      newItens.splice(index, 1);
-      return newItens;
-    });
+  const handleRemoveItem = (index, preferenceType) => {
+    switch (preferenceType) {
+      case 'Carnes':
+        setCarneItens((prevItens) => {
+          const newItens = [...prevItens];
+          newItens.splice(index, 1);
+          return newItens;
+        });
+        break;
+      case 'Guarnição':
+        setGuarnicaoItens((prevItens) => {
+          const newItens = [...prevItens];
+          newItens.splice(index, 1);
+          return newItens;
+        });
+        break;
+      case 'Salada':
+        setSaladaItens((prevItens) => {
+          const newItens = [...prevItens];
+          newItens.splice(index, 1);
+          return newItens;
+        });
+        break;
+      case 'Bolos':
+        setBolosItens((prevItens) => {
+          const newItens = [...prevItens];
+          newItens.splice(index, 1);
+          return newItens;
+        });
+        break;
+      case 'Entrada':
+        setEntradaItens((prevItens) => {
+          const newItens = [...prevItens];
+          newItens.splice(index, 1);
+          return newItens;
+        });
+        break;
+      case 'Bebida':
+        setBebidaItens((prevItens) => {
+          const newItens = [...prevItens];
+          newItens.splice(index, 1);
+          return newItens;
+        });
+        break;
+      default:
+        // Do nothing for unknown preference types
+        break;
+    }
   };
   
   
@@ -271,15 +313,15 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#BB2649',
-    borderRadius: 0,
-    paddingVertical: 20,
-    alignSelf: 'stretch',
+    borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
+    height:50,
+    marginTop:12,
   },
   bottomContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    padding:10,
   },
   buttonText: {
     fontSize: 18,
