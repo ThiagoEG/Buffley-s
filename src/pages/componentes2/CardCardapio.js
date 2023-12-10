@@ -1,19 +1,77 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableHighlight, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { ref, push, set, get,} from 'firebase/database';
+import { db } from "../../services/firebaseConfigurations/firebaseConfig";
+import { useUser } from '../../services/UserContext/index';
 
 const CardCardapio = ({ cardapioData, buffetData }) => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCardapio, setSelectedCardapio] = useState(null);
-
+  const { state } = useUser();
+ const userId = state.uid;
   console.log("data", buffetData)
+
   const handlePress = () => {
-    navigation.navigate('Preferencias', { BuffetNome: buffetData.nome, cardapioData: cardapiosFavoritos });
+    navigation.navigate('DetalhesCardapioDBC', { BuffetNome: buffetData.nome, cardapioData: cardapiosFavoritos, cardapioId: cardapioData.CardapioID });
   };
 
-  const cardapioId = buffetData.cardapioId;
-  console.log("id", cardapioId)
+  const handleAddCardapio = async () => {
+    if (selectedCardapio) {
+      const cardapioId = selectedCardapio.CardapioID;
+      
+      // Define the path to the location where the cardapio data is stored
+      const cardapioRef = ref(db, `cardapios/${cardapioId}`);
+
+      try {
+        // Fetch cardapio data from Firebase
+        const snapshot = await get(cardapioRef);
+        const cardapioDetails = snapshot.val();
+
+        // Check if the user already has this cardapio
+        const userCardapioRef = ref(db, `cardapios`);
+        const userCardapioSnapshot = await get(userCardapioRef);
+        const userCardapios = userCardapioSnapshot.val();
+
+        const userAlreadyHasCardapio = Object.values(userCardapios || {}).find(
+          (userCardapio) => userCardapio.userId === userId && userCardapio.cardapioData.CardapioID === cardapioId
+        );
+
+        if (userAlreadyHasCardapio) {
+          Alert.alert('Error', 'Você já possui esse cardápio.');
+        } else {
+          // Create a new object with user ID and fetched cardapio data
+          const newCardapio = {
+            userCardapioId: userId,
+            ...selectedCardapio,
+            ...cardapioDetails,
+          };
+
+          // Define the path to the location where you want to save the new cardapio
+          const newCardapioRef = ref(db, `cardapios`);
+
+          // Push the new cardapio to the database
+          push(newCardapioRef, newCardapio)
+            .then(() => {
+              console.log('New Cardapio saved to the database!');
+              Alert.alert('Sucesso', 'O cardápio será mostardo na tela dos crdápios!');
+              setModalVisible(!modalVisible);
+              navigation.goBack(); // Go back to the previous screen
+            })
+            .catch((error) => {
+              console.error('Error saving new Cardapio: ', error)
+            });
+        }
+      } catch (error) {
+        console.error('Error fetching cardapio details: ', error);
+      }
+    }
+  };
+  
+
+  const CardapioID = buffetData.CardapioID;
+  console.log("id cardapio", CardapioID)
   return (
     <View style={styles.card}>
       <View style={styles.imageContainer}>
@@ -37,7 +95,7 @@ const CardCardapio = ({ cardapioData, buffetData }) => {
       </TouchableOpacity>
       <Modal
         animationType="slide"
-        transparent={true}
+        transparent={false}
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
@@ -55,18 +113,19 @@ const CardCardapio = ({ cardapioData, buffetData }) => {
                     style={styles.button}
                     onPress={() => {
                       setModalVisible(!modalVisible);
-                      navigation.navigate('Preferencias', { BuffetNome: buffetData.nome, cardapioData: cardapioData });
+                      navigation.navigate('DetalhesCardapioDBC', { BuffetNome: buffetData.nome, cardapioData: cardapioData, cardapioId: cardapioData.CardapioID });
                     }}
                   >
-                    <Text style={styles.buttonText}>Ir para Preferências</Text>
+                    <Text style={styles.buttonText}>Ver Cardápio</Text>
                   </TouchableOpacity>
                   <TouchableHighlight
                     style={{ ...styles.closeButton, backgroundColor: '#be3455' }}
                     onPress={() => {
                       setModalVisible(!modalVisible);
+                      handleAddCardapio();
                     }}
                   >
-                    <Text style={styles.textStyle}>Fechar Modal</Text>
+                    <Text style={styles.textStyle}>Solicitar Cardápio</Text>
                   </TouchableHighlight>
                 </View>
               </View>

@@ -5,16 +5,17 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { TextInput } from 'react-native';
 import { useCardapio } from '../../services/CardapioContext'; // Importe o contexto
 import Navbar from '../Componentes/NavBarD';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { ref, set } from 'firebase/database';
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
+import { color } from 'react-native-reanimated';
 
 export default function DetalhesCardapio({ route, navigation }) {
   const { novoCardapio, selectedRecipes } = route.params;
   const [mostrarReceitas, setMostrarReceitas] = useState(true);
   const [ingredientes, setIngredientes] = useState([]);
 
-  
+
 
   const toggleMostrarReceitas = () => {
     setMostrarReceitas(true);
@@ -24,8 +25,8 @@ export default function DetalhesCardapio({ route, navigation }) {
     setMostrarReceitas(false);
   };
 
-  
-  
+
+
 
   const VoltarHome = () => {
     navigation.navigate('Cardapios');
@@ -51,32 +52,28 @@ export default function DetalhesCardapio({ route, navigation }) {
           const nome = ingrediente.nome;
   
           if (!merged[nome]) {
-            // If it doesn't exist, add the ingredient to the list
-            merged[nome] = { ...ingrediente, quantidade: { ...ingrediente.quantidade } };
+            merged[nome] = multiplyIngredients({ ...ingrediente }, novoCardapio.numeroConvidados);
           } else {
-            // If it already exists, create a deep copy and sum the quantity
             merged[nome] = {
               ...merged[nome],
               quantidade: {
                 ...merged[nome].quantidade,
-                valor: merged[nome].quantidade.valor + ingrediente.quantidade.valor,
+                valor: merged[nome].quantidade.valor + multiplyIngredients(ingrediente, novoCardapio.numeroConvidados).quantidade.valor,
               },
             };
-            // Don't forget to sum the value as well, if necessary
-            merged[nome].valor += ingrediente.valor;
+            merged[nome].valor += multiplyIngredients(ingrediente, novoCardapio.numeroConvidados).valor;
           }
         });
       });
   
-      // Converting the object back to a list
       const mergedList = Object.values(merged);
       return mergedList;
     } else {
-      // If shouldMerge is false, return the unmerged list
-      return recipes.reduce((acc, recipe) => acc.concat(recipe.ingredientes.map((ingrediente) => ({ ...ingrediente }))), []);
+      return recipes.reduce((acc, recipe) => acc.concat(recipe.ingredientes.map((ingrediente) => multiplyIngredients({ ...ingrediente }, novoCardapio.numeroConvidados))), []);
     }
   };
   
+
 
   const multiplyIngredients = (ingredient, numeroConvidados) => {
     // Ensure that ingredient and ingredient.quantidade are defined
@@ -96,14 +93,19 @@ export default function DetalhesCardapio({ route, navigation }) {
   useEffect(() => {
     if (novoCardapio && novoCardapio.selectedRecipes) {
       const totalCost = novoCardapio.selectedRecipes.reduce((acc, recipe) => {
-        // ... rest of your code
-      });
-
-      // Update the total cost in novoCardapio
+        const recipeCost = recipe.ingredientes.reduce((recipeAcc, ingrediente) => {
+          const multipliedIngredient = multiplyIngredients(ingrediente, novoCardapio.numeroConvidados);
+          return recipeAcc + multipliedIngredient.valor;
+        }, 0);
+        return acc + recipeCost;
+      }, 0);
+  
+      // Atualize o custo total em novoCardapio
       setNovoCardapio((prev) => ({ ...prev, totalCost }));
     }
   }, [novoCardapio]);
-
+  
+  
   // Agrupe as receitas selecionadas por categoria manualmente
   const groupedRecipes = {};
 
@@ -123,86 +125,95 @@ export default function DetalhesCardapio({ route, navigation }) {
     <View style={styles.container}>
       <StatusBar hidden={false} />
       <Navbar title="Detalhes Cardápio" />
+      <ScrollView>
+      <View style={styles.containerInfo}>
+        <View style={styles.containerDetalhes}>
 
-      <View style={styles.containerDetalhes}>
+            <Text style={styles.nome}>Nome do Cardapio:</Text>
+            <Text style={styles.cardapioNome}>{novoCardapio.nomeCardapio}</Text>
+          
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.nome}>Quantidade de Convidados:</Text>
+            <Text style={styles.cardapioNome}>{novoCardapio.numeroConvidados}</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.nome}>Valor do Cardápio:</Text>
+            <Text style={[styles.cardapioNome, { color: 'green' }]}>
+  R$ {novoCardapio.totalCost.toFixed(2)}
+</Text>
 
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.nome}>Nome do Cardapio:</Text>
-          <Text style={styles.cardapioNome}>{novoCardapio.nomeCardapio}</Text>
-        </View>
-
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.nome}>Quantidade de Convidados:</Text>
-          <Text style={styles.cardapioNome}>{novoCardapio.numeroConvidados}</Text>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.nome}>Valor do Cardápio:</Text>
-          <Text style={styles.cardapioNome}>R$ {novoCardapio.totalCost.toFixed(2)}</Text>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.nome}>Data:</Text>
-          <Text style={styles.cardapioNome}>{novoCardapio.data}</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.nome}>Data:</Text>
+            <Text style={styles.cardapioNome}>{novoCardapio.data}</Text>
+          </View>
         </View>
       </View>
 
-      <View style={{width: '100%', borderWidth: 2, borderColor: 'rgba(0, 0, 0, 0.5)'}}/>
-
-      <View style={styles.contBtn}>
-        <Button  title='Mostrar Receitas' onPress={toggleMostrarReceitas}/>
-        <Button  title='Mostrar Ingredientes' onPress={toggleMostrarIngredientes}/>
+      <View style={styles.containers}>
+        <TouchableOpacity style={styles.buttons} onPress={toggleMostrarReceitas}>
+          <Text style={styles.buttonText} onPress={toggleMostrarReceitas}> Receitas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={toggleMostrarIngredientes}>
+          <Text style={styles.buttonText } onPress={toggleMostrarIngredientes}>Ingredientes</Text>
+        </TouchableOpacity>
       </View>
-
+      
+      
       {mostrarReceitas ? (
-        <SectionList
-          sections={Object.keys(groupedRecipes).map((categoria) => ({
-            title: categoria,
-            data: groupedRecipes[categoria].map((recipe) => ({
-              ...recipe,
-              ingredientes: recipe.ingredientes.map((ingredient) =>
-                multiplyIngredients(ingredient, novoCardapio.numeroConvidados)
-              ),
-            })),
-          }))}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.receitaContainer}>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.receitaNome}>{item.nome}</Text>
-              </View>
-              <View style={{ marginLeft: 20 }}>
-                <Text style={styles.ingredientesTitulo}>Ingredientes:</Text>
-                {item.ingredientes.map((ingrediente, index) => (
-                  <Text key={index} style={styles.ingredienteItem}>
-                    {`${ingrediente.nome} - ${ingrediente.quantidade && ingrediente.quantidade.valor} ${ingrediente.quantidade && ingrediente.quantidade.unidade} - R$ ${ingrediente.valor.toFixed(2)}`}
-                  </Text>
-                ))}
-              </View>
-            </View>
-          )}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={styles.categoriaTitulo}>{title}</Text>
-          )}
-        />
+        <View style={styles.containerInfoR}>
+        <View style={styles.ingredienteContainer}>
+        <FlatList
+  style={styles.flatcont}
+  data={selectedRecipes}
+  keyExtractor={(item) => item.id}
+  renderItem={({ item }) => (
+    <View style={styles.receitaContainer}>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.receitaNome}>{item.nome}</Text>
+      </View>
+      <View style={{ marginLeft: 20 }}>
+        <Text style={styles.ingredientesTitulo}>Ingredientes:</Text>
+        {item.ingredientes.map((ingrediente, index) => {
+          const multipliedIngredient = multiplyIngredients(ingrediente, novoCardapio.numeroConvidados);
+          return (
+            <Text key={index} style={styles.ingredienteItem}>
+              {`${multipliedIngredient.nome} - ${multipliedIngredient.quantidade.valor} ${multipliedIngredient.quantidade.unidade} - R$ ${multipliedIngredient.valor.toFixed(2)}`}
+            </Text>
+          );
+        })}
+      </View>
+    </View>
+  )}
+/>
+
+        </View>
+        </View>
       ) : (
+        <View style={styles.containerInfoI}>
+        <View style={styles.ingredienteContainer}>
         <FlatList
           style={styles.flatcont}
-          data={mergeIngredients(selectedRecipes, true).map((ingredient) =>
-            multiplyIngredients(ingredient, novoCardapio.numeroConvidados)
-          )}
+          data={mergeIngredients(selectedRecipes, true)}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <View style={styles.ingredienteContainer}>
               <Text style={styles.ingredienteItem}>
                 {`${item.nome} - ${item.quantidade.valor} ${item.quantidade.unidade} - R$ ${item.valor.toFixed(2)}`}
               </Text>
-            </View>
+              
           )}
         />
+        </View>
+        </View>
       )}
 
-      <View style={{padding:16,}}>
+ </ScrollView>
+      <View style={{ padding: 16, }}>
         <LinearButton onPress={VoltarHome} title="Ok" />
       </View>
+
+     
+
     </View>
   );
 }
@@ -211,14 +222,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-   
+
   },
-  containerDetalhes:{ 
+  containerDetalhes: {
     padding: 16,
-    marginTop: -20,  
-    width:'100%',
-    
-  }, 
+    marginTop: -20,
+    width: '100%',
+
+  },
   nome: {
     fontSize: 22,
     marginTop: 12,
@@ -255,8 +266,8 @@ const styles = StyleSheet.create({
   },
 
   ingredienteContainer: {
-    marginLeft: 20,
-  },
+    marginTop: 12,
+},
   ingredienteItem: {
     fontSize: 18,
     marginBottom: 5,
@@ -274,9 +285,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     marginTop: 12,
   },
-  flatcont: {
-    marginTop: 12,
-  },
+  
   contBtn: {
     flexDirection: 'row',
     marginVertical: 10,
@@ -285,6 +294,65 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'center',
     alignItems: 'center',
+  },
+
+  containerInfo: {
+    padding: 16,
+    elevation: 4,
+    backgroundColor: 'white',
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: 5,
+  },
+  containerInfoR: {
+    padding: 16,
+    elevation: 6,
+    backgroundColor: 'white',
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: 5,
+    borderColor: '#ff5e006c',  // Adicione essa linha
+    borderWidth: 2,  // Adicione essa linha
+    marginBottom: 10,
+  },
+  containerInfoI: {
+    padding: 16,
+    elevation: 6,
+    backgroundColor: 'white',
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: 5,
+    borderColor: '#B01455',  // Adicione essa linha
+    borderWidth: 2,  // Adicione essa linha
+    marginBottom: 16,
+  },
+
+  containers: {
+    flexDirection: 'row',
+    padding: 18,
+    marginBottom: 8,
+    backgroundColor: 'transparent',
+    width: '100%',
+    justifyContent: 'space-between'
+  },
+  
+  button: {
+    borderWidth: 1,
+    padding: 12,
+    flex: 1,
+    borderColor: '#B01455',
+    width: 150,
+  },
+  buttons: {
+    borderWidth: 1,
+    padding: 12,
+    flex: 1,
+    borderColor: '#f25022',
+    width: 150,
+  },
+  
+  buttonText: {
+    textAlign: 'center',
   },
 
 });

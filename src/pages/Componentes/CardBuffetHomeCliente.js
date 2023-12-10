@@ -383,7 +383,7 @@ const CardComponent = ({ buffetData  }) => {
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
-    width: '85%',
+    width: '90%',
     alignSelf: 'center',
   },
   cardImage: {

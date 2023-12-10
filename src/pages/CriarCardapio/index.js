@@ -433,10 +433,12 @@ export default function Cardapio() {
                 onValueChange={(itemValue) => setNumeroConvidados(itemValue)}
               >
                 <Picker.Item label="Selecione o número de convidados" value={0} />
-                <Picker.Item label="50" value={50} />
-                <Picker.Item label="100" value={100} />
-                <Picker.Item label="150" value={150} />
-                <Picker.Item label="200" value={200} />
+                <Picker.Item label="50" value="50" />
+                            <Picker.Item label="80" value="80" />
+                            <Picker.Item label="100" value="150" />
+                            <Picker.Item label="150" value="150" />
+                            <Picker.Item label="200" value="200" />
+                            <Picker.Item label="250" value="250" />
               </Picker>
             </View>
             <View style={styles.inputDrop}>

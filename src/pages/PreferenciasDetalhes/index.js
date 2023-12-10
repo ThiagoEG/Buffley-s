@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { ref, get , remove} from 'firebase/database';
 import { db } from '../../services/firebaseConfigurations/firebaseConfig';
 import Navbar from '../Componentes/Navbar';
@@ -40,9 +40,10 @@ const PreferenciasDetalhes = ({ route }) => {
   }, [preferenciasData]);
 
   return (
-    <View style={{ flex: 1, }}>
-
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <ScrollView>
       <Navbar />
+      <View style={styles.ContainerDadoss}>
       <Text style={styles.titulo}>Dados do Cardápio</Text>
 
       <View style={styles.ContainerDados}>
@@ -99,6 +100,8 @@ const PreferenciasDetalhes = ({ route }) => {
           )}
         </View>
       )}
+      </View>
+</ScrollView>
 
       <View style={styles.containerBotoes}>
         <TouchableOpacity
@@ -141,9 +144,10 @@ const styles = StyleSheet.create({
   dados: {
     fontSize: 22,
     gap: 5,
-    fontWeight: 'normal',
+    fontWeight: 'bold',
     marginTop: 5,
     color: '#1b1a1a',
+
   },
   dados2: {
     fontSize: 18,
@@ -151,10 +155,10 @@ const styles = StyleSheet.create({
   },
   containerBotoes: {
     flexDirection: 'row',
-    width: '90%',
+    width: '95%',
     alignSelf: 'center',
     justifyContent: 'center',
-    marginTop: 26,  // Adicionei um espaçamento superior para separar os botões do conteúdo acima
+    padding: 12,
   },
   botao: {
     height: 45,
@@ -199,4 +203,13 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
   },
+  ContainerDados: {
+    padding: 16,
+    elevation: 6,
+    backgroundColor: 'white',
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: 5,
+    marginBottom:16,
+},
 })

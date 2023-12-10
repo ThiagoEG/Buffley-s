@@ -10,6 +10,7 @@ import DatePickerComponent from '../Componentes/DatapickerPreferencias';
 import { tiposDeCarnes, bebidas, bolos, entradas, saladas, guarnicoes } from '../../Banco/PreferenciasBanco';
 import MultiSelectComponent from '../Componentes/DropDonwSelect';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Picker } from '@react-native-picker/picker';
 
 export default function Welcome() {
   const [nome, setNome] = useState('');
@@ -29,7 +30,11 @@ export default function Welcome() {
   const [entradaItens, setEntradaItens] = useState([]);
   const [bebidaItens, setBebidaItens] = useState([]);
   console.log("teste", BuffetNome, cardapioData)
+  const [novaQuantidadeUni, setNovaQuantidadeUni] = useState('');
 
+  const handleCategoriaUniChange = (value) => {
+    setNovaQuantidadeUni(value);
+};
 useEffect(() => {
     // Se cardapioData for fornecido, preencha automaticamente os campos
     if (cardapioData) {
@@ -140,7 +145,7 @@ useEffect(() => {
 
   const handleSubmitPreferencias = async () => {
     // Validando os campos obrigatórios
-    if (!nome || !qtdPessoas) {
+    if (!nome || !qtdPessoas === novaQuantidadeUni) {
       setErrors({
         nome: !nome ? 'Campo obrigatório' : '',
         qtdPessoas: !qtdPessoas ? 'Campo obrigatório' : '',
@@ -154,7 +159,7 @@ useEffect(() => {
   
     const dadosPreferencias = {
       nome,
-      qtdPessoas,
+      qtdPessoas: novaQuantidadeUni,
       data: dataSelecionada,
       userId: userId,
       buffetId: await getBuffetId(BuffetNome),
@@ -219,13 +224,20 @@ useEffect(() => {
         />
 
         <View style={{flexDirection: "row"}[styles.componets]}>
-        <LinearBorder
-  icon="groups"
-  placeholder="Quantidade de pessoas"
-  value={qtdPessoas.toString()} // Convertendo para string
-  onChangeText={(text) => setQtdPessoas(text)}
-  keyboardType="numeric"
-/>
+        <View style={styles.containerPicker}>
+                        <Picker
+                            style={styles.PickerInput}
+                            selectedValue={novaQuantidadeUni}
+                            onValueChange={handleCategoriaUniChange}>
+                            <Picker.Item label="Numero de Convidados" value="" />
+                            <Picker.Item label="50" value="50" />
+                            <Picker.Item label="80" value="80" />
+                            <Picker.Item label="100" value="150" />
+                            <Picker.Item label="150" value="150" />
+                            <Picker.Item label="200" value="200" />
+                            <Picker.Item label="250" value="250" />
+                        </Picker>
+                    </View>
 
 
 <DatePickerComponent onSelectDate={(data) => setDataSelecionada(data)} style={styles.DatePicker} />
@@ -364,5 +376,16 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     marginTop: 12,
     height: 50,
-  }
+  },
+
+  containerPicker: {
+    width: '85%',
+    marginTop: 10,
+    borderRadius: 5,
+    height: 45,
+    backgroundColor: 'white',
+    borderWidth: 3,
+    borderColor: 'rgba(255, 203, 210, 0.8)',
+    alignSelf: "center",
+  },
 });

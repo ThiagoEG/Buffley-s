@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
 import { getDatabase, ref, get } from 'firebase/database';
 import { db } from '../../services/firebaseConfigurations/firebaseConfig';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useUser } from '../../services/UserContext/index';
 import Navbar from '../Componentes/Navbar';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -17,7 +17,11 @@ const DetalhesCardapioDB = () => {
     const userID = state.uid;
     const [mostrarReceitas, setMostrarReceitas] = useState(true);
     const [ingredientes, setIngredientes] = useState([]);
+    const navigation = useNavigation();
 
+    const handleVoltar = () => {
+        navigation.goBack();
+    }
 
 
     const consolidateRecipes = (recipes) => {
@@ -215,8 +219,9 @@ const DetalhesCardapioDB = () => {
                             </View>
                             {mostrarReceitas ? (
                                 <ScrollView>
-                                     <Text style={styles.nome}>Receita:</Text>
+                                     
                                     <View style={styles.containerInfoR}>
+                                        <Text style={styles.nomes}>Receita:</Text>
                                         <FlatList
                                             data={cardapioData.receitas}
                                             keyExtractor={(item, index) => index.toString()}
@@ -248,13 +253,13 @@ const DetalhesCardapioDB = () => {
                                 <ScrollView>
                                     <View style={styles.containerInfoI}>
                                         <View style={styles.ingredienteContainer}>
-                                            <Text style={styles.nome}>Ingredientes:</Text>
+                                            <Text style={styles.nomes}>Ingredientes:</Text>
                                             <FlatList
                                                 style={styles.flatcont}
                                                 data={mergedIngredients}
                                                 keyExtractor={(item, index) => index.toString()}
                                                 renderItem={({ item }) => (
-                                                    <View style={styles.ingredienteContainer}>
+                                                    <View style={styles.ingredienteContainerS}>
                                                         <Text style={styles.ingredienteItem}>
                                                             {`${item.nome} - ${item.quantidade.valor} ${item.quantidade.unidade}`}
                                                         </Text>
@@ -271,7 +276,9 @@ const DetalhesCardapioDB = () => {
                     <Text>Carregando dados...</Text>
                 )}
             </ScrollView>
-            
+            <View style={{ padding: 10 }}>
+                <LinearButton title="Ok" onPress={handleVoltar}/>
+            </View>
         </View>
 
     );
@@ -317,6 +324,11 @@ const styles = StyleSheet.create({
         marginTop: 12,
         fontWeight: 'bold',
     },
+    nomes: {
+        fontSize: 22,
+        
+        fontWeight: 'bold',
+    },
     cardapioNome: {
         fontSize: 24,
         fontWeight: '400',
@@ -343,10 +355,10 @@ const styles = StyleSheet.create({
         fontWeight: '200',
         marginBottom: 6,
         marginLeft: 16,
-        color: '##f25022'
+        color: '#f25022'
     },
 
-    ingredienteContainer: {
+    ingredienteContainers: {
         marginTop: 12,
     },
     ingredienteItem: {

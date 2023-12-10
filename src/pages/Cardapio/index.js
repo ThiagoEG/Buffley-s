@@ -202,12 +202,10 @@ export default function Home({ rating, navigation }) {
               <CardInfo key={index} cardapioId={cardapioItem.id} />
             ))
           ) : (
-            <TouchableOpacity onPress={handleCreateNewCardapio}>
+            
               <View style={styles.cardAdd}>
-                <Text style={styles.cardTitle}>Sem Cardapio Retornados</Text>
-                <Ionicons name="add-circle-outline" size={40} marginRight={12} color="black" />
+                <Text style={styles.cardTitle}>Sem Cardapio Retornados!</Text>
               </View>
-            </TouchableOpacity>
           )}
 
 
@@ -483,7 +481,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     height: 150,
     backgroundColor: 'white',
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,
