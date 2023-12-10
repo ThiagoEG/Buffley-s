@@ -60,7 +60,7 @@ export default function PreferenciasCard({ nome, qtdsPessoas, data, preferencias
 
 const styles = StyleSheet.create({
   retangulo1: {
-    width: '95%',
+    width: '90%',
     height: 110,
     backgroundColor: 'white',
     marginTop: 14,
@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
 
   titleSol2: {
     alignContent: 'center',
-    marginLeft:4,
   },
 
   title1: {
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
   imagem: {
     width: 80,
     height: 80,
-    margin: '5%',
+    margin: '4%',
     borderRadius:5,
   },
 });

@@ -53,12 +53,12 @@ const DatePickerComponent = ({ onSelectDate, style }) => {
 const styles = StyleSheet.create({
   datePickerButton: {
     marginTop: '5%',
-    height: 50,
+    height: 45,
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 20,
     borderRadius: 5,
-    width: 340,
+    width: 330,
     backgroundColor: 'white',
     borderColor: 'rgba(255, 203, 210, 0.8)',
     borderWidth: 3,

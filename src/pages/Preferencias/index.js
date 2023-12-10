@@ -34,8 +34,8 @@ export default function Welcome() {
 
   const handleCategoriaUniChange = (value) => {
     setNovaQuantidadeUni(value);
-};
-useEffect(() => {
+  };
+  useEffect(() => {
     // Se cardapioData for fornecido, preencha automaticamente os campos
     if (cardapioData) {
       setNome(cardapioData.Nome || ''); // Substitua 'Nome' pelo campo correto do objeto cardapioData
@@ -121,8 +121,8 @@ useEffect(() => {
         break;
     }
   };
-  
-  
+
+
 
   const getBuffetId = async (buffetNome) => {
     try {
@@ -152,11 +152,11 @@ useEffect(() => {
       });
       return;
     }
-  
+
     const clienteImagemRef = ref(db, `clientes/${userId}/imagem`);
     const clienteImagemSnapshot = await get(clienteImagemRef);
     const clienteImagemUrl = clienteImagemSnapshot.exists() ? clienteImagemSnapshot.val() : null;
-  
+
     const dadosPreferencias = {
       nome,
       qtdPessoas: novaQuantidadeUni,
@@ -173,19 +173,19 @@ useEffect(() => {
       },
       clienteImagemUrl: clienteImagemUrl,
     };
-  
+
     try {
       const preferenciasRef = ref(db, 'preferencias');
       const novaReferenciaPreferencias = push(preferenciasRef);
       const novoIdPreferencias = novaReferenciaPreferencias.key;
-  
+
       dadosPreferencias.id = novoIdPreferencias;
-  
+
       // Salvando os dados usando 'set' em vez de 'update'
       set(novaReferenciaPreferencias, dadosPreferencias).then(() => {
         console.log('Preferências adicionadas com sucesso ao Firebase Realtime Database.');
         console.log('ID das novas preferências:', novoIdPreferencias);
-  
+
         // Resetando os campos e exibindo mensagem de sucesso
         setNome('');
         setQtdPessoas('');
@@ -197,9 +197,9 @@ useEffect(() => {
         setEntradaItens([]);
         setBebidaItens([]);
         setErrors({});
-  
+
         navigation.navigate('HomeScreen');
-  
+
         Alert.alert('Sucesso', 'Preferências salvas com sucesso!');
       });
     } catch (error) {
@@ -207,12 +207,12 @@ useEffect(() => {
       Alert.alert('Erro', 'Ocorreu um erro ao salvar as preferências. Por favor, tente novamente.');
     }
   };
-  
+
 
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Navbar/>
+      <Navbar />
       <View style={styles.containerForm}>
         <Text style={styles.sectionTitle}>Dados</Text>
 
@@ -223,39 +223,40 @@ useEffect(() => {
           onChangeText={(text) => setNome(text)}
         />
 
-        <View style={{flexDirection: "row"}[styles.componets]}>
-        <View style={styles.containerPicker}>
-                        <Picker
-                            style={styles.PickerInput}
-                            selectedValue={novaQuantidadeUni}
-                            onValueChange={handleCategoriaUniChange}>
-                            <Picker.Item label="Numero de Convidados" value="" />
-                            <Picker.Item label="50" value="50" />
-                            <Picker.Item label="80" value="80" />
-                            <Picker.Item label="100" value="150" />
-                            <Picker.Item label="150" value="150" />
-                            <Picker.Item label="200" value="200" />
-                            <Picker.Item label="250" value="250" />
-                        </Picker>
-                    </View>
+        <View style={{ flexDirection: "row" }[styles.componets]}>
+          <View style={styles.containerPicker}>
+            <Picker
+              style={styles.PickerInput}
+              selectedValue={novaQuantidadeUni}
+              onValueChange={handleCategoriaUniChange}>
+              <Picker.Item label="Numero de Convidados" value="" />
+              <Picker.Item label="50" value="50" />
+              <Picker.Item label="80" value="80" />
+              <Picker.Item label="100" value="150" />
+              <Picker.Item label="150" value="150" />
+              <Picker.Item label="200" value="200" />
+              <Picker.Item label="250" value="250" />
+            </Picker>
+          </View>
 
 
-<DatePickerComponent onSelectDate={(data) => setDataSelecionada(data)} style={styles.DatePicker} />
+         
         </View>
-
-        
+        <View style={{alignSelf: 'center', width: '100%'}}>
+ <DatePickerComponent onSelectDate={(data) => setDataSelecionada(data)} style={styles.DatePicker} />
+</View>
         <Text style={[styles.sectionTitle1]}>Preferências</Text>
 
-        
+
         {mapPreferencias('Carnes', carneItens, setCarneItens, handleRemoveItem)}
-        {mapPreferencias('Guarnição', guarnicaoItens, setGuarnicaoItens, handleRemoveItem)}
+        {mapPreferencias('Acompanhamentos', guarnicaoItens, setGuarnicaoItens, handleRemoveItem)}
         {mapPreferencias('Salada', saladaItens, setSaladaItens, handleRemoveItem)}
         {mapPreferencias('Bolos', bolosItens, setBolosItens, handleRemoveItem)}
         {mapPreferencias('Entrada', entradaItens, setEntradaItens, handleRemoveItem)}
         {mapPreferencias('Bebida', bebidaItens, setBebidaItens, handleRemoveItem)}
 
       </View>
-      
+
       <View style={styles.bottomContainer}>
         <TouchableOpacity style={styles.button} onPress={handleSubmitPreferencias}>
           <Text style={styles.buttonText}>Concluir</Text>
@@ -281,7 +282,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     color: 'black',
   },
-  sectionTitle1:{
+  sectionTitle1: {
     fontSize: 32,
     fontWeight: 'bold',
     marginTop: 12,
@@ -328,12 +329,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    height:50,
-    marginTop:12,
+    height: 50,
+    marginTop: 12,
   },
   bottomContainer: {
     flex: 1,
-    padding:10,
+    padding: 10,
   },
   buttonText: {
     fontSize: 18,
@@ -345,7 +346,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 10,
   },
-  componets:{
+  componets: {
     width: '100%',
     flexDirection: "row"
   },
@@ -353,7 +354,7 @@ const styles = StyleSheet.create({
   {
   },
 
-  AddBoton:{
+  AddBoton: {
     height: 40,
     backgroundColor: '#fff',
     elevation: 2,
@@ -364,18 +365,19 @@ const styles = StyleSheet.create({
     shadowColor: '#be3455',
     marginTop: 16,
   },
-  sectionTitle2:{
+  sectionTitle2: {
     fontSize: 22,
     marginLeft: 18,
     marginTop: 10,
   },
 
-  itemContainer:{
+  itemContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection:'row',
+    flexDirection: 'row',
     marginTop: 12,
     height: 50,
+    alignSelf: 'center',
   },
 
   containerPicker: {

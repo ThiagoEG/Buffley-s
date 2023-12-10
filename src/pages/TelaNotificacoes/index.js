@@ -78,7 +78,7 @@ export default function App() {
               key={index}
               text={`Buffet novo: ${buffet.nome}`}
             >
-              {/* Adiciona a imagem do buffet ao lado da mensagem */}
+
               {buffet.imagem && (
                 <Image
                   source={{ uri: buffet.imagem }}

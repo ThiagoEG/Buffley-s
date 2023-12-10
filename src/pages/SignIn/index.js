@@ -25,7 +25,7 @@ export default function SignIn() {
   const { state, dispatch } = useUser();
   const { buffetId, setBuffetId } = useBuffet(); // Use buffetId do contexto
   const { state: authState } = useAuth();
-
+  
   const clearInputs = () => {
     setEmail('');
     setPassword('');
@@ -168,9 +168,10 @@ export default function SignIn() {
 
   return (
     <View style={styles.container}>
+    
       <View style={styles.TopContainer}>
         <Animatable.Image
-          source={require('../../../assets/Buffley.png')}
+          source={require('../../assets/LogoAtualizada.png')}
           style={styles.image}
           animation="fadeIn"
           duration={2000}
@@ -227,6 +228,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+
+  Bemvindo:{
+    fontSize:40,
+    backgroundColor: null  
+  },
   TopContainer: {
     flex: 0.6,
     backgroundColor: 'white',
@@ -236,9 +242,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   image: {
-    marginTop: '20%',
-    width: '85%',
-    height: '85%',
+    marginTop: '10%',
+    width: '90%',
+    height: '100%',
     alignSelf: 'center',
   },
 
