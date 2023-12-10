@@ -116,8 +116,9 @@ export default function App() {
         nome={employee.nome}
         cargo={employee.cargo}
         tipoFuncionario={employee.tipoFuncionario}
-        imagem={employee.imagem}
+        imagem={employee.imagem}z
         salario={employee.salario}
+        telefone={employee.telefone}
         onDelete={() => handleDeleteEmployee(employee.idFuncionario)}
       />
     ));
