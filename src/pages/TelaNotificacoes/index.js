@@ -11,13 +11,16 @@ export default function App() {
   const [selectedTab, setSelectedTab] = useState('General');
   const [buffets, setBuffets] = useState([]);
   const [cardapios, setCardapios] = useState([]);
+  const [preferenciasRecusadas, setPreferenciasRecusadas] = useState([]);
   const { state } = useUser();
   const userID = state.uid;
 
   useEffect(() => {
     const cardapiosRef = ref(db, 'cardapios');
+    const buffetsRef = ref(db, 'buffets');
+    const preferenciasRef = ref(db, 'preferenciasRecusadas');
 
-    const handleData = (snapshot) => {
+    const handleCardapiosData = (snapshot) => {
       const cardapiosData = snapshot.val();
       if (cardapiosData) {
         const cardapiosArray = Object.values(cardapiosData);
@@ -25,39 +28,44 @@ export default function App() {
       }
     };
 
-    onValue(cardapiosRef, handleData);
-
-    // Retorne uma função de limpeza para desinscrever o callback quando o componente for desmontado
-    return () => {
-      off(cardapiosRef, 'value', handleData);
-    };
-  }, []);
-
-  useEffect(() => {
-    const buffetsRef = ref(db, 'buffets');
-
-    const handleData = (snapshot) => {
+    const handleBuffetsData = (snapshot) => {
       const buffetsData = snapshot.val();
       if (buffetsData) {
         const buffetsArray = Object.values(buffetsData);
-
-        // Atualize o estado com as imagens do buffet
         setBuffets(buffetsArray);
       }
     };
 
-    onValue(buffetsRef, handleData);
+    const handlePreferenciasData = (snapshot) => {
+      const preferenciasData = snapshot.val();
+      if (preferenciasData) {
+        const preferenciasArray = Object.values(preferenciasData);
+        setPreferenciasRecusadas(preferenciasArray);
+      }
+    };
 
-    // Retorne uma função de limpeza para desinscrever o callback quando o componente for desmontado
+    onValue(cardapiosRef, handleCardapiosData);
+    onValue(buffetsRef, handleBuffetsData);
+    onValue(preferenciasRef, handlePreferenciasData);
+
     return () => {
-      // Certifique-se de desinscrever o callback quando o componente for desmontado para evitar vazamentos de memória
-      off(buffetsRef, 'value', handleData);
+      off(cardapiosRef, 'value', handleCardapiosData);
+      off(buffetsRef, 'value', handleBuffetsData);
+      off(preferenciasRef, 'value', handlePreferenciasData);
     };
   }, []);
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
   };
+
+  const getBuffetNameById = (buffetId) => {
+    const buffet = buffets.find((b) => b.id === buffetId);
+    return buffet ? buffet.nome : 'Buffet não encontrado';
+  }
+  
+  
+  
 
   return (
     <View style={styles.container}>
@@ -96,6 +104,24 @@ export default function App() {
                 )}
               </Notification>
             ))}
+ {selectedTab === 'General' &&
+          preferenciasRecusadas
+            .filter((preferencia) => preferencia.userId === userID)
+            .map((filteredPreferencia, index) => {
+              const buffetName = buffets.length > 0
+                ? getBuffetNameById(filteredPreferencia.buffetId)
+                : 'Buffet não encontrado';
+
+              return (
+                <Notification
+                  key={index}
+                  text={`Sua preferência foi recusada!`}
+                >
+                  {/* Adicione qualquer informação adicional que deseja exibir */}
+                </Notification>
+              );
+            })}
+
       </ScrollView>
     </View>
   );

@@ -36,8 +36,8 @@ export default function CriarReceita() {
           {
             nome: novoIngrediente,
             quantidade: {
-              quantidade: novaQuantidade,
-              unidadeDeMedida: novaQuantidadeUni,
+              valor: novaQuantidade,
+              unidade: novaQuantidadeUni,
             },
             valor: novoValor,
           },
@@ -180,6 +180,7 @@ export default function CriarReceita() {
                             selectedValue={novaUnidade}
                             onValueChange={handleNovaUnidadeChange}>
                             <Picker.Item label="porção" value="porção" />
+                            <Picker.Item label="unidade" value="unidade" />
                         </Picker>
                     </View>
           

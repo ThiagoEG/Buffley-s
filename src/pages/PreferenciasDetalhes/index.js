@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { ref, get } from 'firebase/database';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { ref, onValue, off, remove, push, get, set } from 'firebase/database';
 import { db } from '../../services/firebaseConfigurations/firebaseConfig';
 import Navbar from '../Componentes/Navbar';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -17,15 +17,48 @@ const PreferenciasDetalhes = ({ route }) => {
   const handleCriarCardapio = () => {
     navigation.navigate('CriarCardapio', { preferenciasData, preferenciasId })
   }
+
+  const handleRecusar = async () => {
+    try {
+      // Reference to the preference in the database
+      const preferenceRef = ref(db, `preferencias/${preferenciasId}`);
+
+      // Get the preference data
+      const preferenceSnapshot = await get(preferenceRef);
+      const preferenceData = preferenceSnapshot.val();
+
+      // Remove the preference from the database
+      
+
+      // Create a new node "preferenciasRecusadas"
+      const preferenciasRecusadasRef = ref(db, 'preferenciasRecusadas');
+      const newRecusadaRef = push(preferenciasRecusadasRef);
+
+      // Set the data for the new node
+      await set(newRecusadaRef, {
+        userId: preferenceData.userId,
+        buffetId: preferenceData.buffetId,
+        id: preferenceData.id,
+      });
+      await remove(preferenceRef);
+      // Navega para uma tela diferente ou executa outras ações conforme necessário
+      navigation.goBack();
+    } catch (error) {
+      console.error('Error deleting preference:', error.message);
+      // Lida com o erro conforme necessário
+    }
+  };
+
   useEffect(() => {
     // Se a estrutura de preferenciasCliente for diferente, ajuste aqui
     setPreferenciasClienteData(preferenciasData.preferenciasCliente);
   }, [preferenciasData]);
 
   return (
-    <View style={{ flex: 1, }}>
-
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <ScrollView>
       <Navbar />
+      <View style={styles.ContainerDadoss}>
       <Text style={styles.titulo}>Dados do Cardápio</Text>
 
       <View style={styles.ContainerDados}>
@@ -82,19 +115,28 @@ const PreferenciasDetalhes = ({ route }) => {
           )}
         </View>
       )}
+      </View>
+</ScrollView>
 
       <View style={styles.containerBotoes}>
-
-        <LinearButton title="Aceitar" onPress={handleCriarCardapio}/>
-
-        <TouchableOpacity style={[styles.botao, { backgroundColor: '#ff6961' }]}>
-          <Text style={styles.textoBotao}>Recusar</Text>
+        <TouchableOpacity
+          style={[styles.botao, { borderColor: 'red', borderWidth: 1 }]}
+        >
+          <Text style={{ color: 'red' }} onPress={handleRecusar}>Recusar</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          style={[styles.botao, { borderColor: 'green', borderWidth: 1 }]}
+          onPress={handleCriarCardapio}
+        >
+          <Text style={{ color: 'green' }} onPress={handleCriarCardapio}>Aceitar</Text>
+        </TouchableOpacity>
       </View>
 
+      
 
     </View>
+
   );
 };
 
@@ -117,9 +159,10 @@ const styles = StyleSheet.create({
   dados: {
     fontSize: 22,
     gap: 5,
-    fontWeight: 'normal',
+    fontWeight: 'bold',
     marginTop: 5,
     color: '#1b1a1a',
+
   },
   dados2: {
     fontSize: 18,
@@ -127,10 +170,10 @@ const styles = StyleSheet.create({
   },
   containerBotoes: {
     flexDirection: 'row',
-    width: '90%',
+    width: '95%',
     alignSelf: 'center',
     justifyContent: 'center',
-    marginTop: 26,  // Adicionei um espaçamento superior para separar os botões do conteúdo acima
+    padding: 12,
   },
   botao: {
     height: 45,
@@ -140,7 +183,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     borderRadius: 5,
-    
+
   },
   botao2: {
     height: 45,
@@ -152,7 +195,36 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#098409e7'
   },
-  textoBotao: {
-    color: 'white',
+
+
+  containers: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 12,
+    width: '100%'
   },
+  button: {
+    borderWidth: 1,
+    padding: 15,
+    width: '45%',
+  },
+
+  buttons: {
+    borderWidth: 1,
+    padding: 15,
+    width: '45%',
+    color: 'green'
+  },
+  buttonText: {
+    textAlign: 'center',
+  },
+  ContainerDados: {
+    padding: 16,
+    elevation: 6,
+    backgroundColor: 'white',
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: 5,
+    marginBottom:16,
+},
 })

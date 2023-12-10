@@ -151,7 +151,7 @@ const handleFilterClick = (index) => {
           </View>
         </ScrollView>
 
-        <Text style={styles.title}>Buffets Próximos a Você</Text>
+        <Text style={styles.title}>Buffets Disponíveis</Text>
 
         <View style={styles.containerCard}>
         {filteredBuffetData.map((buffet, index) => (
@@ -381,7 +381,7 @@ searchContainer: {
   },
 
   retanguloComEspacamento: {
-    marginRight: null, // Adiciona um espaçamento de 8px à direita de cada retângulo
+    marginRight: 8 // Adiciona um espaçamento de 8px à direita de cada retângulo
   },
 
   retangulo: {
@@ -391,9 +391,9 @@ searchContainer: {
     justifyContent: 'center',
     paddingHorizontal: 15,
     marginTop: 24,
-    marginHorizontal: 16,
     borderRadius: 5,
     elevation: 8,
+    marginLeft:2,
   },
   texto: {
     fontSize: 14,

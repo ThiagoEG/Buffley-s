@@ -1,15 +1,77 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableHighlight, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { ref, push, set, get,} from 'firebase/database';
+import { db } from "../../services/firebaseConfigurations/firebaseConfig";
+import { useUser } from '../../services/UserContext/index';
 
 const CardCardapio = ({ cardapioData, buffetData }) => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-const [selectedCardapio, setSelectedCardapio] = useState(null);
-console.log("data", buffetData)
-const handlePress = () => {
-  navigation.navigate('Preferencias', { BuffetNome: buffetData.nome, cardapioData: cardapiosFavoritos });
-};
+  const [selectedCardapio, setSelectedCardapio] = useState(null);
+  const { state } = useUser();
+ const userId = state.uid;
+  console.log("data", buffetData)
+
+  const handlePress = () => {
+    navigation.navigate('DetalhesCardapioDBC', { BuffetNome: buffetData.nome, cardapioData: cardapiosFavoritos, cardapioId: cardapioData.CardapioID });
+  };
+
+  const handleAddCardapio = async () => {
+    if (selectedCardapio) {
+      const cardapioId = selectedCardapio.CardapioID;
+      
+      // Define the path to the location where the cardapio data is stored
+      const cardapioRef = ref(db, `cardapios/${cardapioId}`);
+
+      try {
+        // Fetch cardapio data from Firebase
+        const snapshot = await get(cardapioRef);
+        const cardapioDetails = snapshot.val();
+
+        // Check if the user already has this cardapio
+        const userCardapioRef = ref(db, `cardapios`);
+        const userCardapioSnapshot = await get(userCardapioRef);
+        const userCardapios = userCardapioSnapshot.val();
+
+        const userAlreadyHasCardapio = Object.values(userCardapios || {}).find(
+          (userCardapio) => userCardapio.userId === userId && userCardapio.cardapioData.CardapioID === cardapioId
+        );
+
+        if (userAlreadyHasCardapio) {
+          Alert.alert('Error', 'Você já possui esse cardápio.');
+        } else {
+          // Create a new object with user ID and fetched cardapio data
+          const newCardapio = {
+            userCardapioId: userId,
+            ...selectedCardapio,
+            ...cardapioDetails,
+          };
+
+          // Define the path to the location where you want to save the new cardapio
+          const newCardapioRef = ref(db, `cardapios`);
+
+          // Push the new cardapio to the database
+          push(newCardapioRef, newCardapio)
+            .then(() => {
+              console.log('New Cardapio saved to the database!');
+              Alert.alert('Sucesso', 'O cardápio será mostardo na tela dos crdápios!');
+              setModalVisible(!modalVisible);
+              navigation.goBack(); // Go back to the previous screen
+            })
+            .catch((error) => {
+              console.error('Error saving new Cardapio: ', error)
+            });
+        }
+      } catch (error) {
+        console.error('Error fetching cardapio details: ', error);
+      }
+    }
+  };
+  
+
+  const CardapioID = buffetData.CardapioID;
+  console.log("id cardapio", CardapioID)
   return (
     <View style={styles.card}>
       <View style={styles.imageContainer}>
@@ -22,55 +84,55 @@ const handlePress = () => {
         <Text style={styles.label}>Nome: {cardapioData.Nome}</Text>
         <Text style={styles.label2}>Quantidade de Pessoas: {cardapioData.QuantidadePessoas}</Text>
       </View>
-<TouchableOpacity
-  style={styles.iconContainer}
-  onPress={() => {
-    setSelectedCardapio(cardapioData);
-    setModalVisible(true);
-  }}
->
-  <Image source={require('../../../assets/MenuDots.png')} style={styles.iconImage} />
-</TouchableOpacity>
-<Modal
-  animationType="slide"
-  transparent={true}
-  visible={modalVisible}
-  onRequestClose={() => {
-    setModalVisible(!modalVisible);
-  }}
->
-  <View style={styles.modalContainer}>
-    <View style={styles.modalContent}>
-      {/* Aqui você pode exibir as informações do cardápio selecionado */}
-      {selectedCardapio && (
-        <View>
-          <Text style={styles.label}>Nome: {selectedCardapio.Nome}</Text>
-          <Text style={styles.label}>Quantidade de Pessoas: {selectedCardapio.QuantidadePessoas}</Text>
-          {/* Adicione mais informações conforme necessário */}
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-                navigation.navigate('Preferencias', { BuffetNome: buffetData.nome, cardapioData: cardapioData });
-              }}
-            >
-              <Text style={styles.buttonText}>Ir para Preferências</Text>
-            </TouchableOpacity>
-            <TouchableHighlight
-              style={{ ...styles.closeButton, backgroundColor: '#be3455' }}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <Text style={styles.textStyle}>Fechar Modal</Text>
-            </TouchableHighlight>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() => {
+          setSelectedCardapio(cardapioData);
+          setModalVisible(true);
+        }}
+      >
+        <Image source={require('../../../assets/MenuDots.png')} style={styles.iconImage} />
+      </TouchableOpacity>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            {selectedCardapio && (
+              <View>
+                <Text style={styles.label}>Nome: {selectedCardapio.Nome}</Text>
+                <Text style={styles.label}>Quantidade de Pessoas: {selectedCardapio.QuantidadePessoas}</Text>
+                {/* Adicione mais informações conforme necessário */}
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                      navigation.navigate('DetalhesCardapioDBC', { BuffetNome: buffetData.nome, cardapioData: cardapioData, cardapioId: cardapioData.CardapioID });
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Ver Cardápio</Text>
+                  </TouchableOpacity>
+                  <TouchableHighlight
+                    style={{ ...styles.closeButton, backgroundColor: '#be3455' }}
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                      handleAddCardapio();
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Solicitar Cardápio</Text>
+                  </TouchableHighlight>
+                </View>
+              </View>
+            )}
           </View>
         </View>
-      )}
-    </View>
-  </View>
-</Modal>
+      </Modal>
 
     </View>
   );
@@ -123,43 +185,43 @@ const styles = StyleSheet.create({
     height: 20,
   },
   modalContainer: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
-modalContent: {
-  backgroundColor: 'white',
-  padding: 20,
-  borderRadius: 10,
-  alignItems: 'center',
-  elevation: 10
-},
-closeButton: {
-  marginTop: 10,
-  borderRadius: 5,
-  padding: 10,
-  marginLeft: '5%'
-},
-textStyle: {
-  color: 'white',
-  textAlign: 'center',
-},
-button: {
-  marginTop: 10,
-  padding: 10,
-  backgroundColor: '#be3455',
-  borderRadius: 5,
-},
-buttonText: {
-  color: 'white',
-  textAlign: 'center',
-},
-buttonContainer: {
-  flexDirection: 'row', // Layout de linha para posicionar os botões lado a lado
-  justifyContent: 'space-between', // Espaçamento igual entre os botões
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    elevation: 10
+  },
+  closeButton: {
+    marginTop: 10,
+    borderRadius: 5,
+    padding: 10,
+    marginLeft: '5%'
+  },
+  textStyle: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  button: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: '#be3455',
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row', // Layout de linha para posicionar os botões lado a lado
+    justifyContent: 'space-between', // Espaçamento igual entre os botões
 
-  marginTop: 10,
-},
+    marginTop: 10,
+  },
 });
 
 export default CardCardapio;

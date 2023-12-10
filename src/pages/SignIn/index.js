@@ -26,6 +26,21 @@ export default function SignIn() {
   const { buffetId, setBuffetId } = useBuffet(); // Use buffetId do contexto
   const { state: authState } = useAuth();
 
+  const clearInputs = () => {
+    setEmail('');
+    setPassword('');
+  };
+
+  useEffect(() => {
+    // Clear inputs when component is initialized
+    clearInputs();
+
+    // After a delay of 1000ms, display the form with a fade-in animation.
+    setTimeout(() => {
+      setIsFormVisible(true);
+    }, 1000);
+  }, []);
+
   const handleLogin = async (username) => {
     try {
       const authInstance = getAuth();

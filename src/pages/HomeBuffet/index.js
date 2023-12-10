@@ -9,6 +9,7 @@ import PreferenciasCard from '../Componentes/PreferenciasCard';
 import { Feather } from '@expo/vector-icons';
 import { useUser } from '../../services/UserContext/index';
 import SideMenu from '../Componentes/SideMenu';
+import CardInfo from "../Componentes/CardBuffetInfo";
 import Navbar from '../componentes2/Navbar2';
 
 
@@ -24,6 +25,8 @@ export default function HomeBuffet({ navigation }) {
   const userId = state.uid;
   const [refreshing, setRefreshing] = React.useState(false);
   const [isScreenInitialized, setIsScreenInitialized] = useState(false);
+  const [favoritos, setFavoritos] = useState([]);
+
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -33,32 +36,10 @@ export default function HomeBuffet({ navigation }) {
     setRefreshing(true);
   
     try {
-      const preferenciasRef = ref(db, 'preferencias');
-      const preferenciasSnapshot = await get(preferenciasRef);
-
-      if (preferenciasSnapshot.exists()) {
-        const preferenciasData = preferenciasSnapshot.val();
-
-        if (preferenciasData) {
-          const preferenciasArray = Object.keys(preferenciasData).map((preferenciaId) => ({
-            id: preferenciaId,
-            ...preferenciasData[preferenciaId],
-          }));
-
-          setPreferenciasData(preferenciasArray);
-          setHasPreferencias(true); // Defina como true se houver preferências
-        } else {
-          console.error('Preferencias data is empty.');
-          setPreferenciasData([]);
-          setHasPreferencias(false); // Defina como false se não houver preferências
-        }
-      } else {
-        console.error('No preferencias found in the database.');
-        setPreferenciasData([]);
-        setHasPreferencias(false); // Defina como false se não houver preferências
-      }
+      await fetchData();
+      await fetchDataFavoritos();
     } catch (error) {
-      console.error('Error fetching preferencias:', error);
+      console.error('Error during refresh:', error);
     }
   
     setRefreshing(false);
@@ -94,15 +75,39 @@ export default function HomeBuffet({ navigation }) {
     } catch (error) {
       console.error('Error fetching preferencias:', error);
     }
+
   };
 
+  const fetchDataFavoritos = async () => {
+    try {
+      const favoritosRef = ref(db, 'Favoritos');
+      const favoritosSnapshot = await get(favoritosRef);
+  
+      if (favoritosSnapshot.exists()) {
+        const favoritosData = favoritosSnapshot.val();
+  
+        if (favoritosData) {
+          const favoritosArray = Object.keys(favoritosData).map((favoritoId) => ({
+            id: favoritoId,
+            ...favoritosData[favoritoId],
+          }));
+  
+          setFavoritos(favoritosArray);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching favoritos data:', error);
+    }
+  };
+
+  
   useEffect(() => {
     if (!isScreenInitialized) {
       fetchData();
+      fetchDataFavoritos();
       setIsScreenInitialized(true);
     }
   }, [isScreenInitialized]);
-
   useLayoutEffect(() => {
     if (!isScreenInitialized) {
       fetchData();
@@ -146,7 +151,22 @@ export default function HomeBuffet({ navigation }) {
           </View>
         )}
 
-        <Text style={styles.title}>Seus cardápios Salvos</Text>
+<Text style={styles.title}>Seus cardápios Favoritos</Text>
+{favoritos.length > 0 ? (
+  favoritos.map((favorito) => {
+    return (
+      <CardInfo
+        key={favorito.id}
+        cardapioId={favorito.CardapioID}
+      />
+    );
+  })
+) : (
+  <View style={styles.cardAdd}>
+    <Feather name="alert-triangle" size={50} color="red" />
+    <Text style={styles.noPreferenciasText}>Você não possui cardápios favoritos.</Text>
+  </View>
+)}
       </ScrollView>
     </View>
   );

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, S
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Card from '../Componentes/card';
 import SideMenu from '../Componentes/SideMenu'
-import Navbar from '../componentes2/NavBarCardapio';
+import Navbar from '../componentes2/Navbar2';
 import CardInfo from "../Componentes/CardClienteInfo";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useUser } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
@@ -202,12 +202,10 @@ export default function Home({ rating, navigation }) {
               <CardInfo key={index} cardapioId={cardapioItem.id} />
             ))
           ) : (
-            <TouchableOpacity onPress={handleCreateNewCardapio}>
+            
               <View style={styles.cardAdd}>
-                <Text style={styles.cardTitle}>Sem Cardapio Retornados</Text>
-                <Ionicons name="add-circle-outline" size={40} marginRight={12} color="black" />
+                <Text style={styles.cardTitle}>Sem Cardapio Retornados!</Text>
               </View>
-            </TouchableOpacity>
           )}
 
 
@@ -483,7 +481,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     height: 150,
     backgroundColor: 'white',
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,

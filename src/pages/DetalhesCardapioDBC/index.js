@@ -19,10 +19,10 @@ const DetalhesCardapioDB = () => {
     const [ingredientes, setIngredientes] = useState([]);
     const navigation = useNavigation();
 
-
     const handleVoltar = () => {
         navigation.goBack();
     }
+
 
     const consolidateRecipes = (recipes) => {
         const consolidatedRecipes = {};
@@ -219,7 +219,7 @@ const DetalhesCardapioDB = () => {
                             </View>
                             {mostrarReceitas ? (
                                 <ScrollView>
-
+                                     
                                     <View style={styles.containerInfoR}>
                                         <Text style={styles.nomes}>Receita:</Text>
                                         <FlatList
@@ -227,6 +227,8 @@ const DetalhesCardapioDB = () => {
                                             keyExtractor={(item, index) => index.toString()}
                                             renderItem={({ item }) => (
                                                 <View>
+
+                                                   
                                                     <View>
                                                         <Text style={styles.receitaNome}>{item.nome}</Text>
                                                         <View style={{ marginLeft: 20 }}>
@@ -237,9 +239,7 @@ const DetalhesCardapioDB = () => {
                                                                         " - " +
                                                                         (ingrediente.quantidade ? ingrediente.quantidade.valor : "") +
                                                                         " " +
-                                                                        (ingrediente.quantidade ? ingrediente.quantidade.unidade : "") +
-                                                                        " - " +
-                                                                        (ingrediente.valor.toFixed(2))}
+                                                                        (ingrediente.quantidade ? ingrediente.quantidade.unidade : "")}
                                                                 </Text>
                                                             ))}
                                                         </View>
@@ -253,7 +253,7 @@ const DetalhesCardapioDB = () => {
                                 <ScrollView>
                                     <View style={styles.containerInfoI}>
                                         <View style={styles.ingredienteContainer}>
-                                            <Text style={styles.nome}>Ingredientes:</Text>
+                                            <Text style={styles.nomes}>Ingredientes:</Text>
                                             <FlatList
                                                 style={styles.flatcont}
                                                 data={mergedIngredients}
@@ -261,7 +261,7 @@ const DetalhesCardapioDB = () => {
                                                 renderItem={({ item }) => (
                                                     <View style={styles.ingredienteContainerS}>
                                                         <Text style={styles.ingredienteItem}>
-                                                            {`${item.nome} - ${item.quantidade.valor} ${item.quantidade.unidade} - R$ ${item.valor.toFixed(2)}`}
+                                                            {`${item.nome} - ${item.quantidade.valor} ${item.quantidade.unidade}`}
                                                         </Text>
                                                     </View>
                                                 )}
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
         color: '#f25022'
     },
 
-    ingredienteContainerS: {
+    ingredienteContainers: {
         marginTop: 12,
     },
     ingredienteItem: {

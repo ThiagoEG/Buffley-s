@@ -324,28 +324,26 @@ const CardComponent = ({ buffetData  }) => {
 
   return (
     <View style={styles.card}>
-      <Image style={styles.cardImage} source={{ uri: imagem }} />
-  
-      <View style={styles.infoContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.buffetName}>{nome}</Text>
-          <View style={styles.iconsContainer}>
-            <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.icon}>
-              <FontAwesome name="map-marker" size={24} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleToggleFavorite} style={styles.icon}>
-              <FontAwesome
-                name={isFavorite ? 'heart' : 'heart-o'}
-                size={24}
-                color={isFavorite ? 'red' : 'gray'}
-              />
-            </TouchableOpacity>
-          </View>
+    <Image style={styles.cardImage} source={{ uri: imagem }} />
+
+    <View style={styles.infoContainer}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.buffetName}>{nome}</Text>
+        <View style={styles.iconsContainer}>
+          <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.icon}>
+            <FontAwesome name="map-marker" size={30} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleToggleFavorite} style={styles.icon}>
+            <FontAwesome
+              name={isFavorite ? 'heart' : 'heart-o'}
+              size={30}
+              color={isFavorite ? 'red' : 'gray'}
+            />
+          </TouchableOpacity>
         </View>
-        <Text style={styles.locationText}>{endereco}</Text>
-        <Text style={styles.mediaText}>Média: {mediaAvaliacoes.toFixed(2)}</Text>
-        <View style={styles.starsContainer}>{renderStars()}</View>
       </View>
+      <View style={styles.starsContainer}>{renderStars()}</View>
+    </View>
   
       <Modal
         animationType="slide"
@@ -385,7 +383,7 @@ const CardComponent = ({ buffetData  }) => {
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
-    width: '85%',
+    width: '90%',
     alignSelf: 'center',
   },
   cardImage: {

@@ -50,7 +50,7 @@ const CardInfo = ({ cardapioId }) => {
   }, [cardapioId]);
 
   const handleVerCardapio = () => {
-      navigation.navigate('DetalhesCardapioDB', {cardapioId})
+      navigation.navigate('DetalhesCardapioDBC', {cardapioId})
       console.log("cardapio id", {cardapioId})
   };
 

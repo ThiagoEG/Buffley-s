@@ -7,6 +7,7 @@ import { ref, get as getData, query, orderByChild, equalTo } from 'firebase/data
 import { useUser } from '../../services/UserContext/index';
 import { db } from '../../services/firebaseConfigurations/firebaseConfig';
 import CardCardapio from '../componentes2/CardCardapio'; // Importe o componente CardCardapio
+import LinearButton from '../Componentes/LinearButton';
 
 const BuffetPerfil = () => {
   const navigation = useNavigation();
@@ -89,6 +90,7 @@ const BuffetPerfil = () => {
   
 
   return (
+    <View style={{flex:1}}>
     <ScrollView style={styles.container}>
       <Navbar />
       <Image style={styles.cardImage} source={{ uri: buffetData.imagem }} />
@@ -99,15 +101,14 @@ const BuffetPerfil = () => {
           <CardCardapio key={cardapio.CardapioID} cardapioData={cardapio} buffetData={buffetData} />
         ))}
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handlePress}>
-          <Image
-            source={require("../../../assets/Frame4.png")}
-            style={styles.buttonImage}
-          />
-        </TouchableOpacity>
-      </View>
+      
     </ScrollView>
+    
+    <View style={styles.buttonContainer}>
+        <LinearButton title="Solicitar Cardápio" onPress={handlePress}/>
+      </View>
+    </View>
+    
   );
 };
 
@@ -131,8 +132,7 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   buttonContainer: {
-    alignItems: 'center',
-    margin: 16,
+   padding: 12,
   },
   cardImage: {
     marginTop: 25,
