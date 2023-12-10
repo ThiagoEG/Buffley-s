@@ -28,7 +28,7 @@ const PreferenciasDetalhes = ({ route }) => {
       const preferenceData = preferenceSnapshot.val();
 
       // Remove the preference from the database
-      
+
 
       // Create a new node "preferenciasRecusadas"
       const preferenciasRecusadasRef = ref(db, 'preferenciasRecusadas');
@@ -57,71 +57,68 @@ const PreferenciasDetalhes = ({ route }) => {
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <ScrollView>
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
-      <ScrollView>
-      <Navbar />
-      <View style={styles.ContainerDadoss}>
-      <View style={styles.ContainerDadoss}>
-      <Text style={styles.titulo}>Dados do Cardápio</Text>
 
-      <View style={styles.ContainerDados}>
-        <Text style={styles.dados}>Nome: {preferenciasData.nome}</Text>
-        <Text style={styles.dados}>Quantidade de Pessoas: {preferenciasData.qtdPessoas}</Text>
-        <Text style={styles.dados}>Data: {preferenciasData.data}</Text>
-      </View>
+        <Navbar />
+      
+          <View style={styles.ContainerDadoss}>
+            <Text style={styles.titulo}>Dados do Cardápio</Text>
 
-      <Text style={styles.titulo} >Preferências do Cliente:</Text>
-      {preferenciasClienteData && (
-        <View style={styles.ContainerDados} >
-
-
-          {preferenciasClienteData.carnes && preferenciasClienteData.carnes.length > 0 && (
-            <View style={styles.ContainerDados2}>
-              <Text style={styles.dados}>Carnes: </Text>
-              <Text style={styles.dados2} >{preferenciasClienteData.carnes.join(', ')}</Text>
+            <View style={styles.ContainerDados}>
+              <Text style={styles.dados}>Nome: {preferenciasData.nome}</Text>
+              <Text style={styles.dados}>Quantidade de Pessoas: {preferenciasData.qtdPessoas}</Text>
+              <Text style={styles.dados}>Data: {preferenciasData.data}</Text>
             </View>
-          )}
 
-          {preferenciasClienteData.guarnicao && preferenciasClienteData.guarnicao.length > 0 && (
-            <View style={styles.ContainerDados2}>
-              <Text style={styles.dados}>Guarnição: </Text>
-              <Text style={styles.dados2}>{preferenciasClienteData.guarnicao.join(', ')}</Text>
-            </View>
-          )}
+            <Text style={styles.titulo} >Preferências do Cliente:</Text>
+            {preferenciasClienteData && (
+              <View style={styles.ContainerDados} >
 
-          {preferenciasClienteData.salada && preferenciasClienteData.salada.length > 0 && (
-            <View style={styles.ContainerDados2}>
-              <Text style={styles.dados}>Salada: </Text>
-              <Text style={styles.dados2}>{preferenciasClienteData.salada.join(', ')}</Text>
-            </View>
-          )}
 
-          {preferenciasClienteData.bolos && preferenciasClienteData.bolos.length > 0 && (
-            <View style={styles.ContainerDados2}>
-              <Text style={styles.dados}>Bolos: </Text>
-              <Text style={styles.dados2}>{preferenciasClienteData.bolos.join(', ')}</Text>
-            </View>
-          )}
+                {preferenciasClienteData.carnes && preferenciasClienteData.carnes.length > 0 && (
+                  <View style={styles.ContainerDados2}>
+                    <Text style={styles.dados}>Carnes: </Text>
+                    <Text style={styles.dados2} >{preferenciasClienteData.carnes.join(', ')}</Text>
+                  </View>
+                )}
 
-          {preferenciasClienteData.entrada && preferenciasClienteData.entrada.length > 0 && (
-            <View style={styles.ContainerDados2}>
-              <Text style={styles.dados}>Entrada: </Text>
-              <Text style={styles.dados2}>{preferenciasClienteData.entrada.join(', ')}</Text>
-            </View>
-          )}
+                {preferenciasClienteData.guarnicao && preferenciasClienteData.guarnicao.length > 0 && (
+                  <View style={styles.ContainerDados2}>
+                    <Text style={styles.dados}>Acompanhamentos: </Text>
+                    <Text style={styles.dados2}>{preferenciasClienteData.guarnicao.join(', ')}</Text>
+                  </View>
+                )}
 
-          {preferenciasClienteData.bebida && preferenciasClienteData.bebida.length > 0 && (
-            <View style={styles.ContainerDados2}>
-              <Text style={styles.dados}>Bebida: </Text>
-              <Text style={styles.dados2}>{preferenciasClienteData.bebida.join(', ')}</Text>
-            </View>
-          )}
-        </View>
-      )}
-      </View>
-</ScrollView>
-      </View>
-</ScrollView>
+                {preferenciasClienteData.salada && preferenciasClienteData.salada.length > 0 && (
+                  <View style={styles.ContainerDados2}>
+                    <Text style={styles.dados}>Salada: </Text>
+                    <Text style={styles.dados2}>{preferenciasClienteData.salada.join(', ')}</Text>
+                  </View>
+                )}
+
+                {preferenciasClienteData.bolos && preferenciasClienteData.bolos.length > 0 && (
+                  <View style={styles.ContainerDados2}>
+                    <Text style={styles.dados}>Bolos: </Text>
+                    <Text style={styles.dados2}>{preferenciasClienteData.bolos.join(', ')}</Text>
+                  </View>
+                )}
+
+                {preferenciasClienteData.entrada && preferenciasClienteData.entrada.length > 0 && (
+                  <View style={styles.ContainerDados2}>
+                    <Text style={styles.dados}>Entrada: </Text>
+                    <Text style={styles.dados2}>{preferenciasClienteData.entrada.join(', ')}</Text>
+                  </View>
+                )}
+
+                {preferenciasClienteData.bebida && preferenciasClienteData.bebida.length > 0 && (
+                  <View style={styles.ContainerDados2}>
+                    <Text style={styles.dados}>Bebida: </Text>
+                    <Text style={styles.dados2}>{preferenciasClienteData.bebida.join(', ')}</Text>
+                  </View>
+                )}
+              </View>
+            )}
+          </View>
+      </ScrollView>
 
       <View style={styles.containerBotoes}>
         <TouchableOpacity
@@ -136,18 +133,7 @@ const PreferenciasDetalhes = ({ route }) => {
         >
           <Text style={{ color: 'green' }} onPress={handleCriarCardapio}>Aceitar</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.botao, { borderColor: 'green', borderWidth: 1 }]}
-          onPress={handleCriarCardapio}
-        >
-          <Text style={{ color: 'green' }} onPress={handleCriarCardapio}>Aceitar</Text>
-        </TouchableOpacity>
       </View>
-
-      
-
-      
-
     </View>
 
 
@@ -244,8 +230,8 @@ const styles = StyleSheet.create({
     width: '95%',
     alignSelf: 'center',
     borderRadius: 5,
-    marginBottom:16,
-},
+    marginBottom: 16,
+  },
 
 
   containers: {
@@ -276,6 +262,6 @@ const styles = StyleSheet.create({
     width: '95%',
     alignSelf: 'center',
     borderRadius: 5,
-    marginBottom:16,
-},
+    marginBottom: 16,
+  },
 })

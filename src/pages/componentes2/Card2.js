@@ -1,15 +1,10 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet,TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Linking, Alert } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import Communications from 'react-native-communications';
-import { Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-  const fazerLigacao = (telefone) => {
-  const numeroTelefone = telefone.replace(/\D/g, ''); // Remova caracteres não numéricos do número de telefone
-  const url = `tel:${numeroTelefone}`;
-  Linking.openURL(url);
-};
+
 
 const EmployeeCard = ({ nome, cargo, tipoFuncionario, telefone, imagem, salario, onDelete, idFuncionario }) => {
   return (
@@ -29,12 +24,22 @@ const EmployeeCard = ({ nome, cargo, tipoFuncionario, telefone, imagem, salario,
           <Text style={styles.label2}>Cargo: {cargo}</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => fazerLigacao(telefone)} style={{alignItems:'center', justifyContent: 'center'}}> 
-        <View style={styles.iconContainer}>
-          <Icon name="phone" size={24} color="gray"/>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity  onPress={() => onDelete(idFuncionario)} styles={styles.IconButton}>
+      
+      <TouchableOpacity
+  onPress={() => {
+    console.log("Número de telefone:", telefone); // Adicione esta linha para verificar o valor de telefone
+    Communications.phonecall(String(telefone), true);
+  }}
+  style={{ alignItems: 'center', justifyContent: 'center' }}
+>
+  <View style={styles.iconContainer}>
+    <Icon name="phone" size={24} color="gray" />
+  </View>
+</TouchableOpacity>
+
+
+
+      <TouchableOpacity onPress={() => onDelete(idFuncionario)} styles={styles.IconButton}>
         <View style={styles.trashIconContainer}>
           <MaterialIcons
             name="delete"

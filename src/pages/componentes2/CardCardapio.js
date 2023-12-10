@@ -76,7 +76,7 @@ const CardCardapio = ({ cardapioData, buffetData }) => {
     <View style={styles.card}>
       <View style={styles.imageContainer}>
         <Image
-          source={require('../../../assets/Buffley.png')} // Substitua pelo caminho da sua imagem
+          source={require('../../assets/image.png')} // Substitua pelo caminho da sua imagem
           style={styles.cardImage}
         />
       </View>

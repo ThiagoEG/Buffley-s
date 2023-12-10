@@ -1,17 +1,5 @@
 # Buffley-s
 
-Baixar Node modules
+## Apresentação do TCC
 
-Lembrem se de componentizar as telas
-
-## Toda mudança que for efetuada, favor colocar no repositório do github!
-
-Thiago, essas pastas estao muito confusas :(
-
-- Tá nada
-
-## Frontend feito. Agora se deve fazer o backend
-
-# Autenticação do app feita, façam outras partes do backend (Utilizem node.js de preferência)
-
-- tem que colocar as outras pessoas 
+Seja o que Deus quiser

@@ -4,7 +4,7 @@ import { View, Text, ActivityIndicator, StyleSheet, Image } from 'react-native';
 const LoadingScreen = () => {
   return (
     <View style={styles.container}>
-<Image style={styles.image} source={require('../../../assets/Buffley.png')}></Image>
+<Image style={styles.image} source={require('../../assets/LogoAtualizada.png')}></Image>
       <ActivityIndicator size="large" color="#007AFF" />
       <Text>Carregando...</Text>
     </View>
