@@ -57,7 +57,10 @@ const PreferenciasDetalhes = ({ route }) => {
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <ScrollView>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <ScrollView>
       <Navbar />
+      <View style={styles.ContainerDadoss}>
       <View style={styles.ContainerDadoss}>
       <Text style={styles.titulo}>Dados do Cardápio</Text>
 
@@ -117,6 +120,8 @@ const PreferenciasDetalhes = ({ route }) => {
       )}
       </View>
 </ScrollView>
+      </View>
+</ScrollView>
 
       <View style={styles.containerBotoes}>
         <TouchableOpacity
@@ -131,11 +136,20 @@ const PreferenciasDetalhes = ({ route }) => {
         >
           <Text style={{ color: 'green' }} onPress={handleCriarCardapio}>Aceitar</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.botao, { borderColor: 'green', borderWidth: 1 }]}
+          onPress={handleCriarCardapio}
+        >
+          <Text style={{ color: 'green' }} onPress={handleCriarCardapio}>Aceitar</Text>
+        </TouchableOpacity>
       </View>
 
       
 
+      
+
     </View>
+
 
   );
 };
@@ -160,8 +174,10 @@ const styles = StyleSheet.create({
     fontSize: 22,
     gap: 5,
     fontWeight: 'bold',
+    fontWeight: 'bold',
     marginTop: 5,
     color: '#1b1a1a',
+
 
   },
   dados2: {
@@ -171,8 +187,10 @@ const styles = StyleSheet.create({
   containerBotoes: {
     flexDirection: 'row',
     width: '95%',
+    width: '95%',
     alignSelf: 'center',
     justifyContent: 'center',
+    padding: 12,
     padding: 12,
   },
   botao: {
@@ -183,6 +201,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     borderRadius: 5,
+
 
   },
   botao2: {
@@ -195,6 +214,38 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#098409e7'
   },
+
+
+  containers: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 12,
+    width: '100%'
+  },
+  button: {
+    borderWidth: 1,
+    padding: 15,
+    width: '45%',
+  },
+
+  buttons: {
+    borderWidth: 1,
+    padding: 15,
+    width: '45%',
+    color: 'green'
+  },
+  buttonText: {
+    textAlign: 'center',
+  },
+  ContainerDados: {
+    padding: 16,
+    elevation: 6,
+    backgroundColor: 'white',
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: 5,
+    marginBottom:16,
+},
 
 
   containers: {
