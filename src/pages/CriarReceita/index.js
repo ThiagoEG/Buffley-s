@@ -169,7 +169,7 @@ export default function CriarReceita() {
 
           <LinearBorder
             icon="kitchen"
-            placeholder="Número de Porções"
+            placeholder="Número de Porções (pessoa)"
             keyboardType="numeric"
             value={porcao}
             onChangeText={handleNumeroDePorcoesChange}
@@ -206,7 +206,7 @@ export default function CriarReceita() {
             renderItem={({ item, index }) => (
               <View style={styles.ingredientRow}>
                 <Text style={styles.ingredientText}>
-                  {item.nome}: R${item.valor} ({item.quantidade.quantidade}  {item.quantidade.unidadeDeMedida})
+                {item.nome}: R${item.valor} ({item.quantidade.valor}  {item.quantidade.unidade})
                 </Text>
                 <TouchableOpacity onPress={() => removerIngrediente(index)}>
                   <MaterialIcons name="delete" size={20} color="red" />
@@ -229,7 +229,7 @@ export default function CriarReceita() {
           />
           <Text style={styles.subTitle} >Quantidade</Text>
           <LinearBorder
-            placeholder="Quantidade"
+            placeholder="Quantidade (pessoa)"
             value={novaQuantidade}
             onChangeText={setNovaQuantidade}
             keyboardType="numeric"

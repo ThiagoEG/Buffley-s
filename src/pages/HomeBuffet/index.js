@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState, useLayoutEffect  } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { View, Text, StyleSheet, ScrollView, Dimensions, StatusBar, RefreshControl } from 'react-native';
@@ -154,12 +152,20 @@ export default function HomeBuffet({ navigation }) {
 <Text style={styles.title}>Seus cardápios Favoritos</Text>
 {favoritos.length > 0 ? (
   favoritos.map((favorito) => {
-    return (
-      <CardInfo
-        key={favorito.id}
-        cardapioId={favorito.CardapioID}
-      />
-    );
+    // Supondo que você tenha accesso a userId
+
+    // Verificar se o cardapioId é igual ao userId
+    if (favorito.CardapioID === userId) {
+      return (
+        <CardInfo
+          key={favorito.id}
+          cardapioId={favorito.CardapioID}
+        />
+      );
+    }
+
+    // Retornar nulo se não houver correspondência
+    return null;
   })
 ) : (
   <View style={styles.cardAdd}>
