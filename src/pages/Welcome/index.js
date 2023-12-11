@@ -165,7 +165,7 @@ export default function Welcome() {
         }
       } catch (error) {
         console.error('Erro no upload da imagem:', error);
-        setErrorText('Erro no upload da imagem');
+        setErrorText('Erro no upload da imagem: ' + error.message);
       }
     }
   };
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
     title:{
         fontSize: 24,
         fontWeight:'bold',
-        marginTop:12,
+        marginTop:10,
         marginBottom:12,
         alignSelf:'center',
         color:"black"

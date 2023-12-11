@@ -82,10 +82,6 @@ const MenuLateral = ({ isVisible, onClose }) => {
       </View>
       <View style={styles.NavigationContainer}>
         <View style={styles.navigation}>
-          <TouchableOpacity style={styles.sla} onPress={handlePress}>
-            <Feather style={styles.Icon} name="star" size={24} />
-            <Text style={styles.navText}>Favoritos</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.sla} onPress={handleConfiguraçao}>
             <Feather style={styles.Icon} name="settings" size={24} />
             <Text style={styles.navText}>Configurações</Text>

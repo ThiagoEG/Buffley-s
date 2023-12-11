@@ -159,7 +159,9 @@ const ConfiguracaoTela = () => {
       </View>
 
 
-      <LinearButton title="Salavar alteração" onPress={handleSavePress}/>
+<View style={{padding:12}}>
+      <LinearButton title="Salvar alteração" onPress={handleSavePress}/>
+      </View>
     </View>
   );
 };
@@ -167,6 +169,7 @@ const ConfiguracaoTela = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white'
   },
 
   containerFoto: {
@@ -189,6 +192,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 100,
     marginBottom: 22,
+    
   },
   nomeUsuario: {
     fontSize: 32,

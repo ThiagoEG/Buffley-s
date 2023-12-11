@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Platform, ScrollView, Dimensions, RefreshControl } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons'; // Certifique-se de instalar o pacote 'expo-vector-icons' ou outro similar
 import Card from '../Componentes/card';
-import SideMenu from '../Componentes/SideMenu'
+import SideMenu from '../Componentes/SideMenu copy';
 import Navbar from '../componentes2/NavBarCardapio';
 import CardInfo from "../Componentes/CardBuffetInfo";
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -72,7 +72,7 @@ export default function Home({ rating, navigation }) {
     loadData();
   
     // Atualiza os cardápios a cada 5 minutos (ou ajuste conforme necessário)
-    const intervalId = setInterval(loadData, 300000);
+    const intervalId = setInterval(loadData, 20000);
   
     // Limpa o intervalo quando o componente é desmontado
     return () => {
@@ -191,23 +191,9 @@ export default function Home({ rating, navigation }) {
           }
         >
 
-          <ScrollView horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent2}>
+          
 
-            <View style={styles.container2}>
-              {textos.map((texto, index) => (
-                <View key={index} style={styles.retanguloComEspacamento}>
-                  <RetanguloComTexto texto={texto} />
-                </View>
-              ))}
-            </View>
-            <View>
-
-            </View>
-          </ScrollView>
-
-          <Text style={styles.title}>Cardápios </Text>
+          <Text style={styles.title}>Cardápios Criados </Text>
           {cardapio.length > 0 ? (
             cardapio.map((cardapioItem, index,) => (
               <CardInfo key={index} cardapioId={cardapioItem.id} />

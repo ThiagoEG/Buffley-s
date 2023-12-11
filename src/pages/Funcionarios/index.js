@@ -10,7 +10,7 @@ import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icon
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation, useRoute  } from '@react-navigation/native';
-import SideMenu from '../Componentes/SideMenu';
+import SideMenu from '../Componentes/SideMenu copy';
 import { useUser  } from '../../services/UserContext/index'; // Supondo que você tenha um contexto para o usuário
 import Card from '../componentes2/Card2';
 import { ref, get, remove, onValue } from 'firebase/database'; // Importações específicas para o Realtime Database

@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState, useLayoutEffect  } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { View, Text, StyleSheet, ScrollView, Dimensions, StatusBar, RefreshControl } from 'react-native';
@@ -6,7 +8,7 @@ import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 import PreferenciasCard from '../Componentes/PreferenciasCard';
 import { Feather } from '@expo/vector-icons';
 import { useUser } from '../../services/UserContext/index';
-import SideMenu from '../Componentes/SideMenu';
+import SideMenu from '../Componentes/SideMenu copy';
 import CardInfo from "../Componentes/CardBuffetInfo";
 import Navbar from '../componentes2/Navbar2';
 
@@ -152,10 +154,7 @@ export default function HomeBuffet({ navigation }) {
 <Text style={styles.title}>Seus cardápios Favoritos</Text>
 {favoritos.length > 0 ? (
   favoritos.map((favorito) => {
-    // Supondo que você tenha accesso a userId
-
-    // Verificar se o cardapioId é igual ao userId
-    if (favorito.CardapioID === userId) {
+    if (favorito.BuffetID === userId) {
       return (
         <CardInfo
           key={favorito.id}
@@ -163,9 +162,6 @@ export default function HomeBuffet({ navigation }) {
         />
       );
     }
-
-    // Retornar nulo se não houver correspondência
-    return null;
   })
 ) : (
   <View style={styles.cardAdd}>
@@ -435,5 +431,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 10,
     elevation: 8,
+    marginBottom: 12,
   },
 });

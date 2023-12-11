@@ -171,7 +171,9 @@ export default function AddCardapio() {
 
           <View style={styles.buttonContainer}>
             {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
+            
             <LinearButton title="Criar Funcionário" onPress={handleSubmit} />
+           
           </View>
         </View>
       </ScrollView>
@@ -182,6 +184,7 @@ export default function AddCardapio() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white'
   },
   containerForm: {
     flex: 1,
@@ -212,8 +215,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 10,
-    marginBottom: 0,
-    bottom: 0,
+    padding:12,
   },
   errorMessage: {
     color: 'red',

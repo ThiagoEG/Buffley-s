@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { createAppContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -35,14 +35,13 @@ import DetalhesCardapioDBC from '../pages/DetalhesCardapioDBC';
 
 const iconesDasGuias = {
     Home: 'home', // Substitua 'home' pelo nome real do ícone que você deseja usar
-    BuffetsParceiros: 'business', // Substitua 'person' pelo nome real do ícone que você deseja usar
-    Cardapio: 'clipboard-outline', // Substitua 'settings' pelo nome real do ícone que você deseja usar
+    Cardapio: 'clipboard', // Substitua 'settings' pelo nome real do ícone que você deseja usar
   };
 
   const iconesDasGuias2 = {
-    Home: 'home-outline', // Substitua 'home' pelo nome real do ícone que você deseja usar
-    Cardapios: 'clipboard-edit-outline', // Substitua 'person' pelo nome real do ícone que você deseja usar
-    Funcionarios: 'briefcase-outline', // Substitua 'settings' pelo nome real do ícone que você deseja usar
+    Home: 'home', // Substitua 'home' pelo nome real do ícone que você deseja usar
+    Cardapios: 'clipboard', // Substitua 'person' pelo nome real do ícone que você deseja usar
+    Funcionarios: 'suitcase', // Substitua 'settings' pelo nome real do ícone que você deseja usar
   };
 
 
@@ -63,11 +62,17 @@ function HomeScreen() {
             
             // Você pode personalizar a cor e o tamanho do ícone com base em 'focused' aqui
             // Por exemplo:
-            // const corDoIcone = focused ? 'azul' : 'cinza';
+             //const corDoIcone = focused ? 'azul' : 'cinza';
   
-            return <Ionicons name={iconName} size={size} color={color} />;
+            return <Entypo name={iconName} size={size} color={color} />;
           },
         })}
+
+        tabBarOptions={{
+          activeTintColor: '#be3455', // Cor do ícone quando a aba está ativa
+          inactiveTintColor: 'gray', // Cor do ícone quando a aba não está ativa
+        }}
+        
       >
         <Tab.Screen name="Home" component={Home} options={{headerShown: false}}/>
         <Tab.Screen name="Cardapio" component={Cardapio} options={{headerShown: false}}/>
@@ -87,9 +92,16 @@ function HomeScreen() {
             // Você pode personalizar a cor e o tamanho do ícone com base em 'focused' aqui
             // Por exemplo:
             // const corDoIcone = focused ? 'azul' : 'cinza';
-            return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+            return <Entypo name={iconName} size={size} color={color} />;
           },
+
+          
         })}
+
+        tabBarOptions={{
+          activeTintColor: '#be3455', // Cor do ícone quando a aba está ativa
+          inactiveTintColor: 'gray', // Cor do ícone quando a aba não está ativa
+        }}
       >
         
         <Tab.Screen name="Cardapios" component={CardapiosBuffet} options={{headerShown: false}}/>
