@@ -28,7 +28,6 @@ const calcularCustoTotal = (receita) => {
 };
 
 
-
 const calcularCategoriaMaisBarata = (selectedRecipes) => {
   let categorias = {};
 
@@ -337,6 +336,9 @@ export default function Cardapio() {
   };
 
 
+  useEffect(() => {
+    console.log(preferenciasId)
+  })
 
 
   useEffect(() => {
@@ -395,6 +397,11 @@ export default function Cardapio() {
 
     const custoReceita = calcularCustoTotal(recipe);
     setTotalCost((prevTotalCost) => prevTotalCost - custoReceita * numeroConvidados);
+  };
+
+  const handleCreateNewRecipe = () => {
+    navigation.navigate('CriarReceita',preferenciasId);
+    console.log("Preferencias id", preferenciasId)
   };
 
   return (
@@ -468,6 +475,8 @@ export default function Cardapio() {
               setTotalCost={setTotalCost}
               numeroConvidados={numeroConvidados}
               onRemoveRecipe={handleRemoveRecipeFromSelected}  // Passe a função onRemoveRecipe
+              handleCreateNewRecipe={() => handleCreateNewRecipe(navigation)}
+
             />
           ))}
 

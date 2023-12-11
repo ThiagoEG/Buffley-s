@@ -7,7 +7,7 @@ import { useUser } from '../../services/UserContext/index';
 
 
 
-const DropCard = ({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCost, setSelectedRecipes, numeroConvidados, onRemoveRecipe }) => {  const [inputText, setInputText] = useState('');
+const DropCard = ({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCost, setSelectedRecipes, numeroConvidados, onRemoveRecipe, }) => {  const [inputText, setInputText] = useState('');
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [searchedRecipes, setSearchedRecipes] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -48,7 +48,7 @@ const DropCard = ({ title, recipes, selectedRecipes, onSelectRecipe, setTotalCos
             },
             {
               text: 'Criar',
-              onPress: handleCreateNewRecipe,
+              onPress: () => handleCreateNewRecipe(navigation)
             },
           ]
         );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, StatusBar, Text, TextInput, ScrollView, FlatList, TouchableOpacity, Alert } from "react-native";
 import Navbar from "../Componentes/Navbar";
 import LinearBorder from "../Componentes/LinearBorder";
@@ -8,7 +8,7 @@ import { ref, push, set } from 'firebase/database';
 import { db } from "../../services/firebaseConfigurations/firebaseConfig";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useUser } from '../../services/UserContext/index';
 
 export default function CriarReceita() {
@@ -27,7 +27,8 @@ export default function CriarReceita() {
     const { state } = useUser();
     const [refreshing, setRefreshing] = useState(false);
     const userId = state.uid;
-    
+    const route = useRoute;
+    const { preferenciasId } = route.params || {};
 
     const adicionarIngrediente = () => {
       if (novoIngrediente && novaQuantidade && novoValor && novaQuantidadeUni) {
@@ -61,6 +62,11 @@ export default function CriarReceita() {
       };
 
       
+
+      useEffect(() =>{
+        console.log(preferenciasId);
+      })
+
 
     const handleNomeReceitaChange = (text) => {
         setNome(text);
@@ -136,7 +142,7 @@ export default function CriarReceita() {
         setCategoria('');
         setIngredientes([]);
         
-        navigation.navigate('CriarCardapio', { receitaData, setRefreshing: () => setRefreshing(true) });
+        navigation.goBack( { receitaData, setRefreshing: () => setRefreshing(true), preferenciasId });
         
         Alert.alert("Sucesso", "Receita adicionada com sucesso!");
         console.log("receita nova", receitaData);
