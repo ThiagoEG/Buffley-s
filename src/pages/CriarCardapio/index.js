@@ -120,6 +120,8 @@ export default function Cardapio() {
     categoriaMaisCara: '',
   });
 
+  const [preferenciasIdState, setPreferenciasId] = useState(route.params?.preferenciasId || null);
+
   const onRefresh = async () => {
     setRefreshingState(true);
 
@@ -159,8 +161,12 @@ export default function Cardapio() {
     return () => clearInterval(intervalId);
   }, []);
 
-
   const userID = state.uid;
+
+  useEffect(() => {
+    setPreferenciasId(route.params?.preferenciasId || null);
+  }, [route.params?.preferenciasId]);
+
 
   const handleSubmit = async () => {
 
@@ -246,9 +252,9 @@ export default function Cardapio() {
       novoCardapioData.userCardapioId = preferenciasData.userId;
     }
 
-    if (preferenciasId) {
-      novoCardapioData.preferenciasCardId = preferenciasId;
-      const preferencesRef = ref(db, `preferencias/${preferenciasId}`);
+    if (preferenciasIdState) {
+      novoCardapioData.preferenciasCardId = preferenciasIdState;
+      const preferencesRef = ref(db, `preferencias/${preferenciasIdState}`);
       await remove(preferencesRef);
       console.log('Preferência excluída com sucesso!');
     }
