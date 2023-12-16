@@ -19,7 +19,13 @@ Para realizar a instalação, basta acessar o link do anexo fornecido abaixo e b
 [![Google Drive](https://img.shields.io/badge/Google%20Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://bit.ly/Buffleys)
 [![Google Forms](https://img.shields.io/badge/Google%20Forms-4285F4?style=for-the-badge&logo=googleforms&logoColor=white&color=4285F4)](https://bit.ly/471uwPu)
 
+## 📦 Tecnologias usadas:
 
+![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
 
+## 👷 Autores
 
-
+* **Willyan Santos** - *Full Stack* - [@willyandev](https://github.com/willyandev)
+* **Thiago Evangelista** - *Full Stack* - [@ThiagoEG](https://github.com/ThiagoEG)
