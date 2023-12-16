@@ -16,7 +16,8 @@ Este aplicativo tem como objetivo aprimorar a experiência dos clientes na solic
 
 Para realizar a instalação, basta acessar o link do anexo fornecido abaixo e baixar o apk através do gloogle drive e por fim utilizar nosso aplicativo. Após a utilização, ficaríamos agradecidos se puder fornecer seu feedback para que possamos continuar aprimorando o serviço.
 
-![Google Drive](https://img.shields.io/badge/Google%20Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white) 
-##### Link do apk:  https://bit.ly/Buffleys
+[![Google Drive](https://img.shields.io/badge/Google%20Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://bit.ly/Buffleys)
+
+
 
 
